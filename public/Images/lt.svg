@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 100" width="100%" height="100%">
+  <g transform="translate(10, 10)">
+    <rect width="80" height="80" fill="#f5a623" rx="8" />
+    <path d="M22 20 h16 v10 h-6.5 v30 h-9.5 z" fill="#ffffff" />
+    <path d="M40 20 h22 v10 h-8 v30 h-6 v-30 z" fill="#ffffff" />
+  </g>
+  <text x="110" y="48" font-family="Inter, sans-serif" font-weight="700" font-size="22" fill="#333333">L&amp;T Finance</text>
+  <text x="110" y="70" font-family="Inter, sans-serif" font-weight="500" font-size="14" fill="#666666" letter-spacing="1">Financial Services</text>
+</svg>

@@ -258,7 +258,7 @@ export default function Footer() {
 
             {/* ── Awards / Trust Badges ── */}
             <div className="border-t border-gray-100">
-                <div className="max-w-[1200px] mx-auto px-4 py-5 flex flex-wrap items-center justify-center gap-8">
+                <div className="max-w-[1200px] mx-auto px-4 py-5 grid grid-cols-2 md:flex flex-wrap items-center justify-center gap-8">
                     {[
                         "Best Real Estate Portal",
                         "Times Business Award",

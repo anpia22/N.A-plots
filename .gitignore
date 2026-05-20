@@ -14,6 +14,7 @@
 
 # production
 /build
+netlify-deploy.zip
 
 # misc
 .DS_Store

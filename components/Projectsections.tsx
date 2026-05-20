@@ -6,15 +6,15 @@ import { ChevronRight } from "lucide-react";
 
 function MagicHomesBadge() {
     return (
-        <span className="inline-flex items-center border border-[#D8232A] rounded px-2 py-0.5 ml-2 align-middle">
-            <span className="text-[#D8232A] font-bold text-xs italic" style={{ fontFamily: "Georgia, serif" }}>
+        <span className="inline-flex items-center border border-[#D8232A] rounded px-1.5 py-0.5 ml-1.5 align-middle whitespace-nowrap shrink-0 select-none">
+            <span className="text-[#D8232A] font-bold text-[10px] md:text-xs italic whitespace-nowrap" style={{ fontFamily: "Georgia, serif" }}>
                 magic H
             </span>
 
-            <svg viewBox="0 0 12 10" width="11" height="10" className="mx-0.5">
+            <svg viewBox="0 0 12 10" width="11" height="10" className="mx-0.5 shrink-0">
                 <path d="M6 0L0 5h1.5v5h9V5H12z" fill="#D8232A" />
             </svg>
-            <span className="text-[#D8232A] font-bold text-xs italic" style={{ fontFamily: "Georgia, serif" }}>
+            <span className="text-[#D8232A] font-bold text-[10px] md:text-xs italic whitespace-nowrap" style={{ fontFamily: "Georgia, serif" }}>
                 mes
             </span>
         </span>
@@ -32,7 +32,8 @@ const topProjects = [
         bhk: "Commercial NA Plots",
         price: "Price on Request",
         marketedBy: "Rising Spaces",
-        img: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=500&q=80",
+        img: "/Images/Projects/Prakriti.avif",
+        externalLink: "https://codenameprakriti.com/",
     },
     {
         id: 2,
@@ -42,7 +43,8 @@ const topProjects = [
         bhk: "Commercial NA Plots",
         price: "Price on Request",
         marketedBy: "Rising Spaces",
-        img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500&q=80",
+        img: "/Images/Projects/Pratham.avif",
+        externalLink: "https://codenamepratham.in/",
     },
     {
         id: 3,
@@ -52,7 +54,8 @@ const topProjects = [
         bhk: "Residential NA Plots",
         price: "Price on Request",
         marketedBy: "Rising Spaces",
-        img: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=500&q=80",
+        img: "/Images/Projects/joy estate banner.avif",
+        externalLink: "https://codenamejoyestate.com/",
     },
 ];
 
@@ -66,6 +69,7 @@ interface Project {
     marketedBy: string;
     img: string;
     wide?: boolean;
+    externalLink?: string;
 }
 
 interface ProjectCardProps {
@@ -73,8 +77,17 @@ interface ProjectCardProps {
 }
 
 function TopProjectCard({ project }: ProjectCardProps) {
+    const handleClick = () => {
+        if (project.externalLink) {
+            window.open(project.externalLink, "_blank", "noopener,noreferrer");
+        }
+    };
+
     return (
-        <div className="group border border-gray-200 rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-shadow cursor-pointer flex flex-col">
+        <div
+            onClick={handleClick}
+            className="w-full group border border-gray-200 rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-shadow cursor-pointer flex flex-col h-full"
+        >
             {/* Image */}
             <div className="h-[190px] overflow-hidden">
                 <img
@@ -98,13 +111,10 @@ function TopProjectCard({ project }: ProjectCardProps) {
 
                 {/* Hover Action Container */}
                 <div className="relative mt-auto h-7 overflow-hidden">
-                    {/* <p className="text-[#555] text-xs transition-transform duration-300 group-hover:-translate-y-full">
-                        Marketed by {project.marketedBy}
-                    </p> */}
                     <p className="text-[#555] text-xs transition-transform duration-300 group-hover:-translate-y-full">
                         Get Pricing Details
                     </p>
-                    <button className="absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-primary text-white text-[10px] font-bold uppercase rounded-full flex items-center justify-center">
+                    <button className="absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-primary text-white text-[10px] font-bold uppercase rounded-full flex items-center justify-center cursor-pointer">
                         View Detail
                     </button>
                 </div>
@@ -118,21 +128,30 @@ export function TopProjects() {
         <section className="w-full bg-white py-8">
             <div className="max-w-[1200px] mx-auto px-4">
                 {/* Heading row */}
-                <div className="flex items-center justify-between mb-1">
-                    <h2 className="text-[#1a1a1a] text-xl font-semibold flex items-center">
-                        Top Projects
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-y-2 gap-x-4 mb-2">
+                    <h2 className="text-[#1a1a1a] text-lg sm:text-xl font-bold flex items-center flex-wrap gap-1 md:gap-2">
+                        <span className="whitespace-nowrap">Top Projects</span>
                         <MagicHomesBadge />
                     </h2>
-                    <a href="#" className="text-[#D8232A] text-sm font-semibold flex items-center gap-1 hover:underline">
-                        See all Projects <ChevronRight size={15} />
+                    <a href="/search?city=Pune&type=Plot" className="text-[#D8232A] text-xs sm:text-sm font-semibold flex items-center gap-1 hover:underline whitespace-nowrap">
+                        See all Projects <ChevronRight size={14} />
                     </a>
                 </div>
                 <div className="w-10 h-[3px] bg-[#FFC107] mb-6" />
 
-                {/* 3-column grid */}
-                <div className="grid grid-cols-3 gap-5">
+                {/* Desktop view (exactly unchanged) */}
+                <div className="hidden md:grid grid-cols-3 gap-5">
                     {topProjects.map((p) => (
                         <TopProjectCard key={p.id} project={p} />
+                    ))}
+                </div>
+
+                {/* Mobile view (swipeable card row) */}
+                <div className="flex md:hidden overflow-x-auto gap-4 pb-4 scrollbar-hide snap-x snap-mandatory">
+                    {topProjects.map((p) => (
+                        <div key={p.id} className="w-[280px] min-w-[280px] max-w-[280px] shrink-0 snap-start">
+                            <TopProjectCard project={p} />
+                        </div>
                     ))}
                 </div>
             </div>
@@ -151,7 +170,8 @@ const newProjects = [
         bhk: "Commercial NA Plots",
         price: "Price on Request",
         marketedBy: "Rising Spaces",
-        img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=300&q=80",
+        img: "/Images/Projects/crown esate.avif",
+        externalLink: "https://crownestate.in/",
     },
     {
         id: 2,
@@ -161,7 +181,8 @@ const newProjects = [
         bhk: "Residential NA Plots",
         price: "Price on Request",
         marketedBy: "Rising Spaces",
-        img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=300&q=80",
+        img: "/Images/Projects/Mountville.avif",
+        externalLink: "https://www.risingspaces.in/mountville",
     },
     {
         id: 3,
@@ -171,7 +192,8 @@ const newProjects = [
         bhk: "Commercial NA Plots",
         price: "Price on Request",
         marketedBy: "Rising Spaces",
-        img: "https://images.unsplash.com/photo-1580041065738-e72023775cdc?w=300&q=80",
+        img: "/Images/Projects/RedStone_Webbanner.avif",
+        externalLink: "https://www.risingspaces.in/red-stone",
     },
     {
         id: 4,
@@ -181,14 +203,24 @@ const newProjects = [
         bhk: "Commercial NA Plots",
         price: "Price on Request",
         marketedBy: "Rising Spaces",
-        img: "https://images.unsplash.com/photo-1560185127-6a8e9e0e0000?w=300&q=80",
+        img: "/Images/Projects/eco town.avif",
         wide: true,
+        externalLink: "https://www.risingspaces.in/eco-town",
     },
 ];
 
 function NewProjectCard({ project }: ProjectCardProps) {
+    const handleClick = () => {
+        if (project.externalLink) {
+            window.open(project.externalLink, "_blank", "noopener,noreferrer");
+        }
+    };
+
     return (
-        <div className="group border border-gray-200 rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-shadow cursor-pointer flex items-stretch">
+        <div
+            onClick={handleClick}
+            className="w-full group border border-gray-200 rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-shadow cursor-pointer flex items-stretch"
+        >
             {/* Left image */}
             <div className="w-[130px] shrink-0 overflow-hidden">
                 <img
@@ -213,13 +245,10 @@ function NewProjectCard({ project }: ProjectCardProps) {
 
                 {/* Hover Action Container */}
                 <div className="relative mt-auto h-7 overflow-hidden">
-                    {/* <p className="text-[#555] text-[11px] transition-transform duration-300 group-hover:-translate-y-full">
-                        Marketed by {project.marketedBy}
-                    </p> */}
                     <p className="text-[#555] text-[11px] transition-transform duration-300 group-hover:-translate-y-full">
                         Get Pricing Details
                     </p>
-                    <button className="absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-primary text-white text-[10px] font-bold uppercase rounded-full flex items-center justify-center">
+                    <button className="absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-primary text-white text-[10px] font-bold uppercase rounded-full flex items-center justify-center cursor-pointer">
                         View Detail
                     </button>
                 </div>
@@ -233,27 +262,39 @@ export function NewProjectGallery() {
         <section className="w-full bg-white py-8">
             <div className="max-w-[1200px] mx-auto px-4">
                 {/* Heading row */}
-                <div className="flex items-center justify-between mb-1">
-                    <h2 className="text-[#1a1a1a] text-xl font-semibold flex items-center">
-                        New Project Gallery
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-y-2 gap-x-4 mb-2">
+                    <h2 className="text-[#1a1a1a] text-lg sm:text-xl font-bold flex items-center flex-wrap gap-1 md:gap-2">
+                        <span className="whitespace-nowrap">New Project Gallery</span>
                         <MagicHomesBadge />
                     </h2>
-                    <a href="#" className="text-[#D8232A] text-sm font-semibold flex items-center gap-1 hover:underline">
-                        See all Projects <ChevronRight size={15} />
+                    <a href="/search?city=Pune&type=Plot" className="text-[#D8232A] text-xs sm:text-sm font-semibold flex items-center gap-1 hover:underline whitespace-nowrap">
+                        See all Projects <ChevronRight size={14} />
                     </a>
                 </div>
                 <div className="w-10 h-[3px] bg-[#00bcd4] mb-6" />
 
-                {/* Top row: 3 cards */}
-                <div className="grid grid-cols-3 gap-5 mb-5">
-                    {newProjects.slice(0, 3).map((p) => (
-                        <NewProjectCard key={p.id} project={p} />
-                    ))}
+                {/* Desktop view (exactly unchanged) */}
+                <div className="hidden md:block">
+                    {/* Top row: 3 cards */}
+                    <div className="grid grid-cols-3 gap-5 mb-5">
+                        {newProjects.slice(0, 3).map((p) => (
+                            <NewProjectCard key={p.id} project={p} />
+                        ))}
+                    </div>
+
+                    {/* Bottom row: 1 wide card (col-span-1 in a 3-col) */}
+                    <div className="grid grid-cols-3 gap-5">
+                        <NewProjectCard project={newProjects[3]} />
+                    </div>
                 </div>
 
-                {/* Bottom row: 1 wide card (col-span-1 in a 3-col) */}
-                <div className="grid grid-cols-3 gap-5">
-                    <NewProjectCard project={newProjects[3]} />
+                {/* Mobile view (swipeable card row) */}
+                <div className="flex md:hidden overflow-x-auto gap-4 pb-4 scrollbar-hide snap-x snap-mandatory">
+                    {newProjects.map((p) => (
+                        <div key={p.id} className="w-[290px] min-w-[290px] max-w-[290px] shrink-0 snap-start">
+                            <NewProjectCard project={p} />
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>

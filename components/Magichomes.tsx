@@ -1,4 +1,5 @@
 import { Folder, FileText, MessageSquare } from "lucide-react";
+import Link from "next/link";
 
 const features = [
     {
@@ -6,18 +7,21 @@ const features = [
         icon: <Folder size={36} className="text-[#00b0d4]" />,
         label: "Directory for All NA Plots",
         bg: "bg-[#e0f9f9]",
+        href: "/search?type=Plot",
     },
     {
         id: 2,
         icon: <FileText size={36} className="text-[#e05a5a]" />,
         label: "All Reports from RERA",
         bg: "bg-[#fce8e8]",
+        href: "/search?status=Under Construction",
     },
     {
         id: 3,
         icon: <MessageSquare size={36} className="text-[#e8a020]" />,
         label: "Expert Reviews & Advice",
         bg: "bg-[#fef6df]",
+        href: "/search",
     },
 ];
 
@@ -65,22 +69,25 @@ export default function MagicHomes() {
                 {/* Feature cards */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8 w-full">
                     {features.map((f) => (
-                        <div
+                        <Link
                             key={f.id}
-                            className={`${f.bg} rounded-2xl px-6 py-5 flex items-center gap-4 cursor-pointer hover:shadow-md transition-shadow`}
+                            href={f.href}
+                            className={`${f.bg} rounded-2xl px-6 py-5 flex items-center gap-4 cursor-pointer hover:shadow-md transition-shadow no-underline block`}
                         >
                             <div className="shrink-0">{f.icon}</div>
                             <p className="text-[#1a1a1a] font-semibold text-sm text-left leading-snug">
                                 {f.label}
                             </p>
-                        </div>
+                        </Link>
                     ))}
                 </div>
 
                 {/* CTA */}
-                <button className="bg-primary hover:bg-primary-dark text-white font-bold text-sm px-10 py-3 rounded-full transition-colors">
-                    View All New projects
-                </button>
+                <Link href="/search" className="inline-block no-underline">
+                    <button className="bg-primary hover:bg-primary-dark text-white font-bold text-sm px-10 py-3 rounded-full transition-colors cursor-pointer">
+                        View All New projects
+                    </button>
+                </Link>
             </div>
         </section>
     );

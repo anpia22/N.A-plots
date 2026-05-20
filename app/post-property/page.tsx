@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { usePopup } from "@/hooks/usePopup";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import Footer from "@/components/Footer";
@@ -28,30 +29,31 @@ const stockImages = [
     id: "img-flat",
     label: "Modern High-Rise Apartment",
     type: "Flat",
-    url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80"
+    url: "/Images/Projects/24K PREMIUM ASSETS.avif"
   },
   {
     id: "img-plot",
     label: "Lush Gated Land / Plot",
     type: "Plot",
-    url: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80"
+    url: "/Images/Projects/Aangan 18.avif"
   },
   {
     id: "img-commercial",
     label: "Modern Commercial Office Tower",
     type: "Commercial",
-    url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80"
+    url: "/Images/Projects/SAFFRON CITY.avif"
   },
   {
     id: "img-house",
     label: "Architectural Luxury Villa / House",
     type: "House",
-    url: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80"
+    url: "/Images/Projects/beyond bliss lonavala.avif"
   }
 ];
 
 export default function PostPropertyPage() {
   const router = useRouter();
+  const { showPopup } = usePopup();
 
   // Form Fields State
   const [propertyType, setPropertyType] = useState<"Flat" | "Plot" | "House" | "Commercial">("Flat");
@@ -109,7 +111,7 @@ export default function PostPropertyPage() {
     e.preventDefault();
 
     if (!title || !projectName || !locality || !price || !area) {
-      alert("Please fill in all the required fields.");
+      showPopup("Please fill in all the required fields.", "warning", "Validation Error");
       return;
     }
 
@@ -151,11 +153,11 @@ export default function PostPropertyPage() {
     const saved = saveProperty(propertyData);
     
     if (saved) {
-      alert("Success! Your property has been listed on MagicHomes. Redirecting to search results...");
-      // Redirect to search results page showing the new property
-      router.push(`/search?city=${city}&type=${propertyType}&sort=recent`);
+      showPopup("Success! Your property has been listed on MagicHomes. Redirecting to search results...", "success", "Property Listed", () => {
+        router.push(`/search?city=${city}&type=${propertyType}&sort=recent`);
+      });
     } else {
-      alert("Failed to save property listing. Please try again.");
+      showPopup("Failed to save property listing. Please try again.", "error", "Error");
     }
   };
 

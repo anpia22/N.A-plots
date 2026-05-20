@@ -13,7 +13,8 @@ const properties = [
         locality: "Paud Mulshi, Pune",
         status: "New Launch",
         photos: 12,
-        img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80",
+        img: "/Images/Projects/frow_banner.avif",
+        externalLink: "https://thefrow.in/",
     },
     {
         id: 2,
@@ -23,7 +24,8 @@ const properties = [
         locality: "Ghotawade, Near Hinjewadi, Pune",
         status: "Under Construction",
         photos: 8,
-        img: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&q=80",
+        img: "/Images/Projects/tatasthu_banner.avif",
+        externalLink: "https://codenametathastu.com/",
     },
     {
         id: 3,
@@ -33,7 +35,8 @@ const properties = [
         locality: "Pawna Lake, near Lonavala, Pune",
         status: "Gated Community",
         photos: 15,
-        img: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400&q=80",
+        img: "/Images/Projects/pawna villas banner.avif",
+        externalLink: "https://thepawnavillas.com/",
     },
     {
         id: 4,
@@ -43,11 +46,18 @@ const properties = [
         locality: "Somatane Phata, Pune",
         status: "Ongoing Project",
         photos: 6,
-        img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&q=80",
+        img: "/Images/Projects/OwnEdge.avif",
+        externalLink: "https://www.risingspaces.in/own-edge",
     },
 ];
 
 export default function PopularOwnerProperties() {
+    const handleCardClick = (link?: string) => {
+        if (link) {
+            window.open(link, "_blank", "noopener,noreferrer");
+        }
+    };
+
     return (
         <section className="w-full bg-white py-10">
             <div className="max-w-[1200px] mx-auto px-4">
@@ -72,6 +82,7 @@ export default function PopularOwnerProperties() {
                         {properties.map((p) => (
                             <div
                                 key={p.id}
+                                onClick={() => handleCardClick(p.externalLink)}
                                 className="w-[280px] shrink-0 md:w-auto md:shrink group rounded-xl border border-gray-200 overflow-hidden cursor-pointer hover:shadow-md transition-shadow bg-white flex flex-col"
                             >
                                 {/* Image */}
@@ -107,7 +118,7 @@ export default function PopularOwnerProperties() {
                                         <p className="text-[#555] text-xs transition-transform duration-300 group-hover:-translate-y-full">
                                             {p.status}
                                         </p>
-                                        <button className="absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-primary text-white text-[10px] font-bold uppercase rounded-full flex items-center justify-center">
+                                        <button className="absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-primary text-white text-[10px] font-bold uppercase rounded-full flex items-center justify-center cursor-pointer">
                                             View Detail
                                         </button>
                                     </div>
@@ -117,9 +128,9 @@ export default function PopularOwnerProperties() {
                     </div>
 
                     {/* Right Arrow */}
-                    <button className="absolute -right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-gray-300 bg-white shadow flex items-center justify-center hover:shadow-md transition-shadow hidden md:flex">
+                    {/* <button className="absolute -right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-gray-300 bg-white shadow flex items-center justify-center hover:shadow-md transition-shadow hidden md:flex">
                         <ChevronRight size={20} className="text-[#333]" />
-                    </button>
+                    </button> */}
                 </div>
 
             </div>

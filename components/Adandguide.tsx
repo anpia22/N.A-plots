@@ -1,382 +1,815 @@
 "use client"
-import { ArrowRight, Play, FileText } from "lucide-react";
+import React, { useState, useMemo } from "react";
+import {
+  ArrowRight,
+  Play,
+  FileText,
+  ChevronRight,
+  Calendar,
+  Clock,
+  BookOpen,
+  ShieldCheck,
+  Search,
+  CheckCircle2
+} from "lucide-react";
 
-// ─── Ad Banners Section ────────────────────────────────────────────────────────
+// ─── TYPES & DATA ────────────────────────────────────────────────────────────
+
+interface Blog {
+  id: string;
+  title: string;
+  category: "Legal & Land" | "Investment" | "Market Trends" | "Architecture";
+  date: string;
+  readTime: string;
+  img: string;
+  short: string;
+  fullContent: string;
+}
+
+const blogsData: Blog[] = [
+  {
+    id: "blog_712_guide",
+    title: "How to Read a 7/12 Extract (Satbara Utara) in Maharashtra",
+    category: "Legal & Land",
+    date: "May 15, 2026",
+    readTime: "5 min read",
+    img: "/Images/AdAndBlog/Gemini_Generated_Image_aewh0kaewh0kaewh.png",
+    short: "Verify land ownership records, check active bank mortgages, and understand occupant classes on Maharashtra land documents.",
+    fullContent: `### What is a 7/12 Extract?
+The 7/12 extract (Satbara Utara) is maintained by the Maharashtra revenue department. It combines Form VII (ownership, occupant class, tenant info) and Form XII (crop details, irrigation, land usage).
+
+### Why is it Critical for Plot Buyers?
+Before purchasing any NA plot, the 7/12 extract is your first defense against fraud — it is legal proof of ownership and reveals disputes or loans on the land.
+
+### Key Sections to Verify
+
+**1. Occupant Class (Bhogvautadar Varg)**
+- **Class 1 (Varg-1):** Unrestricted land — the owner can sell, lease, or mortgage without government permission. Always buy Class 1 plots.
+- **Class 2 (Varg-2):** Restricted land, usually allocated to freedom fighters or scheduled castes/tribes. Requires District Collector sanction and a premium to sell.
+
+**2. Other Rights Column (Itar Adhikar)**
+- Lists active liabilities — bank mortgages (Bojha), private loans, court litigations, or government easements.
+- If a bank holds a mortgage, "Bojha" with the bank name and amount will appear. The seller must provide a No Objection Certificate (NOC) and mortgage clearance deed.
+
+**3. Mutation Entries (Ferfar)**
+- Records how the property changed hands over time (inheritance, sale deed, partition).
+- Verify that the seller's name matches the latest mutation entry.
+
+### Verification Checklist
+- Check the online Mahabhulekh portal for digitally signed records.
+- Cross-reference survey/gut numbers with the layout plan.
+- Obtain a 30-year search report from a professional land lawyer.
+
+> At NAPLOTPUNE, all our gated plot developments come with legally verified, clear Class-1 title 7/12 extracts — ensuring complete documentation transparency and peace of mind.`
+  },
+  {
+    id: "blog_collector_na",
+    title: "Collector NA vs. Gram Panchayat Plots: The Crucial Difference",
+    category: "Investment",
+    date: "May 12, 2026",
+    readTime: "6 min read",
+    img: "/Images/AdAndBlog/Gemini_Generated_Image_lwxf5tlwxf5tlwxf.png",
+    short: "Avoid cheap unapproved agricultural subdivisions. Understand bank loan approvals and regional municipal building permissions.",
+    fullContent: `### The Buzzword: 'NA Plots'
+In Maharashtra, all land is agricultural by default unless converted to Non-Agricultural (NA) use. Many developers advertise cheap "NA plots" without official sanctions. The two main approval types are Collector NA and Gram Panchayat NA.
+
+### Collector NA (Gold Standard)
+The conversion is rigorous and goes through multiple government departments:
+- **Town Planning Approval:** Ensures roads, open spaces, and layouts match PMRDA development guidelines.
+- **Collector Final Sanction:** Issued under Section 44 of the Maharashtra Land Revenue Code.
+- **Bank Loan Eligibility:** All major banks (HDFC, SBI, ICICI) easily approve home loans for Collector NA plots.
+- **Legal Security:** The layout is permanent and cannot be claimed as illegal by municipal corporations.
+
+### Gram Panchayat NA (High Risk)
+Gram Panchayats do NOT have legal power to convert agricultural land to NA land.
+- **Legal Issues:** Layouts often lack proper open spaces, wide roads, or drainage — frequently unauthorized "Gunthewari" subdivisions.
+- **No Bank Loans:** Reputable banks refuse to sanction loans for Gram Panchayat plots.
+- **Demolition Risk:** If merged into a Municipal Corporation (PMC/PCMC), unauthorized layouts face heavy penalties or demolition.
+
+### Quick Comparison
+
+| Feature | Collector NA | Gram Panchayat |
+|---|---|---|
+| Bank Loan | Yes, 70-80% | No, or high-interest only |
+| Infrastructure | Regulated, wide roads, drainage | Unregulated, narrow roads |
+| Appreciation | High, secure resale | Low, highly risky |
+
+> NAPLOTPUNE exclusively features Collector NA / PMRDA Sanctioned plots. Projects like 24K Premium and The f Row offer fully-approved layouts with bank loan options from leading financial institutions.`
+  },
+  {
+    id: "blog_hinjewadi_hotspot",
+    title: "Why Maan and Marunji are the Top Plot Hotspots Near Hinjewadi",
+    category: "Market Trends",
+    date: "May 08, 2026",
+    readTime: "4 min read",
+    img: "/Images/AdAndBlog/Gemini_Generated_Image_liow76liow76liow.png",
+    short: "With the Hinjewadi-Shivajinagar Metro Line and Ring Road, Hinjewadi's adjoining areas are experiencing huge land appreciation.",
+    fullContent: `### Hinjewadi's Expansion Beyond Tech Parks
+Hinjewadi employs over 400,000 tech professionals. As commercial development saturates Phase 1, 2, and 3, residential demand is spilling into Maan and Marunji.
+
+### Key Growth Drivers
+
+**1. Infrastructure & Connectivity**
+- **Pune Metro Line 3:** The 23-km elevated metro connecting Hinjewadi to Shivajinagar is nearing completion, with stations near Maan dramatically reducing commute times.
+- **PMRDA Ring Road:** The 128-km Ring Road will pass through these sectors, offering direct Mumbai-Pune Expressway access.
+
+**2. Walk-To-Work Culture**
+- Maan and Marunji are just 5–10 minutes from Wipro, Infosys, Cognizant, and TCS campuses — ideal for techies tired of traffic.
+
+**3. High ROI Potential**
+- Ready apartments in Hinjewadi cost ₹7,500+ per sqft, while NA plots in Maan-Marunji are available at ₹30–40 Lacs for 1,800 sqft.
+- Land prices in Maan have grown 18–22% annually over the last 5 years, outpacing apartment appreciation.
+
+### Gated Plotting vs. Standalone Land
+Standalone village land carries security and encroachment risks. Gated communities provide concrete roads, water supply, electricity, security, and clubhouse amenities.
+
+> NAPLOTPUNE's flagship projects — 24K Premium and 24K Real Assets in Maan, and 24K Solitaire Assets in Marunji — represent premier gated investments at the doorstep of Hinjewadi IT Hub.`
+  },
+  {
+    id: "blog_vogue_living",
+    title: "The Concept of Vogue Villa Living: Design Your Own Sanctuary",
+    category: "Architecture",
+    date: "May 03, 2026",
+    readTime: "5 min read",
+    img: "/Images/AdAndBlog/Gemini_Generated_Image_pwr3dxpwr3dxpwr3.png",
+    short: "Ditch the cookie-cutter apartments. Learn how gated NA plots give you the freedom to build customized double-height luxury villas.",
+    fullContent: `### Apartment Living vs. Bespoke Villa Living
+Standard 2-3 BHK apartments can feel restrictive — shared walls, limited natural light, high maintenance, and cookie-cutter layouts. Vogue Villa Living is the counter-trend: purchase a sanctioned NA plot inside a gated community and build a fully customized architectural masterpiece.
+
+### The Freedom of Bespoke Design
+- **Architectural Expression:** Build a double-height glass facade, minimalist villa, or traditional exposed-brick home.
+- **Private Amenities:** Integrate a private pool, terrace garden, sunset deck, or outdoor barbecue lounge.
+- **Generous Spaces:** Plan high ceilings, home offices, theatre rooms, or a personal gym.
+
+### Building Guidelines for NA Plots
+
+**1. Floor Space Index (FSI)**
+Most PMRDA layouts allow FSI between 1.0 and 1.5 — you can construct total floor area up to 1.5× your plot size.
+
+**2. Setback Margins**
+Standard open margins required on all four sides for ventilation and road access.
+
+**3. Height Limitations**
+Residential villas are permitted up to G+2 or G+3 floors (approx. 12 meters).
+
+### Gated Infrastructure Advantage
+Building on isolated plots means arranging water, electricity, and security yourself. Gated developments provide underground electric cables, municipal water, security guards, and landscape parks — all ready-made.
+
+> At The f Row in Paud, a fashion-inspired Vogue villa plotting community, we offer ready-to-construct plots with premium amenities. Our partners assist from design to delivery.`
+  }
+];
+
+const videoGuides = [
+  {
+    id: "vid_1",
+    title: "Guide: 5 Things to Check Before Buying Plots in Pune",
+    duration: "3:42",
+    thumb: "/Images/Projects/tatasthu_banner.avif",
+    tag: "PLOT BUYER GUIDE",
+    link: "#"
+  },
+  {
+    id: "vid_2",
+    title: "NAPLOTPUNE: Standard Gated Infrastructure Walkthrough",
+    duration: "4:15",
+    thumb: "/Images/AdAndBlog/Gemini_Generated_Image_51d5wr51d5wr51d5.png",
+    tag: "INFRASTRUCTURE TOUR",
+    link: "#"
+  }
+];
+
+// ─── 1. AD BANNERS SECTION ───────────────────────────────────────────────────
 
 export function AdBanners() {
-    return (
-        <section className="w-full bg-white py-6">
-            <div className="max-w-[1200px] mx-auto px-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  return (
+    <section className="w-full bg-[#FCFDFE] py-8">
+      <div className="max-w-[1200px] mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-                    {/* Left: Research Insights */}
-                    <div className="bg-white rounded-2xl p-5 border border-gray-200 border-t-[#0F3E66] border-l-[#0F3E66] border-r-[#0F3E66] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col gap-4">
-                        <h3 className="text-[#1a1a1a] font-bold text-base md:text-lg">Research Insights</h3>
-
-                        {/* Red banner container */}
-                        <div className="relative rounded-xl overflow-hidden bg-primary h-[175px] flex items-center px-6 gap-4 shadow-inner">
-                            {/* Left Side: House outline and couple */}
-                            <div className="relative w-[130px] h-[165px] self-end shrink-0 overflow-hidden flex items-end">
-                                <img
-                                    src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300&q=80"
-                                    alt="couple"
-                                    className="h-[145px] w-full object-cover object-top rounded-t-xl z-0"
-                                />
-                                {/* White House Outline SVG with Chimney on the Left */}
-                                <svg className="absolute inset-0 w-full h-full z-10 pointer-events-none" viewBox="0 0 130 165" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    {/* Chimney */}
-                                    <path d="M30 46 V26 H42 V36" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-                                    {/* House body & roof */}
-                                    <path d="M65 15 L10 65 H22 V155 H108 V65 H120 L65 15 Z" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-                                </svg>
-                            </div>
-
-                            {/* Right Side: Campaign and report typography */}
-                            <div className="flex-1 flex flex-col items-end justify-center text-right text-white z-10 select-none">
-                                <p className="text-xs font-bold uppercase tracking-wider mb-0.5 opacity-90">#SapnoKaAddress</p>
-                                <div className="flex items-center gap-1 mb-2">
-                                    <span className="text-[9px] text-white/80">A Special Report by</span>
-                                    <div className="flex items-center bg-white/20 px-1.5 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wide">
-                                        <span className="text-white">mb</span>
-                                        <span className="text-white/80 ml-1">Research</span>
-                                    </div>
-                                </div>
-                                <p className="font-extrabold text-lg sm:text-xl leading-tight uppercase tracking-tight">
-                                    HOW MIGRATION<br />IMPACTS REAL ESTATE
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Footer row */}
-                        <div className="flex items-center justify-between gap-4 mt-1">
-                            <p className="text-[#333] text-sm leading-snug flex-1">
-                                <span className="font-bold">India's Migration Story:</span> Drivers, Disruptions, and Real Estate Impact
-                            </p>
-                            <a
-                                href="https://cdn.staticmb.com/magicservicestatic/images/pblb-report.pdf"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="shrink-0 bg-primary hover:bg-primary-dark text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-full transition-all duration-300 shadow-sm hover:shadow active:scale-95 text-center"
-                            >
-                                Click Here
-                            </a>
-                        </div>
-                    </div>
-
-                    {/* Right: Contest Alert */}
-                    <div className="bg-white rounded-2xl p-5 border border-gray-200 border-t-[#0F3E66] border-l-[#0F3E66] border-r-[#0F3E66] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col gap-4">
-                        <h3 className="text-[#1a1a1a] font-bold text-base md:text-lg">Contest Alert</h3>
-
-                        {/* Clickable Beige Banner */}
-                        <a
-                            href="https://property.magicbricks.com/microsite/lp/patabadlolifebadlo/?inc=pblb_web_homepage_pblbwidget_contest"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="relative rounded-xl overflow-hidden bg-gradient-to-r from-[#F5ECE5] to-[#E5D7CC] h-[175px] flex items-center px-6 gap-4 shadow-inner group cursor-pointer"
-                        >
-                            {/* Left Side: Indian Couple Smiling */}
-                            <div className="relative w-[130px] h-[165px] self-end shrink-0 overflow-hidden flex items-end">
-                                <img
-                                    src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=300&q=80"
-                                    alt="happy couple with keys"
-                                    className="h-[155px] w-full object-cover object-top rounded-t-xl group-hover:scale-105 transition-transform duration-500 z-0"
-                                />
-                            </div>
-
-                            {/* Right/Center: Campaign content */}
-                            <div className="flex-1 flex flex-col items-center justify-center text-center px-2 select-none">
-                                <p className="text-[#333] text-sm sm:text-base font-normal leading-snug">
-                                    Share your story and <span className="font-extrabold text-[#1a1a1a]">WIN</span><br />
-                                    vouchers worth <span className="font-extrabold text-[#1a1a1a]">₹5000</span>
-                                </p>
-                                <p className="text-primary font-extrabold text-base sm:text-lg mt-1 tracking-tight">
-                                    #SapnoKaAddress
-                                </p>
-                            </div>
-
-                            {/* Absolute Bottom Right Click Here Button */}
-                            <div className="absolute bottom-4 right-4 bg-primary group-hover:bg-primary-dark text-white text-xs font-bold px-5 py-2.5 rounded-full transition-all duration-300 shadow-sm group-hover:shadow group-hover:scale-105 active:scale-95">
-                                Click Here
-                            </div>
-                        </a>
-                    </div>
-
-                </div>
+          {/* Left Banner: Beyond Bliss Lonavala */}
+          <div className="relative rounded-2xl overflow-hidden bg-slate-900 h-[220px] flex items-center group shadow-md border border-slate-800 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
+            {/* Background Image */}
+            <div className="absolute inset-0 z-0">
+              <img
+                src="/Images/Projects/beyond bliss lonavala.avif"
+                alt="Beyond Bliss Lonavala"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-55"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/90 to-transparent" />
             </div>
-        </section>
-    );
+
+            {/* Content */}
+            <div className="relative z-10 p-6 flex flex-col justify-between h-full w-[70%] select-none">
+              <div>
+                <span className="bg-primary text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full w-fit">
+                  Waterfront Living
+                </span>
+                <h3 className="text-white text-xl font-bold mt-2 leading-tight">
+                  Beyond Bliss Lonavala
+                </h3>
+                <p className="text-gray-300 text-xs mt-2 font-medium line-clamp-2">
+                  Luxury 4 BHK villas & premium waterfront plots nestled in the misty valleys of Lonavala.
+                </p>
+              </div>
+
+              <div className="mt-4">
+                <a
+                  href="https://beyondblisslonavala.com/"
+                  // onClick={(e) => {
+                  //   e.preventDefault();
+                  //   const el = document.getElementById("book-visit");
+                  //   if (el) el.scrollIntoView({ behavior: "smooth" });
+                  //   else alert("Please contact us to schedule a private preview of Beyond Bliss Lonavala.");
+                  // }}
+                  className="bg-white hover:bg-gray-100 text-slate-900 text-xs font-bold px-4 py-2.5 rounded-full inline-flex items-center gap-1.5 transition-all duration-300 transform active:scale-95 shadow-lg"
+                >
+                  Schedule Preview <ArrowRight size={12} />
+                </a>
+              </div>
+            </div>
+
+            {/* Badge overlay */}
+            <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-md">
+              Coming Soon
+            </div>
+          </div>
+
+          {/* Right Banner: The f Row Paud */}
+          <div className="relative rounded-2xl overflow-hidden bg-amber-950 h-[220px] flex items-center group shadow-md border border-amber-900/30 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
+            {/* Background Image */}
+            <div className="absolute inset-0 z-0">
+              <img
+                src="/Images/Projects/frow_banner.avif"
+                alt="The f Row"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-55"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-950 via-amber-900/90 to-transparent" />
+            </div>
+
+            {/* Content */}
+            <div className="relative z-10 p-6 flex flex-col justify-between h-full w-[70%] select-none">
+              <div>
+                <span className="bg-yellow-500 text-amber-950 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full w-fit">
+                  Vogue Villas
+                </span>
+                <h3 className="text-white text-xl font-bold mt-2 leading-tight">
+                  The f Row — Vogue Living
+                </h3>
+                <p className="text-gray-300 text-xs mt-2 font-medium line-clamp-2">
+                  Fashion-inspired gated plotting community & designer villas in Paud, Pune. Ready infrastructure.
+                </p>
+              </div>
+
+              <div className="mt-4">
+                <a
+                  href="https://thefrow.in/"
+                  // onClick={(e) => {
+                  //   e.preventDefault();
+                  //   alert("Welcome to The f Row! Gated NA plot bookings are now open. Our team will contact you shortly.");
+                  // }}
+                  className="bg-yellow-500 hover:bg-yellow-400 text-amber-950 text-xs font-bold px-4 py-2.5 rounded-full inline-flex items-center gap-1.5 transition-all duration-300 transform active:scale-95 shadow-lg"
+                >
+                  Explore Gated Plots <ArrowRight size={12} />
+                </a>
+              </div>
+            </div>
+
+            {/* Price Badge */}
+            <div className="absolute top-4 right-4 bg-yellow-500/20 backdrop-blur-md border border-yellow-500/30 text-yellow-300 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-md">
+              From ₹35 Lac*
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
 }
 
-// ─── Real Estate Guide ────────────────────────────────────────────────────────
-
-const localityVideos = [
-    {
-        id: 1,
-        title: "Balewadi, Pune: Price of Houses, Apartments,...",
-        thumb: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=200&q=80",
-        tag: "LIVE NEAR YOUR WORKSPACE FOR RS 16K MONTHLY",
-    },
-    {
-        id: 2,
-        title: "Marunji, Pune: Price of Houses, Apartments,...",
-        thumb: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=200&q=80",
-        tag: "LIVE NEAR A COMMERCIAL HUB FOR AS LOW MONTHLY",
-    },
-];
-
-const industryInsights = [
-    {
-        id: 1,
-        text: "Occupancy Certificate (OC) - Meaning, Docume...",
-        type: "video",
-        link: "https://www.magicbricks.com/blog/what-is-an-occupancy-certificate-and-why-is-it-necessary/114591.html"
-    },
-    {
-        id: 2,
-        text: "Ready Reckoner Rate - What Does it Mean and ...",
-        type: "article",
-        link: "https://www.magicbricks.com/blog/ready-reckoner-rate/125603.html"
-    },
-    {
-        id: 3,
-        text: "15+ Vastu Tips for Residential Building",
-        type: "article",
-        link: "https://www.magicbricks.com/blog/vastu-for-residential-building/123556.html"
-    },
-    {
-        id: 4,
-        text: "Circle Rates in Pune - Area-wise categorisation",
-        type: "article",
-        link: "https://www.magicbricks.com/blog/ready-reckoner-rates-in-pune/126993.html"
-    },
-    {
-        id: 5,
-        text: "How To Check The Zone of Land In Maharashtra?",
-        type: "article",
-        link: "https://www.magicbricks.com/blog/how-to-check-the-zone-of-land-in-maharashtra/124319.html"
-    },
-];
-
-const legalUpdates = [
-    {
-        id: 1,
-        title: "Format of Will and How to Write a Will?",
-        cta: "Watch video",
-        type: "video",
-        thumb: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=150&q=80",
-        link: "https://www.magicbricks.com/blog/news-in-Pune/type-o/tag-Legal,See_More"
-    },
-    {
-        id: 2,
-        title: "What is Rent Agreement - Format, Key Terms, Importance and More",
-        cta: "Read article",
-        type: "article",
-        thumb: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=150&q=80",
-        link: "https://www.magicbricks.com/blog/rent-agreement-format/127259.html"
-    },
-];
+// ─── 2. REAL ESTATE & PLOT KNOWLEDGE HUB ─────────────────────────────────────
 
 export function RealEstateGuide() {
-    return (
-        <section className="w-full bg-white py-8">
-            <div className="max-w-[1200px] mx-auto px-4">
-                {/* Heading */}
-                <h2 className="text-[#1a1a1a] text-xl font-bold mb-1 tracking-tight">Your Real Estate Guide</h2>
-                <div className="w-10 h-[3px] bg-primary mb-8" />
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
 
-                {/* Three-column grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+  // Interactive Checklist State
+  const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>({
+    rera: false,
+    satbara: false,
+    na: false,
+    demarcation: false,
+    zone: false,
+    layout: false
+  });
 
-                    {/* Column 1: Locality Videos */}
-                    <div className="bg-white rounded-2xl p-5 border border-gray-200 border-t-[#0F3E66] border-l-[#0F3E66] border-r-[#0F3E66] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between min-h-[380px]">
-                        <div>
-                            <h3 className="text-[#1a1a1a] font-bold text-base md:text-lg mb-4">Locality Videos</h3>
+  const checklistItems = [
+    { id: "rera", label: "MahaRERA Registration", desc: "Ensure layout is certified on maharera.maharashtra.gov.in" },
+    { id: "satbara", label: "7/12 Extract (Class-1 Title)", desc: "Check Bhogvautadar Varg-1 for no-consent resale permission" },
+    { id: "na", label: "Collector NA Approval", desc: "Must be sanctioned under Section 44 of Land Revenue Code" },
+    { id: "demarcation", label: "Demarcation & Boundary Maps", desc: "Land boundaries precisely measured and physically marked" },
+    { id: "zone", label: "Residential Zone Clearance", desc: "Verify zoning certificate to ensure house building permission" },
+    { id: "layout", label: "Town Planning Layout Sanction", desc: "Layout approved by PMRDA or regional town planning body" }
+  ];
 
-                            {/* Side-by-side Video Thumbnails */}
-                            <div className="grid grid-cols-2 gap-3 mb-4">
-                                {localityVideos.map((v) => (
-                                    <div key={v.id} className="relative rounded-xl overflow-hidden cursor-pointer group shadow-sm">
-                                        <img
-                                            src={v.thumb}
-                                            alt={v.title}
-                                            className="w-full h-[100px] object-cover group-hover:scale-105 transition-transform duration-500"
-                                        />
-                                        {/* Play Button Overlay */}
-                                        <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/25 transition-colors duration-300">
-                                            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-md transform group-hover:scale-110 transition-transform duration-300">
-                                                <Play size={12} fill="#0F3E66" className="text-primary ml-0.5" />
-                                            </div>
-                                        </div>
-                                        {/* Bottom Label Overlay */}
-                                        <div className="absolute bottom-0 left-0 right-0 bg-black/70 px-1.5 py-1 text-center select-none">
-                                            <p className="text-white text-[8px] font-extrabold uppercase tracking-wide leading-tight">
-                                                {v.tag}
-                                            </p>
-                                        </div>
-                                        {/* MB TV Logo Badge */}
-                                        <div className="absolute top-1.5 right-1.5 flex rounded overflow-hidden text-[7px] font-extrabold uppercase tracking-wide shadow-sm select-none">
-                                            <span className="bg-primary text-white px-1.5 py-0.5">mb</span>
-                                            <span className="bg-[#0A2540] text-white px-1 py-0.5">tv</span>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+  const handleCheck = (id: string) => {
+    setCheckedItems(prev => ({ ...prev, [id]: !prev[id] }));
+  };
 
-                            {/* Caption Under the thumbnails */}
-                            <div className="grid grid-cols-2 gap-3 mb-4">
-                                {localityVideos.map((v) => (
-                                    <p key={v.id} className="text-[#333] text-xs font-semibold leading-snug hover:text-primary transition-colors duration-200 cursor-pointer">
-                                        {v.title}
-                                    </p>
-                                ))}
-                            </div>
-                        </div>
+  const progressCount = Object.values(checkedItems).filter(Boolean).length;
+  const progressPercent = Math.round((progressCount / checklistItems.length) * 100);
 
-                        <div>
-                            {/* Pagination Dots (9 dots, active is red) */}
-                            <div className="flex items-center gap-1.5 mb-5 select-none">
-                                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                                {[...Array(8)].map((_, i) => (
-                                    <span key={i} className="w-1.5 h-1.5 rounded-full bg-gray-300" />
-                                ))}
-                            </div>
+  // Filter Blogs based on category and search query
+  const filteredBlogs = useMemo(() => {
+    return blogsData.filter(blog => {
+      const matchesCategory = selectedCategory === "All" || blog.category === selectedCategory;
+      const matchesSearch = blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        blog.short.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        blog.category.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [selectedCategory, searchQuery]);
 
-                            {/* Footer Link */}
-                            <a
-                                href="https://www.magicbricks.com/blog/news-in-Pune/type-v2/tag-Locality,Video,Pune"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-primary hover:text-[#0A2944] font-bold text-sm flex items-center gap-1 w-fit group transition-colors duration-200"
-                            >
-                                See all <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform duration-200" />
-                            </a>
-                        </div>
-                    </div>
+  return (
+    <section className="w-full bg-white py-12 border-t border-gray-100">
+      <div className="max-w-[1200px] mx-auto px-4">
 
-                    {/* Column 2: Industry Insights */}
-                    <div className="bg-white rounded-2xl p-5 border border-gray-200 border-t-[#0F3E66] border-l-[#0F3E66] border-r-[#0F3E66] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between min-h-[380px]">
-                        <div>
-                            <h3 className="text-[#1a1a1a] font-bold text-base md:text-lg mb-4">Industry Insights</h3>
+        {/* Hub Heading */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
+          <div>
+            <h2 className="text-[#0F172A] text-2xl md:text-3xl font-extrabold tracking-tight">
+              NAPLOTPUNE Knowledge Hub
+            </h2>
+            <p className="text-gray-500 text-sm mt-1">
+              Your comprehensive guide to premium NA plot investments, land verification, and villa construction.
+            </p>
+          </div>
+          <div className="w-20 h-1 bg-primary mt-3 md:mt-0 rounded" />
+        </div>
 
-                            {/* List of Insights */}
-                            <div className="flex flex-col">
-                                {industryInsights.map((item) => (
-                                    <a
-                                        key={item.id}
-                                        href={item.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center gap-3 py-3 border-b border-gray-100 hover:text-primary group transition-colors duration-200 last:border-b-0 last:pb-0"
-                                    >
-                                        {item.type === "video" ? (
-                                            /* Custom Red Circle Play Icon Outline */
-                                            <div className="w-5 h-5 rounded-full border border-primary flex items-center justify-center shrink-0 group-hover:bg-primary/5 transition-colors">
-                                                <Play size={8} fill="#0F3E66" className="text-primary ml-[0.5px]" />
-                                            </div>
-                                        ) : (
-                                            /* Document Page Icon */
-                                            <FileText size={18} className="text-gray-400 shrink-0 group-hover:text-primary transition-colors" />
-                                        )}
-                                        <span className="text-[#333] text-xs font-semibold leading-snug group-hover:text-primary transition-colors">
-                                            {item.text}
-                                        </span>
-                                    </a>
-                                ))}
-                            </div>
-                        </div>
+        {/* Layout Grid: Blogs (Left) + Interactive Checklist/Videos (Right) */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                        <div className="mt-6">
-                            {/* Footer Link */}
-                            <a
-                                href="https://www.magicbricks.com/blog/news-in-Pune/type-ind-insight/tag-4d4250756e65/cat-Buy"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-primary hover:text-[#0A2944] font-bold text-sm flex items-center gap-1 w-fit group transition-colors duration-200"
-                            >
-                                See all <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform duration-200" />
-                            </a>
-                        </div>
-                    </div>
+          {/* LEFT 2/3 COLUMN: Interactive Blogs */}
+          <div className="lg:col-span-2 space-y-6">
 
-                    {/* Column 3: Legal Updates */}
-                    <div className="bg-white rounded-2xl p-5 border border-gray-200 border-t-[#0F3E66] border-l-[#0F3E66] border-r-[#0F3E66] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between min-h-[380px]">
-                        <div>
-                            <h3 className="text-[#1a1a1a] font-bold text-base md:text-lg mb-4">Legal Updates</h3>
+            {/* Filter Bar & Search */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-gray-50 p-3 rounded-2xl border border-gray-100">
+              {/* Category Pills */}
+              <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide py-1">
+                {["All", "Legal & Land", "Investment", "Market Trends", "Architecture"].map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 select-none ${selectedCategory === cat
+                      ? "bg-primary text-white shadow-sm"
+                      : "bg-white text-slate-600 hover:bg-gray-100 hover:text-slate-900 border border-gray-200/60"
+                      }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
 
-                            <div className="flex flex-col gap-4">
-                                {legalUpdates.map((item) => (
-                                    <div key={item.id} className="flex items-start gap-4 pb-4 border-b border-gray-100 last:border-b-0 last:pb-0">
-                                        {/* Thumbnail box */}
-                                        <div className="relative shrink-0 w-[90px] h-[65px] rounded-lg overflow-hidden bg-gray-50 shadow-sm group cursor-pointer">
-                                            <img
-                                                src={item.thumb}
-                                                alt={item.title}
-                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                            />
-                                            {/* Play overlay for video item */}
-                                            {item.type === "video" && (
-                                                <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/25 transition-colors">
-                                                    <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center shadow-md">
-                                                        <Play size={10} fill="#0F3E66" className="text-primary ml-[0.5px]" />
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        {/* Content area */}
-                                        <div className="flex-1">
-                                            <h4 className="text-[#1a1a1a] font-bold text-xs leading-snug mb-1 cursor-pointer hover:text-primary transition-colors">
-                                                {item.title}
-                                            </h4>
-                                            <a
-                                                href={item.link}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-primary hover:text-[#0A2944] font-bold text-[11px] flex items-center gap-1 transition-colors mt-1"
-                                            >
-                                                {item.cta} <ArrowRight size={10} />
-                                            </a>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="flex items-center justify-between mt-6 select-none">
-                            {/* Footer Link */}
-                            <a
-                                href="https://www.magicbricks.com/blog/news-in-Pune/type-o/tag-Legal,See_More"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-primary hover:text-[#0A2944] font-bold text-sm flex items-center gap-1 w-fit group transition-colors duration-200"
-                            >
-                                See all <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform duration-200" />
-                            </a>
-
-                            {/* Explore Services Button */}
-                            <a
-                                href="https://www.magicbricks.com/propertyservices/legal-services?inc=propservices_homepage_topicon"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="bg-primary hover:bg-primary-dark text-white text-xs font-bold px-4 py-2.5 rounded-full transition-all duration-300 shadow-sm hover:shadow active:scale-95"
-                            >
-                                Explore Services
-                            </a>
-                        </div>
-                    </div>
-
-                </div>
+              {/* Search Bar */}
+              <div className="relative min-w-[200px]">
+                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-4 py-1.5 bg-white border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-primary/10 focus:border-primary transition-all text-slate-800"
+                />
+              </div>
             </div>
-        </section>
-    );
+
+            {/* Blogs List */}
+            {filteredBlogs.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {filteredBlogs.map((blog) => (
+                  <article
+                    key={blog.id}
+                    className="flex flex-col bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group h-full"
+                  >
+                    {/* Cover Photo */}
+                    <div className="relative h-[160px] overflow-hidden bg-gray-100">
+                      <img
+                        src={blog.img}
+                        alt={blog.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-slate-800 text-[10px] font-bold px-2.5 py-1 rounded-md shadow-sm border border-white/40">
+                        {blog.category}
+                      </span>
+                    </div>
+
+                    {/* Blog Card Content */}
+                    <div className="p-5 flex-1 flex flex-col justify-between">
+                      <div>
+                        {/* Meta Row */}
+                        <div className="flex items-center gap-3 text-gray-400 text-[11px] font-medium mb-2.5">
+                          <span className="flex items-center gap-1">
+                            <Calendar size={11} /> {blog.date}
+                          </span>
+                          <span className="w-1 h-1 rounded-full bg-gray-300" />
+                          <span className="flex items-center gap-1">
+                            <Clock size={11} /> {blog.readTime}
+                          </span>
+                        </div>
+
+                        {/* Title */}
+                        <h3 className="text-slate-900 font-bold text-sm sm:text-base leading-snug group-hover:text-primary transition-colors cursor-pointer line-clamp-2">
+                          {blog.title}
+                        </h3>
+
+                        {/* Short Description */}
+                        <p className="text-gray-500 text-xs leading-relaxed mt-2 line-clamp-3">
+                          {blog.short}
+                        </p>
+                      </div>
+
+                      {/* Read CTA */}
+                      <button
+                        onClick={() => setSelectedBlog(blog)}
+                        className="text-primary hover:text-primary-dark font-bold text-xs flex items-center gap-1 w-fit group/btn mt-5 transition-colors cursor-pointer"
+                      >
+                        Read Full Article
+                        <ChevronRight size={13} className="transform group-hover/btn:translate-x-0.5 transition-transform" />
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-16 bg-gray-50/50 rounded-2xl border border-dashed border-gray-200">
+                <FileText className="mx-auto text-gray-300 mb-3" size={32} />
+                <p className="text-slate-600 font-semibold text-sm">No articles found</p>
+                <p className="text-gray-400 text-xs mt-1">Try resetting your filters or search terms.</p>
+              </div>
+            )}
+          </div>
+
+          {/* RIGHT 1/3 COLUMN: Legal Checklist & Video Tutorials */}
+          <div className="space-y-6">
+
+            {/* INTERACTIVE LEGAL CHECKLIST WIDGET */}
+            <div className="bg-[#1e293b] rounded-2xl p-5 text-white border border-slate-800 shadow-lg relative overflow-hidden">
+              {/* Background accent */}
+              <div className="absolute -right-16 -top-16 w-36 h-36 rounded-full bg-white/5 pointer-events-none" />
+
+              <div className="flex items-center gap-2 mb-3">
+                <ShieldCheck className="text-emerald-400 shrink-0" size={20} />
+                <h3 className="font-extrabold text-sm sm:text-base tracking-tight">NA Plot Legal Safety</h3>
+              </div>
+              <p className="text-slate-300 text-xs mb-4">
+                Verify these 6 critical pillars before purchasing. Track your plot's compliance:
+              </p>
+
+              {/* Progress Bar */}
+              <div className="mb-5 bg-slate-900/60 p-3 rounded-xl border border-slate-700/40">
+                <div className="flex justify-between items-center text-xs font-semibold text-slate-300 mb-1.5">
+                  <span>Verification Progress</span>
+                  <span className={`${progressPercent === 100 ? "text-emerald-400 font-extrabold animate-bounce" : "text-emerald-300"}`}>
+                    {progressPercent}% Checked
+                  </span>
+                </div>
+                <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden shadow-inner">
+                  <div
+                    className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-500 ease-out"
+                    style={{ width: `${progressPercent}%` }}
+                  />
+                </div>
+                {progressPercent === 100 && (
+                  <p className="text-[10px] text-emerald-400 font-bold mt-2 text-center bg-emerald-500/10 py-1 rounded border border-emerald-500/20">
+                    🎉 Your Plot is Legally Sound &amp; Safe!
+                  </p>
+                )}
+              </div>
+
+              {/* Checklist Items */}
+              <div className="space-y-2.5">
+                {checklistItems.map((item) => (
+                  <div
+                    key={item.id}
+                    onClick={() => handleCheck(item.id)}
+                    className="flex items-start gap-2.5 p-2 bg-slate-900/20 hover:bg-slate-900/50 border border-slate-800/40 hover:border-slate-800 rounded-xl cursor-pointer transition-all duration-200 select-none group"
+                  >
+                    <div className="mt-0.5 shrink-0">
+                      <div className={`w-5 h-5 rounded-md border flex items-center justify-center transition-all ${checkedItems[item.id]
+                        ? "bg-emerald-500 border-emerald-500 text-slate-900"
+                        : "border-slate-600 group-hover:border-slate-400 text-transparent"
+                        }`}>
+                        <svg className="w-3 h-3 fill-none stroke-current" strokeWidth="3" viewBox="0 0 24 24">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className={`text-[11px] font-bold transition-colors leading-tight ${checkedItems[item.id] ? "text-emerald-400 line-through opacity-70" : "text-slate-100"
+                        }`}>
+                        {item.label}
+                      </h4>
+                      <p className="text-[9px] text-slate-400 leading-normal mt-0.5 line-clamp-1">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* VIDEO GUIDES & WALKTHROUGHS */}
+            {/* <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-300">
+              <h3 className="text-slate-900 font-bold text-sm sm:text-base mb-4 flex items-center gap-2">
+                <span className="w-1.5 h-3.5 bg-primary rounded-sm" />
+                Plot Video Library
+              </h3>
+
+              <div className="space-y-4">
+                {videoGuides.map((vid) => (
+                  <div key={vid.id} className="flex gap-3 group/vid border-b border-gray-50 pb-3 last:border-0 last:pb-0">
+                    
+                    <div className="relative shrink-0 w-[95px] h-[65px] rounded-lg overflow-hidden bg-gray-100 shadow-sm cursor-pointer">
+                      <img
+                        src={vid.thumb}
+                        alt={vid.title}
+                        className="w-full h-full object-cover group-hover/vid:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-black/15 group-hover/vid:bg-black/30 transition-colors flex items-center justify-center">
+                        <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center shadow-md transform group-hover/vid:scale-110 transition-all duration-300">
+                          <Play size={8} fill="#D8232A" className="text-primary ml-[0.5px]" />
+                        </div>
+                      </div>
+                      <span className="absolute bottom-1 right-1 bg-black/75 text-white text-[8px] font-bold px-1 rounded">
+                        {vid.duration}
+                      </span>
+                    </div>
+
+                
+                    <div className="flex-1 flex flex-col justify-center">
+                      <span className="text-[8px] font-extrabold text-primary uppercase tracking-wider mb-0.5">
+                        {vid.tag}
+                      </span>
+                      <h4
+                        onClick={() => alert(`Launching Video Tutorial: "${vid.title}". Premium high-definition walkthrough and full commentary loaded.`)}
+                        className="text-slate-800 font-bold text-[11px] leading-snug cursor-pointer hover:text-primary transition-colors line-clamp-2"
+                      >
+                        {vid.title}
+                      </h4>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div> */}
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* ─── 3. FULL BLOG DETAIL MODAL (PORTAL) ───────────────────────────────── */}
+      {selectedBlog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4 py-6 transition-all duration-300 overflow-y-auto">
+          <div className="bg-white rounded-3xl w-full max-w-3xl max-h-[85vh] overflow-y-auto relative shadow-2xl animate-in zoom-in-95 duration-200 border border-slate-100 flex flex-col">
+
+            {/* Header bar with Close Button */}
+            <div className="sticky top-0 bg-white/90 backdrop-blur-md border-b border-gray-100 px-6 py-4 flex items-center justify-between z-20">
+              <div className="flex items-center gap-2">
+                <span className="bg-primary/10 text-primary text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-md">
+                  {selectedBlog.category}
+                </span>
+                <span className="text-gray-400 text-xs font-semibold flex items-center gap-1">
+                  <Clock size={12} /> {selectedBlog.readTime}
+                </span>
+              </div>
+              <button
+                onClick={() => setSelectedBlog(null)}
+                className="text-gray-400 hover:text-gray-800 transition-colors bg-gray-100 hover:bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center cursor-pointer font-bold text-xs"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Cover image in modal */}
+            <div className="relative h-[240px] shrink-0 bg-gray-100">
+              <img
+                src={selectedBlog.img}
+                alt={selectedBlog.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-transparent to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6">
+                <h1 className="text-white font-extrabold text-lg sm:text-2xl leading-tight drop-shadow-md">
+                  {selectedBlog.title}
+                </h1>
+              </div>
+            </div>
+
+            {/* Article Content */}
+            <div className="p-6 md:p-8 flex-1 overflow-y-auto">
+              {/* Publisher Card */}
+              <div className="flex items-center gap-3 border-b border-gray-100 pb-5 mb-6">
+                <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-xs border border-slate-800 select-none">
+                  NP
+                </div>
+                <div>
+                  <h4 className="text-slate-800 font-bold text-xs sm:text-sm">NAPLOTPUNE Editorial</h4>
+                  <p className="text-gray-400 text-[10px] sm:text-xs">Expert Land Investment Advisory • Published {selectedBlog.date}</p>
+                </div>
+              </div>
+
+              {/* Markdown Styled Body */}
+              <div className="prose prose-slate max-w-none text-slate-700 text-xs sm:text-sm leading-relaxed">
+                {(() => {
+                  const lines = selectedBlog.fullContent.split("\n");
+                  const elements: React.ReactNode[] = [];
+                  let idx = 0;
+
+                  // Helper: render inline bold/italic markdown as JSX
+                  const renderInline = (text: string): React.ReactNode[] => {
+                    const parts: React.ReactNode[] = [];
+                    const regex = /\*\*(.+?)\*\*|\*(.+?)\*/g;
+                    let lastIndex = 0;
+                    let match: RegExpExecArray | null;
+                    let k = 0;
+                    while ((match = regex.exec(text)) !== null) {
+                      if (match.index > lastIndex) {
+                        parts.push(text.slice(lastIndex, match.index));
+                      }
+                      if (match[1]) {
+                        parts.push(<strong key={k++} className="font-bold text-slate-900">{match[1]}</strong>);
+                      } else if (match[2]) {
+                        parts.push(<em key={k++} className="italic">{match[2]}</em>);
+                      }
+                      lastIndex = regex.lastIndex;
+                    }
+                    if (lastIndex < text.length) {
+                      parts.push(text.slice(lastIndex));
+                    }
+                    return parts;
+                  };
+
+                  while (idx < lines.length) {
+                    const line = lines[idx].trim();
+
+                    // Skip empty lines
+                    if (!line) { idx++; continue; }
+
+                    // ### Headings
+                    if (line.startsWith("###")) {
+                      elements.push(
+                        <h3 key={`h-${idx}`} className="text-slate-900 font-extrabold text-sm sm:text-base tracking-tight mt-7 mb-2 border-l-4 border-primary pl-3">
+                          {line.replace(/^###\s*/, "")}
+                        </h3>
+                      );
+                      idx++;
+                      continue;
+                    }
+
+                    // > Blockquotes
+                    if (line.startsWith(">")) {
+                      const quoteLines: string[] = [];
+                      while (idx < lines.length && lines[idx].trim().startsWith(">")) {
+                        quoteLines.push(lines[idx].trim().replace(/^>\s*/, ""));
+                        idx++;
+                      }
+                      elements.push(
+                        <div key={`bq-${idx}`} className="bg-primary/5 border-l-4 border-primary p-4 rounded-r-xl my-5">
+                          <p className="text-slate-700 font-medium text-xs sm:text-sm italic leading-relaxed">
+                            {renderInline(quoteLines.join(" "))}
+                          </p>
+                        </div>
+                      );
+                      continue;
+                    }
+
+                    // | Tables |
+                    if (line.startsWith("|")) {
+                      const tableLines: string[] = [];
+                      while (idx < lines.length && lines[idx].trim().startsWith("|")) {
+                        tableLines.push(lines[idx].trim());
+                        idx++;
+                      }
+                      // Filter out separator rows (|---|---|)
+                      const dataRows = tableLines.filter(r => !/^\|[\s\-|]+\|$/.test(r));
+                      if (dataRows.length > 0) {
+                        const headerCells = dataRows[0].split("|").filter(c => c.trim());
+                        const bodyRows = dataRows.slice(1);
+                        elements.push(
+                          <div key={`tbl-${idx}`} className="my-5 overflow-x-auto rounded-xl border border-gray-200">
+                            <table className="w-full text-xs sm:text-sm">
+                              <thead>
+                                <tr className="bg-slate-50 border-b border-gray-200">
+                                  {headerCells.map((cell, ci) => (
+                                    <th key={ci} className="px-4 py-2.5 text-left font-bold text-slate-800 text-xs">
+                                      {renderInline(cell.trim())}
+                                    </th>
+                                  ))}
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {bodyRows.map((row, ri) => {
+                                  const cells = row.split("|").filter(c => c.trim());
+                                  return (
+                                    <tr key={ri} className={`border-b border-gray-100 ${ri % 2 === 1 ? "bg-gray-50/50" : ""}`}>
+                                      {cells.map((cell, ci) => (
+                                        <td key={ci} className="px-4 py-2.5 text-slate-600 font-medium text-xs">
+                                          {renderInline(cell.trim())}
+                                        </td>
+                                      ))}
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
+                          </div>
+                        );
+                      }
+                      continue;
+                    }
+
+                    // - Bullet lists (collect consecutive lines)
+                    if (line.startsWith("- ")) {
+                      const listItems: string[] = [];
+                      while (idx < lines.length && lines[idx].trim().startsWith("- ")) {
+                        listItems.push(lines[idx].trim().replace(/^-\s*/, ""));
+                        idx++;
+                      }
+                      elements.push(
+                        <ul key={`ul-${idx}`} className="space-y-2 my-3 pl-1">
+                          {listItems.map((item, li) => (
+                            <li key={li} className="flex items-start gap-2.5 text-slate-700 font-medium">
+                              <span className="w-1.5 h-1.5 rounded-full bg-primary mt-[6px] shrink-0" />
+                              <span>{renderInline(item)}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      );
+                      continue;
+                    }
+
+                    // **Bold sub-heading** (standalone bold line used as section label)
+                    if (/^\*\*[\d]+\./.test(line) || (/^\*\*[^*]+\*\*$/.test(line) && !line.startsWith("###"))) {
+                      const text = line.replace(/^\*\*/, "").replace(/\*\*$/, "");
+                      elements.push(
+                        <h4 key={`bh-${idx}`} className="text-slate-800 font-bold text-xs sm:text-sm mt-5 mb-1">
+                          {text}
+                        </h4>
+                      );
+                      idx++;
+                      continue;
+                    }
+
+                    // Regular paragraph
+                    elements.push(
+                      <p key={`p-${idx}`} className="text-slate-600 font-medium leading-relaxed my-2">
+                        {renderInline(line)}
+                      </p>
+                    );
+                    idx++;
+                  }
+
+                  return elements;
+                })()}
+              </div>
+
+              {/* Interactive Footer Offer */}
+              <div className="mt-8 bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-5 border border-slate-800 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                  <h4 className="font-bold text-sm sm:text-base">Interested in site verification?</h4>
+                  <p className="text-slate-300 text-xs mt-0.5">Book a free guided tour to Maan, Paud, or Lonavala plots today.</p>
+                </div>
+                <button
+                  onClick={() => {
+                    setSelectedBlog(null);
+                    const el = document.getElementById("book-visit");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                    else alert("Please request a call back or schedule a visit. Our team will contact you instantly.");
+                  }}
+                  className="bg-primary hover:bg-primary-dark text-white text-xs font-bold px-4 py-2.5 rounded-full transition-all shrink-0 active:scale-95 cursor-pointer shadow-lg shadow-primary/20"
+                >
+                  Book Free Site Visit
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      )}
+
+    </section>
+  );
 }
 
-// ─── Default export: both ─────────────────────────────────────────────────────
+// ─── DEFAULT EXPORT: COMBINED VIEW ───────────────────────────────────────────
+
 export default function AdAndGuide() {
-    return (
-        <div className="w-full bg-white">
-            <AdBanners />
-            <RealEstateGuide />
-        </div>
-    );
+  return (
+    <div className="w-full bg-[#FCFDFE]">
+      <AdBanners />
+      <RealEstateGuide />
+    </div>
+  );
 }

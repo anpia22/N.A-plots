@@ -13,7 +13,7 @@ export default function Hero() {
 
   // Search State
   const [searchCity, setSearchCity] = useState("Pune");
-  const [searchType, setSearchType] = useState("Flat");
+  const [searchType, setSearchType] = useState("All");
   const [searchBudget, setSearchBudget] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -239,7 +239,7 @@ export default function Hero() {
                   <div className="flex flex-col justify-center flex-1">
                     <span className="text-[10px] text-gray-400 font-bold block uppercase leading-none mb-0.5">Type</span>
                     <span className="text-sm font-bold text-gray-700 leading-tight flex items-center gap-1">
-                      {searchType}s
+                      {searchType}
                       <ChevronDown size={12} className="text-gray-500" />
                     </span>
                   </div>
@@ -254,7 +254,7 @@ export default function Hero() {
                         className="absolute left-0 right-0 top-[105%] bg-white border border-gray-200 rounded-xl shadow-xl z-50 p-2 overflow-hidden w-[140px]"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        {["Flat", "Plot", "House", "Commercial"].map((t) => (
+                        {["All", "Plots", "Villas", "Commercial", "Houses"].map((t) => (
                           <button
                             key={t}
                             type="button"
@@ -267,7 +267,7 @@ export default function Hero() {
                               : "text-gray-600 hover:bg-gray-50"
                               }`}
                           >
-                            {t}s
+                            {t}
                             {searchType === t && <Check size={12} strokeWidth={3} />}
                           </button>
                         ))}
@@ -369,7 +369,7 @@ export default function Hero() {
                 </div>
 
                 {/* Click Here Button */}
-                <button className="bg-primary hover:bg-primary-dark text-white text-xs font-bold px-4 py-2 rounded-full w-fit transition-colors z-10 relative mt-2">
+                <button className="bg-primary hover:bg-primary-dark text-white text-xs font-bold px-4 py-2 rounded-full w-fit transition-colors z-10 relative mt-2 text-center cursor-pointer">
                   Click Here
                 </button>
 

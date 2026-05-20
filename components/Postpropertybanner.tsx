@@ -3,8 +3,12 @@
 "use client"
 import React from "react";
 import Link from "next/link";
+import { useState } from "react";
+import RequirementForm from "./RequirementForm";
+import { AnimatePresence } from "framer-motion";
 
 export default function PostPropertyBanner() {
+    const [isReqModalOpen, setIsReqModalOpen] = useState(false);
     return (
         <section className="w-[calc(100%-2rem)] md:w-full max-w-[1200px] mx-auto flex flex-col sm:flex-row items-center justify-between bg-[#fff9e6] rounded-xl px-6 py-5 md:px-8 shadow-sm gap-4">
 
@@ -25,9 +29,9 @@ export default function PostPropertyBanner() {
             </div>
 
             {/* Right: CTA Button */}
-            <Link
-                href="/post-property"
-                className="flex items-center bg-primary-orange rounded-full overflow-hidden no-underline transition-all duration-200 hover:bg-primary-orange-dark hover:-translate-y-0.5 flex-shrink-0"
+            <div
+                onClick={() => setIsReqModalOpen(true)}
+                className="flex items-center bg-red-600 rounded-full overflow-hidden no-underline transition-all duration-200 hover:bg-primary-orange-dark hover:-translate-y-0.5 flex-shrink-0 cursor-pointer"
                 aria-label="Post Property for Free"
             >
                 <span className="pl-5 pr-3 py-2.5 text-sm font-bold tracking-wide text-white">
@@ -36,7 +40,15 @@ export default function PostPropertyBanner() {
                 <span className="bg-white text-gray-900 text-[0.6rem] font-extrabold tracking-widest rounded-full px-2.5 py-[5px] mr-2">
                     FREE
                 </span>
-            </Link>
+            </div>
+            <AnimatePresence>
+                {isReqModalOpen && (
+                    <RequirementForm
+                        isModal={true}
+                        onClose={() => setIsReqModalOpen(false)}
+                    />
+                )}
+            </AnimatePresence>
 
         </section>
     );

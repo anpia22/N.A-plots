@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { usePopup } from "@/hooks/usePopup";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -35,6 +36,7 @@ import {
 function SearchResultsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { showPopup } = usePopup();
 
   // URL parameters
   const initialCity = searchParams.get("city") || "Pune";
@@ -185,9 +187,9 @@ function SearchResultsContent() {
     e.stopPropagation();
     if (navigator.clipboard) {
       navigator.clipboard.writeText(window.location.origin + `/search?query=${encodeURIComponent(p.projectName)}`);
-      alert(`Listing link copied to clipboard: ${p.projectName} - ${p.locality}!`);
+      showPopup(`Listing link copied to clipboard: ${p.projectName} - ${p.locality}!`, "success", "Link Copied");
     } else {
-      alert(`Sharing: ${p.title} at ${p.locality}`);
+      showPopup(`Sharing: ${p.title} at ${p.locality}`, "info");
     }
   };
 
@@ -195,7 +197,7 @@ function SearchResultsContent() {
   const handleLeadSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!leadName || !leadPhone || !leadEmail) {
-      alert("Please fill in all required fields.");
+      showPopup("Please fill in all required fields.", "warning", "Validation Error");
       return;
     }
     setLeadSubmitted(true);
@@ -207,26 +209,28 @@ function SearchResultsContent() {
       setLeadEmail("");
       setLeadMessage("");
       setContactProperty(null);
-      alert("Thank you! The property advertiser will contact you shortly.");
+      showPopup("Thank you! The property advertiser will contact you shortly.", "success", "Request Sent");
     }, 1500);
   };
 
   // Filtering Logic
   const filteredProperties = properties.filter(p => {
     // 1. City Filter
-    if (selectedCity && p.city.toLowerCase() !== selectedCity.toLowerCase()) {
+    if (selectedCity && selectedCity.toLowerCase() !== "pune" && p.city.toLowerCase() !== selectedCity.toLowerCase()) {
       return false;
     }
 
-    // 2. Search Text Query (matches project name, locality, title, description)
+    // 2. Search Text Query (matches project name, locality, city, title, description)
     if (searchQuery) {
-      const q = searchQuery.toLowerCase();
-      const matchQuery =
-        p.title.toLowerCase().includes(q) ||
-        p.locality.toLowerCase().includes(q) ||
-        p.projectName.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q) ||
-        (p.builderName && p.builderName.toLowerCase().includes(q));
+      const terms = searchQuery.toLowerCase().split(/[\s,]+/).filter(Boolean);
+      const matchQuery = terms.every(term =>
+        p.title.toLowerCase().includes(term) ||
+        p.locality.toLowerCase().includes(term) ||
+        p.city.toLowerCase().includes(term) ||
+        p.projectName.toLowerCase().includes(term) ||
+        p.description.toLowerCase().includes(term) ||
+        (p.builderName && p.builderName.toLowerCase().includes(term))
+      );
 
       if (!matchQuery) return false;
     }
@@ -613,7 +617,13 @@ function SearchResultsContent() {
                   return (
                     <article
                       key={p.id}
-                      onClick={() => setDetailProperty(p)}
+                      onClick={() => {
+                        if (p.externalLink) {
+                          window.open(p.externalLink, "_blank", "noopener,noreferrer");
+                        } else {
+                          setDetailProperty(p);
+                        }
+                      }}
                       className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col md:flex-row hover:shadow-md transition-shadow cursor-pointer relative group"
                     >
                       {/* Left side: Premium Image Gallery / Slider */}
@@ -768,11 +778,17 @@ function SearchResultsContent() {
                           {/* CTA Actions */}
                           <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                             <button
-                              onClick={() => setDetailProperty(p)}
+                              onClick={() => {
+                                if (p.externalLink) {
+                                  window.open(p.externalLink, "_blank", "noopener,noreferrer");
+                                } else {
+                                  setDetailProperty(p);
+                                }
+                              }}
                               className="h-10 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-3xl text-xs font-bold transition-all border border-gray-200 flex items-center justify-center"
                             >
                               <Maximize2 size={12} className="mr-1.5" />
-                              View Specs
+                              View Project
                             </button>
                             <button
                               onClick={() => setContactProperty(p)}
@@ -839,15 +855,15 @@ function SearchResultsContent() {
                   Did you found your  <span className="text-yellow-300 font-bold">#SapnoKaAddress</span>?
                 </h3>
                 <p className="text-white/80 text-xs max-w-[650px] leading-relaxed">
-                  Let me know your property requirements to find your Dream Address.
+                  Let us know your property requirements to find your Dream Address.
                 </p>
               </div>
-              <Link
-                href="/post-property"
-                className="bg-white hover:bg-gray-100 text-primary px-6 py-3 rounded-full text-xs font-bold transition-all shadow-md shrink-0 flex items-center gap-1 uppercase tracking-wide hover:-translate-y-0.5"
+              <div
+                onClick={() => setIsReqModalOpen(true)}
+                className="cursor-pointer bg-white hover:bg-gray-100 text-primary px-6 py-3 rounded-full text-xs font-bold transition-all shadow-md shrink-0 flex items-center gap-1 uppercase tracking-wide hover:-translate-y-0.5"
               >
                 Post Requirement <span className="bg-[#FFC107] text-[#333] text-[9px] font-black px-1.5 py-0.5 rounded-full ml-1 leading-none">FREE</span>
-              </Link>
+              </div>
             </div>
 
           </main>
@@ -990,11 +1006,27 @@ function SearchResultsContent() {
 
       {/* FULL PROPERTY SPECIFICATIONS / DETAILS MODAL */}
       {detailProperty && (
-        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto" onClick={() => setDetailProperty(null)}>
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto scrollbar-hide " onClick={() => setDetailProperty(null)}>
           <div
-            className="bg-white rounded-2xl w-full max-w-[750px] shadow-2xl overflow-hidden relative border border-gray-100 animate-in fade-in zoom-in-95 duration-200 my-8"
+            className="bg-white rounded-2xl w-full max-w-[750px] shadow-2xl overflow-y-scroll scrollbar-hide h-[90vh] relative border border-gray-100 animate-in fade-in zoom-in-95 duration-200 my-8"
+            style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none"
+            }}
             onClick={(e) => e.stopPropagation()}
           >
+            <style dangerouslySetInnerHTML={{
+              __html: `
+              ::-webkit-scrollbar {
+                display: none !important;
+                width: 0 !important;
+                height: 0 !important;
+              }
+              * {
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+              }
+            `}} />
             {/* Header Image Slider */}
             <div className="h-[280px] w-full bg-gray-900 relative">
               <img

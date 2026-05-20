@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 export default function PropertyCategories() {
     const ads = [
@@ -13,7 +14,8 @@ export default function PropertyCategories() {
             buttonText: "Explore Now",
             image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80",
             bgColor: "#F0FDF4",
-            accentColor: "#15803D"
+            accentColor: "#15803D",
+            externalLink: "https://thefrow.in/"
         },
         {
             id: 2,
@@ -24,7 +26,8 @@ export default function PropertyCategories() {
             buttonText: "Enquire Now",
             image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&q=80",
             bgColor: "#EFF6FF",
-            accentColor: "#1D4ED8"
+            accentColor: "#1D4ED8",
+            externalLink: "https://codenametathastu.com/"
         },
         {
             id: 3,
@@ -35,7 +38,8 @@ export default function PropertyCategories() {
             buttonText: "Book Visit",
             image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400&q=80",
             bgColor: "#FFF5F5",
-            accentColor: "#E11D48"
+            accentColor: "#E11D48",
+            externalLink: "https://thepawnavillas.com/"
         }
     ];
 
@@ -55,6 +59,7 @@ export default function PropertyCategories() {
             label: "Residential NA Plots",
             explore: true,
             bg: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&q=80",
+            href: "/search?type=Plot",
         },
         {
             id: 2,
@@ -62,6 +67,7 @@ export default function PropertyCategories() {
             label: "Commercial NA Plots",
             explore: true,
             bg: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&q=80",
+            href: "/search?type=Commercial",
         },
         {
             id: 3,
@@ -73,8 +79,16 @@ export default function PropertyCategories() {
             label: "Ongoing Projects",
             explore: true,
             bg: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400&q=80",
+            href: "/search?status=Under Construction",
         },
     ];
+
+    const handleAdClick = () => {
+        const ad = ads[currentAdIndex];
+        if (ad.externalLink) {
+            window.open(ad.externalLink, "_blank", "noopener,noreferrer");
+        }
+    };
 
     return (
         <section className="w-full bg-white pt-4 pb-10">
@@ -92,7 +106,8 @@ export default function PropertyCategories() {
                             /* Ad Card */
                             <div
                                 key={card.id}
-                                className="relative rounded-xl overflow-hidden cursor-pointer h-[200px]"
+                                onClick={handleAdClick}
+                                className="relative rounded-xl overflow-hidden cursor-pointer h-[200px] isolate"
                             >
                                 <AnimatePresence mode="wait">
                                     <motion.div
@@ -101,17 +116,16 @@ export default function PropertyCategories() {
                                         animate={{ opacity: 1, x: 0 }}
                                         exit={{ opacity: 0, x: -20 }}
                                         transition={{ duration: 0.5 }}
-                                        className="absolute inset-0 flex flex-col items-center justify-between p-5"
+                                        className="absolute inset-0 flex flex-col items-center justify-between p-5 rounded-xl overflow-hidden"
                                         style={{ backgroundColor: ads[currentAdIndex].bgColor }}
                                     >
-                                        {/* Couple image placeholder overlay */}
-                                        <div className="absolute inset-0 overflow-hidden">
+                                        {/* Background Image with Color Overlay */}
+                                        <div className="absolute inset-0 overflow-hidden rounded-xl">
                                             <img
                                                 src={ads[currentAdIndex].image}
                                                 alt="ad-image"
-                                                className="absolute bottom-0 right-0 h-[85%] w-auto object-cover opacity-80"
+                                                className="absolute inset-0 w-full h-full object-cover opacity-25"
                                             />
-                                            <div className="absolute inset-0" style={{ backgroundColor: `${ads[currentAdIndex].bgColor}99` }} />
                                         </div>
 
                                         <div className="relative z-10 text-center">
@@ -130,7 +144,7 @@ export default function PropertyCategories() {
                                         </div>
 
                                         <button
-                                            className="relative z-10 text-white text-xs font-bold px-6 py-2 rounded-full transition-colors"
+                                            className="relative z-10 text-white text-xs font-bold px-6 py-2 rounded-full transition-colors cursor-pointer"
                                             style={{ backgroundColor: ads[currentAdIndex].accentColor }}
                                         >
                                             {ads[currentAdIndex].buttonText}
@@ -150,9 +164,10 @@ export default function PropertyCategories() {
                             </div>
                         ) : (
                             /* Property Card */
-                            <div
+                            <Link
+                                href={card.href || "#"}
                                 key={card.id}
-                                className="relative rounded-xl overflow-hidden cursor-pointer h-[200px] group"
+                                className="relative rounded-xl overflow-hidden cursor-pointer h-[200px] group block no-underline"
                             >
                                 <img
                                     src={card.bg}
@@ -174,7 +189,7 @@ export default function PropertyCategories() {
                                         </p>
                                     )}
                                 </div>
-                            </div>
+                            </Link>
                         )
                     )}
                 </div>

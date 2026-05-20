@@ -1,5 +1,6 @@
 "use client"
 import { ReactNode, useState, useMemo } from "react";
+import { usePopup } from "@/hooks/usePopup";
 import { Image, ChevronRight, ArrowRight, Calculator, Home, Ruler, TrendingUp, Calendar } from "lucide-react";
 
 // ─── Exclusive Owner Properties ───────────────────────────────────────────────
@@ -7,39 +8,43 @@ import { Image, ChevronRight, ArrowRight, Calculator, Home, Ruler, TrendingUp, C
 const properties = [
     {
         id: 1,
-        type: "2 BHK Flat",
-        price: "₹1.20 Cr",
-        locality: "Wakad, Pune",
-        status: "Ready to Move",
-        photos: 7,
-        img: "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=400&q=80",
+        type: "Residential NA Plot",
+        price: "₹35 Lac*",
+        locality: "Paud, Pune",
+        status: "Under Construction",
+        photos: 2,
+        img: "/Images/Projects/frow_banner.avif",
+        projectName: "The f Row"
     },
     {
         id: 2,
-        type: "3 BHK Flat",
-        price: "₹95 Lac",
-        locality: "Porwal Road, Pune",
-        status: "Ready to Move",
-        photos: 11,
-        img: "https://images.unsplash.com/photo-1560185008-a33f5c7de1a7?w=400&q=80",
+        type: "Commercial NA Plot",
+        price: "₹45 Lac*",
+        locality: "Ghotawade, Pune",
+        status: "Under Construction",
+        photos: 2,
+        img: "/Images/Projects/tatasthu_banner.avif",
+        projectName: "Codename Tathastu"
     },
     {
         id: 3,
-        type: "3 BHK Flat",
-        price: "₹1 Cr",
-        locality: "Hadapsar, Pune",
-        status: "Ready to Move",
-        photos: 15,
-        img: "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=400&q=80",
+        type: "Waterfront Commercial Plot",
+        price: "₹1.1 Cr*",
+        locality: "Pawna, Pune",
+        status: "Under Construction",
+        photos: 2,
+        img: "/Images/Projects/pawna villas banner.avif",
+        projectName: "The Pawna Villas"
     },
     {
         id: 4,
-        type: "3 BHK Flat",
-        price: "₹1.20 Cr",
-        locality: "Wakad, Pune",
-        status: "Ready to Move",
-        photos: 51,
-        img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80",
+        type: "Commercial NA Plot",
+        price: "₹25 Lac*",
+        locality: "Somatane, Pune",
+        status: "Under Construction",
+        photos: 2,
+        img: "/Images/Projects/OwnEdge.avif",
+        projectName: "Codename OWNEDGE"
     },
 ];
 
@@ -51,20 +56,63 @@ interface Property {
     status: string;
     photos: number;
     img: string;
+    projectName?: string;
 }
 
-interface PropertyCardProps {
-    property: Property;
-}
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-function PropertyCard({ property }: PropertyCardProps) {
+function PropertyCard({ property }: { property: Property }) {
+    const router = useRouter();
+
+    const handleClick = () => {
+        const parts = property.locality.split(',').map(s => s.trim());
+        const loc = parts[0];
+        const city = parts.length > 1 ? parts[1] : "Pune";
+
+        const knownCitiesMap: Record<string, string> = {
+            "pune": "Pune",
+            "chakan": "Chakan",
+            "dhamane": "Dhamane",
+            "ghotawade": "Ghotawade",
+            "hinjewadi": "Hinjewadi",
+            "kanhe phata": "kanhe Phata",
+            "lonvala": "Lonvala",
+            "malshi": "Malshi",
+            "paud": "Paud",
+            "pawna": "Pawna",
+            "somatane": "Somatnane Phata",
+            "somatnane phata": "Somatnane Phata",
+            "takwe": "Takwe",
+            "tale gaav": "Tale gaav",
+            "varale": "Varale",
+            "wakad": "Wakad"
+        };
+
+        let targetCity = "Pune";
+        const locLower = loc.toLowerCase();
+        const cityLower = city.toLowerCase();
+
+        if (knownCitiesMap[locLower]) {
+            targetCity = knownCitiesMap[locLower];
+        } else if (knownCitiesMap[cityLower]) {
+            targetCity = knownCitiesMap[cityLower];
+        }
+
+        const queryTerm = property.projectName || loc;
+        router.push(`/search?city=${encodeURIComponent(targetCity)}&query=${encodeURIComponent(queryTerm)}`);
+    };
+
     return (
-        <div className="group border border-gray-200 rounded-2xl overflow-hidden bg-white hover:shadow-md transition-shadow cursor-pointer flex flex-col h-full">
+        <div
+            onClick={handleClick}
+            className="group border border-gray-200 rounded-2xl overflow-hidden bg-white hover:shadow-md transition-shadow cursor-pointer flex flex-col h-full"
+        >
             {/* Image */}
             <div className="relative h-[185px] bg-gray-100">
                 <img
                     src={property.img}
-                    alt={property.type}
+                    alt={property.projectName || property.type}
                     className="w-full h-full object-cover"
                 />
                 <div className="absolute bottom-2 left-2 bg-black/60 text-white text-xs px-2 py-0.5 rounded flex items-center gap-1">
@@ -75,15 +123,20 @@ function PropertyCard({ property }: PropertyCardProps) {
 
             {/* Details */}
             <div className="px-4 py-4 flex-1 flex flex-col">
-                <p className="text-[#555] text-sm mb-0.5">{property.type}</p>
-                <p className="text-[#1a1a1a] font-bold text-lg mb-1">{property.price}</p>
+                <h3 className="text-[#1a1a1a] font-bold text-base mb-0.5 truncate">
+                    {property.projectName || property.type}
+                </h3>
+                <p className="text-[#777] text-xs mb-1">
+                    {property.projectName ? property.type : 'Property'}
+                </p>
+                <p className="text-amber-600 font-bold text-base mb-1">{property.price}</p>
                 <p className="text-[#555] text-sm mb-2">{property.locality}</p>
                 {/* Hover Action Container */}
                 <div className="relative mt-auto h-7 overflow-hidden">
-                    <p className="text-[#555] text-xs transition-transform duration-300 group-hover:-translate-y-full">
+                    <p className="text-[#777] text-xs transition-transform duration-300 group-hover:-translate-y-full">
                         {property.status}
                     </p>
-                    <button className="absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-primary text-white text-[10px] font-bold uppercase rounded-full flex items-center justify-center">
+                    <button className="absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-amber-500 text-white text-[10px] font-bold uppercase rounded-full flex items-center justify-center cursor-pointer">
                         View Detail
                     </button>
                 </div>
@@ -101,12 +154,12 @@ export function PremiumProperties() {
                     <h2 className="text-[#1a1a1a] text-xl font-semibold">
                         Premium Properties in Pune
                     </h2>
-                    <a
-                        href="#"
-                        className="text-primary text-sm font-semibold flex items-center gap-1 hover:underline"
+                    <Link
+                        href="/search"
+                        className="text-primary text-sm font-semibold flex items-center gap-1 hover:underline no-underline"
                     >
                         Explore all Properties <ChevronRight size={15} />
-                    </a>
+                    </Link>
                 </div>
                 <div className="w-10 h-[3px] bg-[#FFC107] mb-6" />
 
@@ -121,9 +174,9 @@ export function PremiumProperties() {
                     </div>
 
                     {/* Right arrow */}
-                    <button className="absolute -right-5 top-[90px] w-10 h-10 rounded-full border border-gray-300 bg-white shadow flex items-center justify-center hover:shadow-md z-10 hidden md:flex">
+                    {/* <button className="absolute -right-5 top-[90px] w-10 h-10 rounded-full border border-gray-300 bg-white shadow flex items-center justify-center hover:shadow-md z-10 hidden md:flex">
                         <ChevronRight size={20} className="text-[#333]" />
-                    </button>
+                    </button> */}
                 </div>
             </div>
         </section>
@@ -209,7 +262,7 @@ function ToolCard({ tool, onClick }: ToolCardProps) {
                 <h3 className="text-[#1a1a1a] font-bold text-base mb-2">{tool.title}</h3>
                 <p className="text-[#666] text-sm leading-snug mb-4 flex-1">{tool.desc}</p>
                 <button
-                    className="text-primary font-semibold text-sm flex items-center gap-1 hover:underline text-left mt-auto"
+                    className="text-primary font-semibold text-sm flex items-center gap-1 hover:underline text-left mt-auto cursor-pointer"
                 >
                     {tool.linkText} <ArrowRight size={14} />
                 </button>
@@ -402,6 +455,7 @@ function EMICalculator() {
 }
 
 export function AdviceTools() {
+    const { showPopup } = usePopup();
     const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
 
     return (
@@ -422,9 +476,9 @@ export function AdviceTools() {
                     </div>
 
                     {/* Right arrow */}
-                    <button className="absolute -right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-gray-300 bg-white shadow flex items-center justify-center hover:shadow-md z-10 hidden md:flex">
+                    {/* <button className="absolute -right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-gray-300 bg-white shadow flex items-center justify-center hover:shadow-md z-10 hidden md:flex">
                         <ChevronRight size={20} className="text-[#333]" />
-                    </button>
+                    </button> */}
                 </div>
             </div>
 
@@ -456,7 +510,7 @@ export function AdviceTools() {
                                     className="flex flex-col gap-4"
                                     onSubmit={(e) => {
                                         e.preventDefault();
-                                        alert('Success! Our team has received your request and will contact you shortly.');
+                                        showPopup('Success! Our team has received your request and will contact you shortly.', 'success');
                                         setSelectedTool(null);
                                     }}
                                 >

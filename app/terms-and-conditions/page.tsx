@@ -105,7 +105,7 @@ export default function TermsAndConditionsPage() {
       {/* Main Content Area with Sticky Navigation */}
       <div className="max-w-[1200px] mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
-          
+
           {/* Left Side: Table of Contents (Sticky) */}
           <aside className="hidden lg:block lg:col-span-1">
             <div className="sticky top-28 bg-white rounded-2xl border border-gray-200/80 p-6 shadow-sm">
@@ -119,11 +119,10 @@ export default function TermsAndConditionsPage() {
                     <button
                       key={sec.id}
                       onClick={() => scrollToSection(sec.id)}
-                      className={`text-left text-xs font-semibold py-2 px-3 rounded-lg transition-all duration-200 cursor-pointer border-none outline-none ${
-                        isActive
+                      className={`text-left text-xs font-semibold py-2 px-3 rounded-lg transition-all duration-200 cursor-pointer border-none outline-none ${isActive
                           ? "bg-primary/5 text-primary font-bold shadow-sm translate-x-1"
                           : "text-text-secondary hover:text-text-primary hover:bg-gray-50"
-                      }`}
+                        }`}
                     >
                       {sec.label}
                     </button>
@@ -145,7 +144,7 @@ export default function TermsAndConditionsPage() {
 
           {/* Right Side: Document Content */}
           <main className="col-span-1 lg:col-span-3 bg-white rounded-2xl border border-gray-200/80 p-6 sm:p-10 shadow-sm space-y-10">
-            
+
             <section id="acceptance" className="scroll-mt-28 space-y-4">
               <h2 className="text-xl sm:text-2xl font-semibold text-text-primary">
                 1. Acceptance of Terms
@@ -265,11 +264,11 @@ export default function TermsAndConditionsPage() {
                 If you have any questions, clarifications, or reports of listing violations regarding these Terms &amp; Conditions, please reach out to us:
               </p>
               <div className="bg-[#F8FAFC] border border-gray-200/60 p-6 rounded-2xl space-y-2">
-                <span className="font-semibold text-text-primary block text-sm sm:text-base">NAPLOTSPUNE Compliance Officer</span>
-                <span className="text-xs sm:text-sm block">Realty Services Limited</span>
-                <span className="text-xs sm:text-sm block">Koregaon Park, Pune, Maharashtra, 411001</span>
-                <span className="text-xs sm:text-sm block">Email: <a href="mailto:support@naplotspune.com" className="text-primary hover:underline font-bold">support@naplotspune.com</a></span>
-                <span className="text-xs sm:text-sm block">Phone: +91 20 6789 0122</span>
+                <span className="font-semibold text-text-primary block text-sm sm:text-base">NAPLOTSPUNE </span>
+                {/* <span className="text-xs sm:text-sm block">Realty Services Limited</span> */}
+                <span className="text-xs sm:text-sm block">Pune</span>
+                <span className="text-xs sm:text-sm block">Email: <a href="mailto:privacy@naplotspune.com" className="text-primary hover:underline font-bold">privacy@naplotspune.com</a></span>
+                <span className="text-xs sm:text-sm block">Phone: +91 0000000000</span>
               </div>
             </section>
 

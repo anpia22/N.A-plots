@@ -994,7 +994,7 @@ function SearchResultsContent() {
                   </button>
 
                   <p className="text-[10px] text-gray-400 text-center mt-3.5 leading-relaxed">
-                    By submitting this, you agree to our Terms of Service & Privacy Policy. Your details will be sent directly to the advertiser.
+                    By submitting this, you agree to our <Link href="/terms-and-conditions" className="underline hover:text-primary font-semibold">Terms & Conditions</Link> & <Link href="/privacy-policy" className="underline hover:text-primary font-semibold">Privacy Policy</Link>. Your details will be sent directly to the advertiser.
                   </p>
                 </>
               )}

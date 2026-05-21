@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import {
     User,
     Mail,
@@ -461,7 +462,7 @@ export default function RequirementForm({
                                 className="w-4.5 h-4.5 accent-primary rounded border-gray-300 focus:ring-0 cursor-pointer mt-0.5"
                             />
                             <span className="text-xs text-gray-500 leading-normal">
-                                I agree to be contacted by MagicHomes and verified property sellers/agents via Call, SMS, or WhatsApp. I accept the <span className="underline hover:text-gray-700">Terms of Use</span> and <span className="underline hover:text-gray-700">Privacy Policy</span>.
+                                I agree to be contacted by MagicHomes and verified property sellers/agents via Call, SMS, or WhatsApp. I accept the <Link href="/terms-and-conditions" className="underline hover:text-[#0F172A] font-semibold">Terms of Use</Link> and <Link href="/privacy-policy" className="underline hover:text-[#0F172A] font-semibold">Privacy Policy</Link>.
                             </span>
                         </label>
                         {errors.agree && (

@@ -1,5 +1,7 @@
 'use client';
 
+import Link from "next/link";
+
 // Custom high-fidelity inline SVGs to avoid old/incompatible lucide-react brand icon issues
 const FacebookIcon = ({ size = 16 }: { size?: number }) => (
     <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" stroke="none">
@@ -158,6 +160,14 @@ const socials = [
     { icon: <LinkedinIcon size={16} />, label: "LinkedIn", color: "#0A66C2" },
 ];
 
+// ─── Link Helper ──────────────────────────────────────────────────────────────
+const getLinkHref = (linkText: string) => {
+    const text = linkText.trim().toLowerCase();
+    if (text === "privacy policy") return "/privacy-policy";
+    if (text === "terms & conditions" || text === "terms of use") return "/terms-and-conditions";
+    return "#";
+};
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function Footer() {
@@ -200,12 +210,12 @@ export default function Footer() {
                             <ul className="flex flex-col gap-2">
                                 {col.links.map((link) => (
                                     <li key={link}>
-                                        <a
-                                            href="#"
+                                        <Link
+                                            href={getLinkHref(link)}
                                             className="text-[#555] text-xs hover:text-primary transition-colors leading-relaxed"
                                         >
                                             {link}
-                                        </a>
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>
@@ -283,9 +293,9 @@ export default function Footer() {
                     </p>
                     <div className="flex items-center gap-4">
                         {["Privacy Policy", "Terms of Use", "Grievance Redressal"].map((item) => (
-                            <a key={item} href="#" className="text-[#888] text-xs hover:text-primary transition-colors">
+                            <Link key={item} href={getLinkHref(item)} className="text-[#888] text-xs hover:text-primary transition-colors">
                                 {item}
-                            </a>
+                            </Link>
                         ))}
                     </div>
                 </div>

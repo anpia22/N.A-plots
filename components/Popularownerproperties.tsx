@@ -87,7 +87,7 @@ export default function PopularOwnerProperties() {
                                 className="w-[280px] shrink-0 md:w-auto md:shrink group rounded-xl border border-gray-200 overflow-hidden cursor-pointer hover:shadow-md transition-shadow bg-white flex flex-col"
                             >
                                 {/* Image */}
-                                <div className="relative h-[185px] bg-gray-100">
+                                <div className="relative h-full sm:h-[155px] bg-gray-100">
                                     <img
                                         src={p.img}
                                         alt={p.type}

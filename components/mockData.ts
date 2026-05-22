@@ -15,6 +15,7 @@ export interface Property {
   builderName?: string;
   img: string; // Primary image
   images: string[]; // Carousel images
+  imagemobile?: string;
   photosCount: number;
   description: string;
   bathrooms?: number;
@@ -290,11 +291,11 @@ export const seedProperties: Property[] = [
     status: "Under Construction",
     postedBy: "Builder",
     isProject: true,
-    img: "/Images/Projects/frow_banner.avif",
+    img: "/Images/Projects/frowinsta.jpeg",
     images: [
-      "/Images/Projects/frow_banner.avif",
-      "/Images/Projects/Mountville.avif"
+      "/Images/Projects/frowinsta.jpeg"
     ],
+    imagemobile: "/Images/Projects/frow_banner.avif",
     photosCount: 2,
     description: "The f Row features premium fashion-inspired Vogue residential NA plots developed by Rising Spaces in Paud, Pune. It offers top-notch modern lifestyle amenities, eco-friendly planning, concrete roads, under-ground lines, and gated community features.",
     facing: "East",
@@ -322,6 +323,7 @@ export const seedProperties: Property[] = [
       "/Images/Projects/tathastu.jpeg",
       "/Images/Projects/tathastu2.jpeg"
     ],
+    imagemobile: "/Images/Projects/tatasthu_banner.avif",
     photosCount: 2,
     description: "Codename Tathastu offers high-demand, masterfully planned commercial NA plots in Ghotawade near Hinjawadi IT park. Gated plotting township spread across a massive landscape with premium specifications.",
     facing: "West",
@@ -344,11 +346,12 @@ export const seedProperties: Property[] = [
     status: "Under Construction",
     postedBy: "Builder",
     isProject: true,
-    img: "/Images/Projects/pawna villas banner.avif",
+    img: "/Images/Projects/pawnalake.png",
     images: [
-      "/Images/Projects/pawna villas banner.avif",
-      "/Images/Projects/beyond bliss lonavala.avif"
+      "/Images/Projects/pawnalake.png",
+      "/Images/Projects/pawna.png"
     ],
+    imagemobile: "/Images/Projects/pawna villas banner.avif",
     photosCount: 2,
     description: "The Pawna Villas offers commercial NA land plots and spaces situated on the gorgeous waterfront of Pawna Lake near Lonavala, perfectly curated for luxury commercial developments, resorts, or lakeside retail.",
     facing: "North-East",
@@ -376,6 +379,7 @@ export const seedProperties: Property[] = [
       "/Images/Projects/ownedge.jpeg",
       "/Images/Projects/ownedge2.jpeg"
     ],
+    imagemobile: "/Images/Projects/OwnEdge.avif",
     photosCount: 2,
     description: "Codename OWNEDGE is a high-visibility commercial plotting project located at Somatane Phata along the busy Expressway corridor, giving businesses the prime location edge they require.",
     facing: "South-East",
@@ -398,11 +402,11 @@ export const seedProperties: Property[] = [
     status: "Under Construction",
     postedBy: "Builder",
     isProject: true,
-    img: "/Images/Projects/Prakriti.avif",
+    img: "/Images/Projects/prakritiinsta.jpg",
     images: [
-      "/Images/Projects/Prakriti.avif",
-      "/Images/Projects/RedStone_Webbanner.avif"
+      "/Images/Projects/prakritiinsta.jpg"
     ],
+    imagemobile: "/Images/Projects/Prakriti.avif",
     photosCount: 2,
     description: "Codename Prakriti features premium-grade commercial NA plotting solutions situated at Kanhe Phata along the highway, providing developers and companies excellent ROI potential.",
     facing: "East",
@@ -427,9 +431,9 @@ export const seedProperties: Property[] = [
     isProject: true,
     img: "/Images/Projects/pratham.jpeg",
     images: [
-      "/Images/Projects/pratham.jpeg",
-      // "/Images/Projects/pratham2.jpeg"
+      "/Images/Projects/pratham.jpeg"
     ],
+    imagemobile: "/Images/Projects/Pratham.avif",
     photosCount: 2,
     description: "Codename Pratham provides smart-sized, high-yielding commercial NA plots located in the Varale industrial and logistics belt near Pune, perfect for office fronts and small business warehouses.",
     facing: "North",
@@ -454,9 +458,9 @@ export const seedProperties: Property[] = [
     isProject: true,
     img: "/Images/Projects/joyestate.jpeg",
     images: [
-      "/Images/Projects/joyestate.jpeg",
-      // "/Images/Projects/Aangan 18.avif"
+      "/Images/Projects/joyestate.jpeg"
     ],
+    imagemobile: "/Images/Projects/joy estate banner.avif",
     photosCount: 2,
     description: "Codename Joy Estate offers beautifully structured, premium residential NA plots in Dhamane, Pune. Nestled in tranquil landscapes, this gated retreat includes modular roads, recreation gardens, and underground cable connections.",
     facing: "East",
@@ -479,11 +483,11 @@ export const seedProperties: Property[] = [
     status: "Under Construction",
     postedBy: "Builder",
     isProject: true,
-    img: "/Images/Projects/crown esate.avif",
+    img: "/Images/Projects/crownesate.jpeg",
     images: [
-      "/Images/Projects/crown esate.avif",
-      "/Images/Projects/SAFFRON CITY.avif"
+      "/Images/Projects/crownesate.jpeg"
     ],
+    imagemobile: "/Images/Projects/crown esate.avif",
     photosCount: 2,
     description: "Crown Estate is a highly anticipated premium commercial plotting layout in Khadkale near Lonavala, featuring superior highway connectivity and massive corporate frontage.",
     facing: "West",
@@ -508,9 +512,9 @@ export const seedProperties: Property[] = [
     isProject: true,
     img: "/Images/Projects/mountville.jpeg",
     images: [
-      "/Images/Projects/mountville.jpeg",
-      // "/Images/Projects/CAMBRIDGE COUNTY.avif"
+      "/Images/Projects/mountville.jpeg"
     ],
+    imagemobile: "/Images/Projects/Mountville.avif",
     photosCount: 2,
     description: "Mountville offers pristine valley-facing residential NA plots at Kanhe Phata, designed for scenic weekend villas and luxurious hill retreats under secure gated parameters.",
     facing: "East",
@@ -533,11 +537,11 @@ export const seedProperties: Property[] = [
     status: "Under Construction",
     postedBy: "Builder",
     isProject: true,
-    img: "/Images/Projects/RedStone_Webbanner.avif",
+    img: "/Images/Projects/redstoneinsta.jpg",
     images: [
-      "/Images/Projects/RedStone_Webbanner.avif",
-      "/Images/Projects/Prakriti.avif"
+      "/Images/Projects/redstoneinsta.jpg"
     ],
+    imagemobile: "/Images/Projects/RedStone_Webbanner.avif",
     photosCount: 2,
     description: "Red Stone is a premium-designed commercial NA plotting landmark located in the fast-growing belt of Takve, Kanhe Phata, offering optimal land space for retail, showrooms, or depots.",
     facing: "South",
@@ -560,11 +564,11 @@ export const seedProperties: Property[] = [
     status: "Under Construction",
     postedBy: "Builder",
     isProject: true,
-    img: "/Images/Projects/eco town.avif",
+    img: "/Images/Projects/ecotown.jpg",
     images: [
-      "/Images/Projects/eco town.avif",
-      "/Images/Projects/tatasthu_banner.avif"
+      "/Images/Projects/ecotown.jpg"
     ],
+    imagemobile: "/Images/Projects/eco town.avif",
     photosCount: 2,
     description: "Eco Town is a commercial plotting development with sustainable architecture in Ghotawade near Hinjawadi, incorporating eco-friendly infrastructure and modern commercial workspaces.",
     facing: "North-East",
@@ -591,9 +595,9 @@ export const seedProperties: Property[] = [
     isProject: true,
     img: "/Images/Projects/18angan.jpeg",
     images: [
-      "/Images/Projects/18angan.jpeg",
-      // "/Images/Projects/24K PREMIUM ASSETS.avif"
+      "/Images/Projects/18angan.jpeg"
     ],
+    imagemobile: "/Images/Projects/Aangan 18.avif",
     photosCount: 2,
     description: "Aangan 18 is a highly-anticipated, upcoming premium residential plotting project in Maan, Pune. Spanning over pristine landscape near the Hinjawadi IT Hub, it features high-specification residential plotting developments under a secure gated network.",
     facing: "East",
@@ -616,11 +620,11 @@ export const seedProperties: Property[] = [
     status: "Under Construction",
     postedBy: "Builder",
     isProject: true,
-    img: "/Images/Projects/beyond bliss lonavala.avif",
+    img: "/Images/Projects/beyondBliss.jpeg",
     images: [
-      "/Images/Projects/beyond bliss lonavala.avif",
-      // "/Images/Projects/pawna villas banner.avif"
+      "/Images/Projects/beyondBliss.jpeg"
     ],
+    imagemobile: "/Images/Projects/beyond bliss lonavala.avif",
     photosCount: 2,
     description: "Beyond Bliss Lonavala offers an ultra-exclusive upcoming luxury gated villa township nestled in the misty valleys of Lonavala. Beautifully constructed signature 4 BHK waterfront villas with private pools, sky gardens, and scenic terrace decks.",
     facing: "West",

@@ -109,7 +109,7 @@ function PropertyCard({ property }: { property: Property }) {
             className="group border border-gray-200 rounded-2xl overflow-hidden bg-white hover:shadow-md transition-shadow cursor-pointer flex flex-col h-full"
         >
             {/* Image */}
-            <div className="relative h-[185px] bg-gray-100">
+            <div className="relative h-full md:h-[155px] bg-gray-100">
                 <img
                     src={property.img}
                     alt={property.projectName || property.type}

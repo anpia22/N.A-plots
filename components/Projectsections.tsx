@@ -103,7 +103,7 @@ export function TopProjectCard({ project }: ProjectCardProps) {
             className="w-full group border border-gray-200 rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-shadow cursor-pointer flex flex-col h-full"
         >
             {/* Image */}
-            <div className="h-[190px] overflow-hidden">
+            <div className="h-full md:h-[210px] overflow-hidden">
                 <img
                     src={project.img}
                     alt={project.name}
@@ -205,7 +205,7 @@ export function TopProjects() {
                         ))}
                     </div>
 
-                    {/* Navigation Arrows */}
+                    {/* Navigation Arrows (Desktop) */}
                     {showLeftArrow && (
                         <button
                             onClick={() => handleScroll('left')}
@@ -223,6 +223,26 @@ export function TopProjects() {
                             aria-label="Next project"
                         >
                             <ChevronRight size={20} className="text-[#333]" />
+                        </button>
+                    )}
+
+                    {/* Navigation Arrows (Mobile) */}
+                    {showLeftArrow && (
+                        <button
+                            onClick={() => handleScroll('left')}
+                            className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center transition-colors shadow-sm z-10 md:hidden"
+                            aria-label="Previous project mobile"
+                        >
+                            <ChevronLeft size={16} />
+                        </button>
+                    )}
+                    {showRightArrow && (
+                        <button
+                            onClick={() => handleScroll('right')}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center transition-colors shadow-sm z-10 md:hidden"
+                            aria-label="Next project mobile"
+                        >
+                            <ChevronRight size={16} />
                         </button>
                     )}
                 </div>
@@ -303,6 +323,7 @@ const newProjects = [
 ];
 
 export function NewProjectCard({ project }: ProjectCardProps) {
+
     const handleClick = () => {
         if (project.externalLink) {
             window.open(project.externalLink, "_blank", "noopener,noreferrer");
@@ -351,6 +372,21 @@ export function NewProjectCard({ project }: ProjectCardProps) {
 }
 
 export function NewProjectGallery() {
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    const handleScroll = (direction: "left" | "right") => {
+        if (containerRef.current) {
+            const cardEl = containerRef.current.firstElementChild as HTMLElement;
+            if (cardEl) {
+                const cardWidth = cardEl.clientWidth;
+                const style = window.getComputedStyle(containerRef.current);
+                const gap = parseFloat(style.columnGap || style.gap) || 16;
+                const scrollAmount = direction === "left" ? -(cardWidth + gap) : (cardWidth + gap);
+                containerRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+            }
+        }
+    };
+
     return (
         <section className="w-full bg-white py-8">
             <div className="max-w-[1200px] mx-auto px-4">
@@ -374,12 +410,32 @@ export function NewProjectGallery() {
                 </div>
 
                 {/* Mobile view (swipeable card row) */}
-                <div className="flex md:hidden overflow-x-auto gap-4 pb-4 scrollbar-hide snap-x snap-mandatory">
-                    {newProjects.map((p) => (
-                        <div key={p.id} className="w-[290px] min-w-[290px] max-w-[290px] shrink-0 snap-start">
-                            <NewProjectCard project={p} />
-                        </div>
-                    ))}
+                <div className="md:hidden block">
+                    <div ref={containerRef} className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide snap-x snap-mandatory scroll-smooth">
+                        {newProjects.map((p) => (
+                            <div key={p.id} className="w-[290px] min-w-[290px] max-w-[290px] shrink-0 snap-start">
+                                <NewProjectCard project={p} />
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Add arroes button to scroll */}
+                    <div className="flex items-center justify-center w-full space-x-4 mt-2">
+                        <button
+                            onClick={() => handleScroll('left')}
+                            className="w-10 h-10 rounded-full bg-red-500 hover:bg-gray-300 text-white flex items-center justify-center transition-colors shadow-sm"
+                            aria-label="Previous project"
+                        >
+                            <ChevronLeft size={20} />
+                        </button>
+                        <button
+                            onClick={() => handleScroll('right')}
+                            className="w-10 h-10 rounded-full bg-red-500 hover:bg-gray-300 text-white flex items-center justify-center transition-colors shadow-sm"
+                            aria-label="Next project"
+                        >
+                            <ChevronRight size={20} />
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>

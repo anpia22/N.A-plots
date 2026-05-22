@@ -152,6 +152,16 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
   const [leadMessage, setLeadMessage] = useState("");
   const [leadSubmitted, setLeadSubmitted] = useState(false);
 
+  // Detect mobile viewport for imagemobile swap
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 768px)");
+    const handler = (e: MediaQueryListEvent | MediaQueryList) => setIsMobile(e.matches);
+    handler(mql);
+    mql.addEventListener("change", handler as (e: MediaQueryListEvent) => void);
+    return () => mql.removeEventListener("change", handler as (e: MediaQueryListEvent) => void);
+  }, []);
+
   // Load properties from state (seed + localStorage)
   useEffect(() => {
     setProperties(getMergedProperties());
@@ -771,11 +781,11 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                     >
                       {/* Left side: Premium Image Gallery / Slider */}
                       <div
-                        className="w-full md:w-[320px] h-[220px] md:h-auto shrink-0 bg-gray-900 relative overflow-hidden"
+                        className="w-full md:w-[320px] h-full md:h-[220px] md:h-auto shrink-0 bg-gray-900 relative overflow-hidden"
                         onClick={(e) => e.stopPropagation()} // Stop propagation from card click
                       >
                         <img
-                          src={p.images[currentImgIdx]}
+                          src={isMobile && p.imagemobile ? p.imagemobile : p.images[currentImgIdx]}
                           alt={p.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
@@ -783,8 +793,8 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                         {/* Shadow overlays */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
 
-                        {/* Image Controls */}
-                        {p.images.length > 1 && (
+                        {/* Image Controls — hidden on mobile when imagemobile is available */}
+                        {!(isMobile && p.imagemobile) && p.images.length > 1 && (
                           <>
                             <button
                               onClick={(e) => prevImage(p.id, p.images.length, e)}

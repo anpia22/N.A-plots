@@ -15,7 +15,7 @@ const agents = [
         buyersServed: "6000+",
         forSale: 76,
         forRent: 22,
-        operatesIn: ["Hinjawadi", "Marunji", "Bhukum", "Hinjewadi Rajiv Gandhi Nagar"],
+        operatesIn: ["Hinjawadi", "Marunji", "Bhukum", "Hinjawadi Rajiv Gandhi Nagar"],
         salePriceRange: "₹42.5 Lacs – 8.50 Cr",
         rentPriceRange: "₹18,000 – 70,000",
     },

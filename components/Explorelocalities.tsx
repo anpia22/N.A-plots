@@ -1,44 +1,45 @@
 "use client"
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Star, ExternalLink, ArrowRight, ChevronRight } from "lucide-react";
+import Link from "next/link";
+import { Star, ExternalLink, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 const localities = [
     {
         id: 1,
+        name: "Hinjawadi",
+        priceRange: "₹2,200 – ₹3,000 per sqft",
+        rating: 4.5,
+        reviews: 32,
+        propertiesForSale: 2,
+        img: "/Images/Projects/tatasthu_banner.avif",
+    },
+    {
+        id: 2,
+        name: "Lonavala",
+        priceRange: "₹4,000 – ₹7,500 per sqft",
+        rating: 4.8,
+        reviews: 15,
+        propertiesForSale: 1,
+        img: "/Images/Projects/beyond bliss lonavala.avif",
+    },
+    {
+        id: 3,
+        name: "Pawna",
+        priceRange: "₹3,500 – ₹6,000 per sqft",
+        rating: 4.7,
+        reviews: 21,
+        propertiesForSale: 1,
+        img: "/Images/Projects/pawna villas banner.avif",
+    },
+    {
+        id: 4,
         name: "Kanhe Phata",
         priceRange: "₹1,800 – ₹2,500 per sqft",
         rating: 4.2,
         reviews: 45,
-        propertiesForSale: 12,
+        propertiesForSale: 3,
         img: "/Images/Projects/Prakriti.avif",
-    },
-    {
-        id: 2,
-        name: "Ghotawade, Hinjewadi",
-        priceRange: "₹2,200 – ₹3,000 per sqft",
-        rating: 4.5,
-        reviews: 32,
-        propertiesForSale: 8,
-        img: "/Images/Projects/tatasthu_banner.avif",
-    },
-    {
-        id: 3,
-        name: "Paud",
-        priceRange: "₹1,500 – ₹3,500 per sqft",
-        rating: 4.6,
-        reviews: 28,
-        propertiesForSale: 5,
-        img: "/Images/Projects/frow_banner.avif",
-    },
-    {
-        id: 4,
-        name: "Somatane Phata",
-        priceRange: "₹2,500 – ₹4,500 per sqft",
-        rating: 4.3,
-        reviews: 18,
-        propertiesForSale: 7,
-        img: "/Images/Projects/OwnEdge.avif",
     },
 ];
 
@@ -70,17 +71,20 @@ interface LocalityCardProps {
 }
 
 function LocalityCard({ locality }: LocalityCardProps) {
-    const router = useRouter();
-
-    const handleClick = () => {
-        const query = locality.name.split(',')[0].trim();
-        router.push(`/search?query=${encodeURIComponent(query)}`);
-    };
+    const name = locality.name.trim();
+    let slug = "";
+    if (name === "Hinjawadi") {
+        slug = "property-in-hinjawadi";
+    } else if (name === "Lonavala") {
+        slug = "property-in-Lonavala";
+    } else {
+        slug = `property-in-${name.toLowerCase().replace(/\s+/g, "-")}`;
+    }
 
     return (
-        <div
-            onClick={handleClick}
-            className="relative border border-gray-200 rounded-lg overflow-hidden bg-white hover:shadow-md transition-shadow cursor-pointer flex flex-col border-t-3 border-t-blue-400"
+        <Link
+            href={`/${slug}`}
+            className="relative border border-gray-200 rounded-lg overflow-hidden bg-white hover:shadow-md transition-shadow cursor-pointer flex flex-col border-t-3 border-t-blue-400 h-full justify-between no-underline block"
         >
             {/* Top info */}
             <div className="px-5 pt-5 pb-3">
@@ -106,22 +110,55 @@ function LocalityCard({ locality }: LocalityCardProps) {
                 <span
                     className="text-primary mt-4 font-semibold text-xs flex items-center gap-1 hover:underline"
                 >
-                    {locality.propertiesForSale.toLocaleString()} Properties for Sale{" "}
+                    {locality.propertiesForSale.toLocaleString()} {locality.propertiesForSale === 1 ? "Property" : "Properties"} for Sale{" "}
                     <ArrowRight size={14} />
                 </span>
             </div>
-        </div>
+        </Link>
     );
 }
 
 export default function ExploreLocalities() {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [showLeftArrow, setShowLeftArrow] = useState(false);
+    const [showRightArrow, setShowRightArrow] = useState(true);
+
+    const checkScroll = () => {
+        if (containerRef.current) {
+            const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+            setShowLeftArrow(scrollLeft > 5);
+            setShowRightArrow(scrollLeft + clientWidth < scrollWidth - 5);
+        }
+    };
+
+    const handleScroll = (direction: "left" | "right") => {
+        if (containerRef.current) {
+            const cardEl = containerRef.current.firstElementChild as HTMLElement;
+            if (cardEl) {
+                const cardWidth = cardEl.clientWidth;
+                const style = window.getComputedStyle(containerRef.current);
+                const gap = parseFloat(style.columnGap || style.gap) || 16;
+                const scrollAmount = direction === "left" ? -(cardWidth + gap) : (cardWidth + gap);
+                containerRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+            }
+        }
+    };
+
+    useEffect(() => {
+        checkScroll();
+        window.addEventListener("resize", checkScroll);
+        return () => {
+            window.removeEventListener("resize", checkScroll);
+        };
+    }, []);
+
     return (
         <section className="w-full bg-white py-6">
             <div className="max-w-[1200px] mx-auto px-4">
                 <div className="flex flex-col lg:flex-row gap-5 items-stretch">
 
                     {/* Left label card */}
-                    <div className="w-full lg:w-[220px] lg:shrink-0 bg-[#e6f9fb] rounded-2xl flex flex-col justify-end px-6 py-6 md:py-8 min-h-[120px] lg:min-h-0">
+                    <div className="w-full lg:w-[220px] lg:shrink-0 bg-[#e6f9fb] rounded-2xl flex flex-col justify-end px-6 py-6 md:py-8 min-h-[105px] lg:min-h-0">
                         <p
                             className="text-[#1a1a1a] text-3xl lg:text-4xl mb-1 leading-none"
                             style={{ fontFamily: "cursive" }}
@@ -135,17 +172,43 @@ export default function ExploreLocalities() {
                     </div>
 
                     {/* Right: locality cards */}
-                    <div className="relative flex-1">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            {localities.slice(0, 3).map((loc) => (
-                                <LocalityCard key={loc.id} locality={loc} />
+                    <div className="relative flex-1 min-w-0">
+                        {/* Scroll Container */}
+                        <div
+                            ref={containerRef}
+                            onScroll={checkScroll}
+                            className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide snap-x snap-mandatory scroll-smooth w-full"
+                        >
+                            {localities.map((loc) => (
+                                <div
+                                    key={loc.id}
+                                    className="w-[280px] min-w-[280px] max-w-[280px] md:w-[calc((100%-32px)/3)] md:min-w-[calc((100%-32px)/3)] md:max-w-[calc((100%-32px)/3)] shrink-0 snap-start"
+                                >
+                                    <LocalityCard locality={loc} />
+                                </div>
                             ))}
                         </div>
 
-                        {/* Arrow */}
-                        {/* <button className="absolute -right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-gray-300 bg-white shadow flex items-center justify-center hover:shadow-md z-10 hidden md:flex">
-                            <ChevronRight size={20} className="text-[#333]" />
-                        </button> */}
+                        {/* Navigation Arrows */}
+                        {showLeftArrow && (
+                            <button
+                                onClick={() => handleScroll('left')}
+                                className="absolute left-[-20px] top-[calc(50%-8px)] w-10 h-10 rounded-full border border-gray-200 bg-white shadow-md flex items-center justify-center hover:bg-gray-50 transition-colors z-10 hidden md:flex"
+                                aria-label="Previous locality"
+                            >
+                                <ChevronLeft size={20} className="text-[#333]" />
+                            </button>
+                        )}
+
+                        {showRightArrow && (
+                            <button
+                                onClick={() => handleScroll('right')}
+                                className="absolute right-[-20px] top-[calc(50%-8px)] w-10 h-10 rounded-full border border-gray-200 bg-white shadow-md flex items-center justify-center hover:bg-gray-50 transition-colors z-10 hidden md:flex"
+                                aria-label="Next locality"
+                            >
+                                <ChevronRight size={20} className="text-[#333]" />
+                            </button>
+                        )}
                     </div>
 
                 </div>

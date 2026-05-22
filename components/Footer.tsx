@@ -42,99 +42,99 @@ const footerColumns = [
     {
         heading: "Company",
         links: [
-            "About ",
-            "Careers",
-            "Contact Us",
-            "Advertise with Us",
+            // "About Us",
+            // "Careers",
+            // "Contact Us",
             "Terms & Conditions",
-            "Request Info",
-            "Feedback",
+            // "Feedback",
             "Privacy Policy",
-            "Cookie Policy",
-            "Sitemap",
+            // "Cookie Policy",
+            // "Sitemap",
         ],
     },
     {
-        heading: "Our Products",
+        heading: "Property Types",
         links: [
-            "Post Property for Free",
-            " Prime",
-            "Home Loans",
-            "PropWorth",
-            "MagicDiary",
-            "MagicHomes",
-            "magicLoans",
-            "MB Research",
-            "Home Interior Services",
-            "Movers & Packers",
+            "NA Plots",
+            "Commercial Plots",
+            "Residential Plots",
+            "Villas",
+            "Bungalow Plots",
+            "Weekend Homes",
         ],
     },
     {
-        heading: "Properties in India",
+        heading: "Properties in Pune",
         links: [
-            "Property in Mumbai",
-            "Property in Delhi",
-            "Property in Bangalore",
-            "Property in Pune",
-            "Property in Hyderabad",
-            "Property in Chennai",
-            "Property in Kolkata",
-            "Property in Ahmedabad",
-            "Property in Noida",
-            "Property in Thane",
+            "Property in Hinjawadi",
+            "Property in Lonavala",
+            "Property in Paud",
+            "Property in Ghotawade",
+            "Property in Somatane",
+            "Property in Kanhe Phata",
+            "Property in Pawna",
+            "Property in Varale",
+            "Property in Kamshet",
+            "Property in Chakan / Talegaon MIDC",
         ],
     },
     {
         heading: "Top Projects",
         links: [
-            "Lodha Palava City",
-            "Prestige Estates",
-            "Godrej Properties",
-            "Brigade Group",
-            "Sobha Limited",
-            "DLF Homes",
-            "Shapoorji Pallonji",
-            "Hiranandani",
-            "Puravankara",
-            "Mahindra Lifespaces",
+            "The f Row",
+            "Codename Tathastu",
+            "The Pawna Villas",
+            "Codename OWNEDGE",
+            "Codename Prakriti",
+            "Codename Joy Estate",
+            "Mountville",
+            "Red Stone",
+            "Eco Town",
+            "Aangan 18",
         ],
     },
     {
         heading: "Locality Guides",
         links: [
-            "Bandra West, Mumbai",
-            "Whitefield, Bangalore",
-            "Koregaon Park, Pune",
-            "Gachibowli, Hyderabad",
-            "Sector 62, Noida",
-            "Salt Lake, Kolkata",
-            "Anna Nagar, Chennai",
-            "Prahlad Nagar, Ahmedabad",
-            "Dwarka, Delhi",
-            "Wakad, Pune",
+            "Hinjawadi, Pune",
+            "Lonavala, Pune",
+            "Paud, Pune",
+            "Ghotawade, Pune",
+            "Somatane Phata, Pune",
+            "Kanhe Phata, Pune",
+            "Pawna, Pune",
+            "Varale, Pune",
+            "Kamshet, Pune",
+            "Chakan / Talegaon MIDC, Pune",
         ],
     },
 ];
 
-const propertyTypes = [
-    "Flats in Mumbai",
-    "Flats in Delhi",
-    "Flats in Bangalore",
-    "Flats in Hyderabad",
-    "Flats in Pune",
-    "Villas in Chennai",
-    "Villas in Bangalore",
-    "Plots in Hyderabad",
-    "PG in Delhi",
-    "PG in Bangalore",
-    "Commercial in Mumbai",
-    "Commercial in Delhi",
-];
-
-const stateLinks = [
-    "Maharashtra", "Karnataka", "Telangana", "Tamil Nadu",
-    "Delhi NCR", "West Bengal", "Gujarat", "Rajasthan",
-    "Uttar Pradesh", "Kerala", "Punjab", "Haryana",
+const additionalSections = [
+    {
+        title: "Villas",
+        links: ["Villas in Pune", "Villas in Lonavala", "Villas in Khandala", "Villas in Hinjawadi", "Villas in Wakad", "Villas in Baner", "Villas in Pawna", "Villas in Paud"]
+    },
+    {
+        title: "Bungalows",
+        links: ["Bungalows in Pune", "Bungalows in Lonavala", "Bungalows in Khandala", "Bungalows in Hinjawadi", "Bungalows in Wakad", "Bungalows in Baner", "Bungalows in Pawna"]
+    },
+    {
+        title: "Residential Plots",
+        links: ["Residential Plots in Pune", "Residential Plots in Hinjawadi", "Residential Plots in Maan", "Residential Plots in Dhamane", "Residential Plots in Paud", "Residential Plots in Lonavala", "Residential Plots in Shirgaon"]
+    },
+    {
+        title: "Commercial Plots",
+        links: ["Commercial Plots in Pune", "Commercial Plots in Hinjawadi", "Commercial Plots in Ghotawade", "Commercial Plots in Somatane", "Commercial Plots in Kanhe Phata", "Commercial Plots in Varale", "Commercial Plots in Takve", "Commercial Plots in Kamshet", "Commercial Plots in Chakan / Talegaon MIDC"]
+    },
+    {
+        title: "NA Plots",
+        links: ["NA Plots in Pune", "NA Plots in Hinjawadi", "NA Plots in Maan", "NA Plots in Paud", "NA Plots in Somatane Phata", "NA Plots in Kanhe Phata", "NA Plots in Ghotawade", "NA Plots in Lonavala", "NA Plots in Kamshet", "NA Plots in Chakan / Talegaon MIDC"]
+    },
+    {
+        title: "Properties",
+        links: ["Property in Pune", "Property in Hinjawadi", "Property in Maan", "Property in Paud", "Property in Somatane Phata", "Property in Kanhe Phata", "Property in Ghotawade", "Property in Lonavala", "Property in Kamshet", "Property in Chakan / Talegaon MIDC"]
+    }
 ];
 
 const appStores = [
@@ -161,10 +161,57 @@ const socials = [
 ];
 
 // ─── Link Helper ──────────────────────────────────────────────────────────────
-const getLinkHref = (linkText: string) => {
-    const text = linkText.trim().toLowerCase();
-    if (text === "privacy policy") return "/privacy-policy";
-    if (text === "terms & conditions" || text === "terms of use") return "/terms-and-conditions";
+const getLinkHref = (heading: string, linkText: string) => {
+    // 1. Static links in "Company"
+    if (heading === "Company") {
+        const text = linkText.trim().toLowerCase();
+        if (text === "privacy policy") return "/privacy-policy";
+        if (text === "terms & conditions" || text === "terms of use") return "/terms-and-conditions";
+        return "#";
+    }
+
+    // 2. Property Types (e.g. "NA Plots", "Villas")
+    if (heading === "Property Types") {
+        const text = linkText.trim().toLowerCase();
+        let prefix = "property";
+        if (text.includes("villa")) prefix = "villas";
+        else if (text.includes("bungalow")) prefix = "bungalow";
+        else if (text.includes("residential")) prefix = "resendential";
+        else if (text.includes("commercial")) prefix = "commercial";
+        else if (text.includes("plot")) prefix = "plots";
+        return `/${prefix}-in-pune`;
+    }
+
+    // 3. Top Projects
+    if (heading === "Top Projects") {
+        return `/search?query=${encodeURIComponent(linkText)}`;
+    }
+
+    // 4. Properties in Pune / Locality Guides
+    if (heading === "Properties in Pune" || heading === "Locality Guides") {
+        let city = linkText.split(" in ")[1] || linkText.split(",")[0];
+        if (!city) city = linkText;
+        const citySlug = city.trim().toLowerCase().replace(/\s+/g, '-');
+        return `/property-in-${citySlug}`;
+    }
+
+    // 5. Additional Sections ("Villas in Pune", "Property in Hinjawadi", etc.)
+    if (linkText.includes(" in ")) {
+        const parts = linkText.split(" in ");
+        if (parts.length === 2) {
+            const typeStr = parts[0].toLowerCase();
+            let prefix = "property";
+            if (typeStr.includes("villa")) prefix = "villas";
+            else if (typeStr.includes("bungalow")) prefix = "bungalow";
+            else if (typeStr.includes("residential")) prefix = "resendential";
+            else if (typeStr.includes("commercial")) prefix = "commercial";
+            else if (typeStr.includes("plot")) prefix = "plots";
+
+            const citySlug = parts[1].trim().toLowerCase().replace(/\s+/g, '-');
+            return `/${prefix}-in-${citySlug}`;
+        }
+    }
+
     return "#";
 };
 
@@ -211,7 +258,7 @@ export default function Footer() {
                                 {col.links.map((link) => (
                                     <li key={link}>
                                         <Link
-                                            href={getLinkHref(link)}
+                                            href={getLinkHref(col.heading, link)}
                                             className="text-[#555] text-xs hover:text-primary transition-colors leading-relaxed"
                                         >
                                             {link}
@@ -224,41 +271,28 @@ export default function Footer() {
                 </div>
             </div>
 
-            {/* ── Property Types ── */}
+            {/* ── Additional Link Sections ── */}
             <div className="border-t border-gray-100">
-                <div className="max-w-[1200px] mx-auto px-4 py-6">
-                    <h4 className="text-[#1a1a1a] font-bold text-sm uppercase tracking-wide mb-4">
-                        Property Types
-                    </h4>
-                    <div className="flex flex-wrap gap-x-5 gap-y-2">
-                        {propertyTypes.map((item) => (
-                            <a
-                                key={item}
-                                href="#"
-                                className="text-[#555] text-xs hover:text-primary transition-colors"
-                            >
-                                {item}
-                            </a>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* ── States ── */}
-            <div className="border-t border-gray-100">
-                <div className="max-w-[1200px] mx-auto px-4 py-6">
-                    <h4 className="text-[#1a1a1a] font-bold text-sm uppercase tracking-wide mb-4">
-                        Real Estate in India – By State
-                    </h4>
-                    <div className="flex flex-wrap gap-x-5 gap-y-2">
-                        {stateLinks.map((state) => (
-                            <a
-                                key={state}
-                                href="#"
-                                className="text-[#555] text-xs hover:text-primary transition-colors"
-                            >
-                                {state}
-                            </a>
+                <div className="max-w-[1200px] mx-auto px-4 py-10">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8">
+                        {additionalSections.map((section, idx) => (
+                            <div key={idx}>
+                                <h4 className="text-[#1a1a1a] font-bold text-sm uppercase tracking-wide mb-4">
+                                    {section.title}
+                                </h4>
+                                <ul className="flex flex-col gap-2">
+                                    {section.links.map((item) => (
+                                        <li key={item}>
+                                            <Link
+                                                href={getLinkHref(section.title, item)}
+                                                className="text-[#555] text-xs hover:text-primary transition-colors leading-relaxed"
+                                            >
+                                                {item}
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         ))}
                     </div>
                 </div>
@@ -270,10 +304,10 @@ export default function Footer() {
             <div className="border-t border-gray-100">
                 <div className="max-w-[1200px] mx-auto px-4 py-5 grid grid-cols-2 md:flex flex-wrap items-center justify-center gap-8">
                     {[
-                        "Best Real Estate Portal",
-                        "Times Business Award",
-                        "FICCI Award Winner",
-                        "Deloitte Tech Fast 50",
+                        "Best Plotted Development",
+                        "Excellence in Real Estate",
+                        "Most Trusted Developer",
+                        "Premium Lifestyle Projects",
                     ].map((badge) => (
                         <div key={badge} className="flex items-center gap-2">
                             <div className="w-8 h-8 rounded-full bg-[#FFC107]/20 flex items-center justify-center">
@@ -289,11 +323,11 @@ export default function Footer() {
             <div className="border-t border-gray-100 bg-[#f5f5f5]">
                 <div className="max-w-[1200px] mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-2">
                     <p className="text-[#888] text-xs text-center md:text-left">
-                        © 2025  Realty Services Limited | CIN: U45200UP2019PLC117837
+                        © 2025 Rising Spaces. All Rights Reserved.
                     </p>
                     <div className="flex items-center gap-4">
                         {["Privacy Policy", "Terms of Use", "Grievance Redressal"].map((item) => (
-                            <Link key={item} href={getLinkHref(item)} className="text-[#888] text-xs hover:text-primary transition-colors">
+                            <Link key={item} href={getLinkHref("Company", item)} className="text-[#888] text-xs hover:text-primary transition-colors">
                                 {item}
                             </Link>
                         ))}

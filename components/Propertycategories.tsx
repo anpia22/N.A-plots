@@ -63,8 +63,8 @@ export default function PropertyCategories() {
         },
         {
             id: 2,
-            count: "15+",
-            label: "Commercial NA Plots",
+            count: "5+",
+            label: "Commercial Properties",
             explore: true,
             bg: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&q=80",
             href: "/search?type=Commercial",

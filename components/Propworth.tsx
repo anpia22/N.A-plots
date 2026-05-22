@@ -43,7 +43,7 @@ export default function PropWorth() {
     useEffect(() => {
         if (!dreamLocation.trim()) {
             // Default popular suggestions when focused but empty
-            const popular = ["Hinjewadi, Pune", "Maan, Hinjewadi", "Lonavala", "Paud", "Ghotawade"];
+            const popular = ["Hinjawadi, Pune", "Maan, Hinjawadi", "Lonavala", "Paud", "Ghotawade"];
             setFilteredLocations(popular);
         } else {
             const query = dreamLocation.toLowerCase();

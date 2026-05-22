@@ -37,27 +37,22 @@ export default function MagicHomes() {
                 </div>
 
                 {/* Logo / Brand */}
-                <div className="flex items-center justify-center gap-1 mb-2 flex-nowrap whitespace-nowrap">
+                <div className="flex items-center justify-center gap-2 mb-2 flex-nowrap whitespace-nowrap">
                     <span className="text-primary font-bold text-3xl sm:text-4xl tracking-tight" style={{ fontFamily: "Georgia, serif" }}>
                         NA
                     </span>
-                    {/* Home icon replacing 'o' */}
-                    <span className="relative inline-flex items-center">
-                        <span
-                            className="text-primary font-bold text-3xl sm:text-4xl tracking-tight"
-                            style={{ fontFamily: "Georgia, serif" }}
-                        >H</span>
-                        <span
-                            className="absolute bottom-[14px] left-0 right-0 flex justify-center"
-                            style={{ fontSize: 10 }}
-                        >
-                            <svg viewBox="0 0 16 12" width="16" height="12" fill="#D8232A">
+                    <span className="inline-flex items-center text-primary font-bold text-3xl sm:text-4xl tracking-tight" style={{ fontFamily: "Georgia, serif" }}>
+                        Pl
+                        <span className="inline-flex items-center justify-center mx-[2px] transform -translate-y-[1px]">
+                            <svg
+                                viewBox="0 0 16 12"
+                                className="w-[22px] h-[17px] sm:w-[32px] sm:h-[26px]"
+                                fill="currentColor"
+                            >
                                 <path d="M8 0L0 6h2v6h4V8h4v4h4V6h2z" />
                             </svg>
                         </span>
-                    </span>
-                    <span className="text-primary font-bold text-3xl sm:text-4xl tracking-tight" style={{ fontFamily: "Georgia, serif" }}>
-                        omes
+                        ts
                     </span>
                 </div>
 

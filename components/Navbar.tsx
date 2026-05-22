@@ -18,15 +18,19 @@ export default function Navbar() {
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
               <span className="text-white font-heading font-bold text-xl">NA</span>
             </div>
-            <span className="font-heading font-bold text-xl text-[#0F172A]">NAPLOTSPUNE</span>
+            <span className="font-heading font-bold text-xl text-[#0F172A]">NAPLOTS-PUNE</span>
           </Link>
 
           {/* Center: Navigation */}
           <div className="hidden lg:flex items-center gap-8 font-medium text-sm text-[#475569]">
-            <Link href="/search?type=Flat" className="hover:text-primary transition-colors no-underline">Buy</Link>
-            <Link href="/search?type=Commercial" className="hover:text-primary transition-colors no-underline">Commercial</Link>
-            <Link href="/search?query=Premium&sort=relevance" className="hover:text-primary transition-colors no-underline">New Projects</Link>
-            <Link href="/search?type=Plot" className="hover:text-primary transition-colors no-underline">Plots</Link>
+            {/* <Link href="/search?type=Flat" className="hover:text-primary transition-colors no-underline">Buy</Link> */}
+
+            <Link href="/plots-in-pune" className="hover:text-primary transition-colors no-underline">Plots</Link>
+            <Link href="/villas-in-pune" className="hover:text-primary transition-colors no-underline">Villa</Link>
+            <Link href="/bungalow-in-pune" className="hover:text-primary transition-colors no-underline">Bungalow</Link>
+            <Link href="/resendential-in-pune" className="hover:text-primary transition-colors no-underline">Resendential</Link>
+            <Link href="/commercial-in-pune" className="hover:text-primary transition-colors no-underline">Commercial</Link>
+            {/* <Link href="/search?query=Premium&sort=relevance" className="hover:text-primary transition-colors no-underline">New Projects</Link> */}
           </div>
 
           {/* Right Side: Buttons */}

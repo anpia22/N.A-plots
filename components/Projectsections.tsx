@@ -1,21 +1,24 @@
 "use client"
 
-import { ChevronRight } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // ─── Shared: magicHomes badge ─────────────────────────────────────────────────
 
 function MagicHomesBadge() {
     return (
-        <span className="inline-flex items-center border border-[#D8232A] rounded px-1.5 py-0.5 ml-1.5 align-middle whitespace-nowrap shrink-0 select-none">
+        <span className="inline-flex items-center border border-[#D8232A] rounded px-1.5 py-0.5 ml-1.5 align-middle whitespace-nowrap shrink-0 select-none gap-1">
             <span className="text-[#D8232A] font-bold text-[10px] md:text-xs italic whitespace-nowrap" style={{ fontFamily: "Georgia, serif" }}>
-                magic H
+                NA
             </span>
-
-            <svg viewBox="0 0 12 10" width="11" height="10" className="mx-0.5 shrink-0">
-                <path d="M6 0L0 5h1.5v5h9V5H12z" fill="#D8232A" />
-            </svg>
-            <span className="text-[#D8232A] font-bold text-[10px] md:text-xs italic whitespace-nowrap" style={{ fontFamily: "Georgia, serif" }}>
-                mes
+            <span className="inline-flex items-center text-[#D8232A] font-bold text-[10px] md:text-xs italic whitespace-nowrap" style={{ fontFamily: "Georgia, serif" }}>
+                Pl
+                <span className="inline-flex items-center justify-center mx-[0.5px] transform -translate-y-[0.5px]">
+                    <svg viewBox="0 0 12 10" width="9" height="8" className="shrink-0">
+                        <path d="M6 0L0 5h1.5v5h9V5H12z" fill="#D8232A" />
+                    </svg>
+                </span>
+                ts
             </span>
         </span>
     );
@@ -26,40 +29,51 @@ function MagicHomesBadge() {
 const topProjects = [
     {
         id: 1,
-        name: "Codename Prakriti",
+        name: "The f Row",
         developer: "Rising Spaces",
-        locality: "Kanhe Phata, Pune",
-        bhk: "Commercial NA Plots",
-        price: "Price on Request",
-        marketedBy: "Rising Spaces",
-        img: "/Images/Projects/Prakriti.avif",
-        externalLink: "https://codenameprakriti.com/",
-    },
-    {
-        id: 2,
-        name: "Codename Pratham",
-        developer: "Rising Spaces",
-        locality: "Varale, Pune",
-        bhk: "Commercial NA Plots",
-        price: "Price on Request",
-        marketedBy: "Rising Spaces",
-        img: "/Images/Projects/Pratham.avif",
-        externalLink: "https://codenamepratham.in/",
-    },
-    {
-        id: 3,
-        name: "Codename Joy Estate",
-        developer: "Rising Spaces",
-        locality: "Dhamane, Pune",
+        locality: "Paud, Pune",
         bhk: "Residential NA Plots",
         price: "Price on Request",
         marketedBy: "Rising Spaces",
-        img: "/Images/Projects/joy estate banner.avif",
-        externalLink: "https://codenamejoyestate.com/",
+        img: "/Images/Projects/frow_banner.avif",
+        externalLink: "https://thefrow.in/",
+    },
+    {
+        id: 2,
+        name: "Codename Tathastu",
+        developer: "Rising Spaces",
+        locality: "Ghotawade, Pune",
+        bhk: "Commercial Properties",
+        price: "₹75 Lacs ",
+        marketedBy: "Rising Spaces",
+        img: "/Images/Projects/tatasthu_banner.avif",
+        externalLink: "https://codenametathastu.com/",
+    },
+    {
+        id: 3,
+        name: "Mountville",
+        developer: "Rising Spaces",
+        locality: "Kanhe Phata, Pune",
+        bhk: "Residential NA Plots",
+        price: "39 Lacs",
+        marketedBy: "Rising Spaces",
+        img: "/Images/Projects/Mountville.avif",
+        externalLink: "https://www.risingspaces.in/mountville",
+    },
+    {
+        id: 4,
+        name: "Crown Estate",
+        developer: "Rising Spaces",
+        locality: "Khadkale, Pune",
+        bhk: "Commercial Properties",
+        price: "26 Lacs",
+        marketedBy: "Rising Spaces",
+        img: "/Images/Projects/crown esate.avif",
+        externalLink: "https://crownestate.in/",
     },
 ];
 
-interface Project {
+export interface Project {
     id: number;
     name: string;
     developer: string;
@@ -72,11 +86,11 @@ interface Project {
     externalLink?: string;
 }
 
-interface ProjectCardProps {
+export interface ProjectCardProps {
     project: Project;
 }
 
-function TopProjectCard({ project }: ProjectCardProps) {
+export function TopProjectCard({ project }: ProjectCardProps) {
     const handleClick = () => {
         if (project.externalLink) {
             window.open(project.externalLink, "_blank", "noopener,noreferrer");
@@ -124,6 +138,40 @@ function TopProjectCard({ project }: ProjectCardProps) {
 }
 
 export function TopProjects() {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [showLeftArrow, setShowLeftArrow] = useState(false);
+    const [showRightArrow, setShowRightArrow] = useState(true);
+
+    const checkScroll = () => {
+        if (containerRef.current) {
+            const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+            setShowLeftArrow(scrollLeft > 5);
+            setShowRightArrow(scrollLeft + clientWidth < scrollWidth - 5);
+        }
+    };
+
+    const handleScroll = (direction: "left" | "right") => {
+        if (containerRef.current) {
+            const cardEl = containerRef.current.firstElementChild as HTMLElement;
+            if (cardEl) {
+                const cardWidth = cardEl.clientWidth;
+                const style = window.getComputedStyle(containerRef.current);
+                const gap = parseFloat(style.columnGap || style.gap) || 20;
+                const scrollAmount = direction === "left" ? -(cardWidth + gap) : (cardWidth + gap);
+                containerRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+            }
+        }
+    };
+
+    useEffect(() => {
+        // Run initial check
+        checkScroll();
+        window.addEventListener("resize", checkScroll);
+        return () => {
+            window.removeEventListener("resize", checkScroll);
+        };
+    }, []);
+
     return (
         <section className="w-full bg-white py-8">
             <div className="max-w-[1200px] mx-auto px-4">
@@ -133,26 +181,50 @@ export function TopProjects() {
                         <span className="whitespace-nowrap">Top Projects</span>
                         <MagicHomesBadge />
                     </h2>
-                    <a href="/search?city=Pune&type=Plot" className="text-[#D8232A] text-xs sm:text-sm font-semibold flex items-center gap-1 hover:underline whitespace-nowrap">
+                    <a href="/top-projects" className="text-[#D8232A] text-xs sm:text-sm font-semibold flex items-center gap-1 hover:underline whitespace-nowrap">
                         See all Projects <ChevronRight size={14} />
                     </a>
                 </div>
                 <div className="w-10 h-[3px] bg-[#FFC107] mb-6" />
 
-                {/* Desktop view (exactly unchanged) */}
-                <div className="hidden md:grid grid-cols-3 gap-5">
-                    {topProjects.map((p) => (
-                        <TopProjectCard key={p.id} project={p} />
-                    ))}
-                </div>
+                {/* Carousel Container */}
+                <div className="relative group/carousel">
+                    {/* Scroll Container */}
+                    <div
+                        ref={containerRef}
+                        onScroll={checkScroll}
+                        className="flex overflow-x-auto gap-4 md:gap-5 pb-4 scrollbar-hide snap-x snap-mandatory scroll-smooth w-full"
+                    >
+                        {topProjects.map((p) => (
+                            <div
+                                key={p.id}
+                                className="w-[280px] min-w-[280px] max-w-[280px] md:w-[calc((100%-40px)/3)] md:min-w-[calc((100%-40px)/3)] md:max-w-[calc((100%-40px)/3)] shrink-0 snap-start"
+                            >
+                                <TopProjectCard project={p} />
+                            </div>
+                        ))}
+                    </div>
 
-                {/* Mobile view (swipeable card row) */}
-                <div className="flex md:hidden overflow-x-auto gap-4 pb-4 scrollbar-hide snap-x snap-mandatory">
-                    {topProjects.map((p) => (
-                        <div key={p.id} className="w-[280px] min-w-[280px] max-w-[280px] shrink-0 snap-start">
-                            <TopProjectCard project={p} />
-                        </div>
-                    ))}
+                    {/* Navigation Arrows */}
+                    {showLeftArrow && (
+                        <button
+                            onClick={() => handleScroll('left')}
+                            className="absolute left-[-20px] top-[95px] w-10 h-10 rounded-full border border-gray-200 bg-white shadow-md flex items-center justify-center hover:bg-gray-50 transition-colors z-10 hidden md:flex"
+                            aria-label="Previous project"
+                        >
+                            <ChevronLeft size={20} className="text-[#333]" />
+                        </button>
+                    )}
+
+                    {showRightArrow && (
+                        <button
+                            onClick={() => handleScroll('right')}
+                            className="absolute right-[-20px] top-[95px] w-10 h-10 rounded-full border border-gray-200 bg-white shadow-md flex items-center justify-center hover:bg-gray-50 transition-colors z-10 hidden md:flex"
+                            aria-label="Next project"
+                        >
+                            <ChevronRight size={20} className="text-[#333]" />
+                        </button>
+                    )}
                 </div>
             </div>
         </section>
@@ -164,52 +236,73 @@ export function TopProjects() {
 const newProjects = [
     {
         id: 1,
-        name: "Crown Estate",
+        name: "Codename Joy Estate",
         developer: "Rising Spaces",
-        locality: "Khadkale, Pune",
-        bhk: "Commercial NA Plots",
-        price: "Price on Request",
+        locality: "Dhamane, Pune",
+        bhk: "Residential NA Plots",
+        price: "19 Lacs",
         marketedBy: "Rising Spaces",
-        img: "/Images/Projects/crown esate.avif",
-        externalLink: "https://crownestate.in/",
+        img: "/Images/Projects/joy estate banner.avif",
+        externalLink: "https://codenamejoyestate.com/",
     },
     {
         id: 2,
-        name: "Mountville",
-        developer: "Rising Spaces",
-        locality: "Kanhe Phata, Pune",
-        bhk: "Residential NA Plots",
-        price: "Price on Request",
-        marketedBy: "Rising Spaces",
-        img: "/Images/Projects/Mountville.avif",
-        externalLink: "https://www.risingspaces.in/mountville",
-    },
-    {
-        id: 3,
         name: "Red Stone",
         developer: "Rising Spaces",
         locality: "Takve, Kanhe Phata, Pune",
-        bhk: "Commercial NA Plots",
-        price: "Price on Request",
+        bhk: "Commercial NA",
+        price: "1,499/sq.ft.",
         marketedBy: "Rising Spaces",
         img: "/Images/Projects/RedStone_Webbanner.avif",
         externalLink: "https://www.risingspaces.in/red-stone",
     },
     {
-        id: 4,
+        id: 3,
         name: "Eco Town",
         developer: "Rising Spaces",
         locality: "Ghotawade, Pune",
-        bhk: "Commercial NA Plots",
+        bhk: "Commercial NA",
         price: "Price on Request",
         marketedBy: "Rising Spaces",
         img: "/Images/Projects/eco town.avif",
-        wide: true,
         externalLink: "https://www.risingspaces.in/eco-town",
+    },
+    {
+        id: 4,
+        name: "Codename Pratham",
+        developer: "Rising Spaces",
+        locality: "Varale, Pune",
+        bhk: "Commercial NA",
+        price: "Price on Request",
+        marketedBy: "Rising Spaces",
+        img: "/Images/Projects/Pratham.avif",
+        externalLink: "https://codenamepratham.in/",
+    },
+    {
+        id: 5,
+        name: "Codename Prakriti",
+        developer: "Rising Spaces",
+        locality: "Kanhe Phata, Pune",
+        bhk: "Commercial NA",
+        price: "15.38 Lacs",
+        marketedBy: "Rising Spaces",
+        img: "/Images/Projects/Prakriti.avif",
+        externalLink: "https://codenameprakriti.com/",
+    },
+    {
+        id: 6,
+        name: "Codename OWNEDGE",
+        developer: "Rising Spaces",
+        locality: "Somatane, Pune",
+        bhk: "Commercial NA",
+        price: "Price on Request",
+        marketedBy: "Rising Spaces",
+        img: "/Images/Projects/OwnEdge.avif",
+        externalLink: "https://www.risingspaces.in/own-edge",
     },
 ];
 
-function NewProjectCard({ project }: ProjectCardProps) {
+export function NewProjectCard({ project }: ProjectCardProps) {
     const handleClick = () => {
         if (project.externalLink) {
             window.open(project.externalLink, "_blank", "noopener,noreferrer");
@@ -264,28 +357,20 @@ export function NewProjectGallery() {
                 {/* Heading row */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-y-2 gap-x-4 mb-2">
                     <h2 className="text-[#1a1a1a] text-lg sm:text-xl font-bold flex items-center flex-wrap gap-1 md:gap-2">
-                        <span className="whitespace-nowrap">New Project Gallery</span>
+                        <span className="whitespace-nowrap">Top Investment Destinations</span>
                         <MagicHomesBadge />
                     </h2>
-                    <a href="/search?city=Pune&type=Plot" className="text-[#D8232A] text-xs sm:text-sm font-semibold flex items-center gap-1 hover:underline whitespace-nowrap">
+                    <a href="/top-investment-destinations" className="text-[#D8232A] text-xs sm:text-sm font-semibold flex items-center gap-1 hover:underline whitespace-nowrap">
                         See all Projects <ChevronRight size={14} />
                     </a>
                 </div>
                 <div className="w-10 h-[3px] bg-[#00bcd4] mb-6" />
 
-                {/* Desktop view (exactly unchanged) */}
-                <div className="hidden md:block">
-                    {/* Top row: 3 cards */}
-                    <div className="grid grid-cols-3 gap-5 mb-5">
-                        {newProjects.slice(0, 3).map((p) => (
-                            <NewProjectCard key={p.id} project={p} />
-                        ))}
-                    </div>
-
-                    {/* Bottom row: 1 wide card (col-span-1 in a 3-col) */}
-                    <div className="grid grid-cols-3 gap-5">
-                        <NewProjectCard project={newProjects[3]} />
-                    </div>
+                {/* Desktop view */}
+                <div className="hidden md:grid grid-cols-3 gap-5">
+                    {newProjects.map((p) => (
+                        <NewProjectCard key={p.id} project={p} />
+                    ))}
                 </div>
 
                 {/* Mobile view (swipeable card row) */}

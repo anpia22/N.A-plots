@@ -32,30 +32,97 @@ import {
   Info,
   Sparkles
 } from "lucide-react";
+function mapQueryTypeToFilterTypes(type: string): { filterTypes: string[], selectedType: string } {
+  const t = type.toLowerCase();
+  if (t === "villa" || t === "villas") {
+    return { filterTypes: ["Villa"], selectedType: "Villa" };
+  }
+  if (t === "bungalow" || t === "bungalows") {
+    return { filterTypes: ["Bungalow"], selectedType: "Bungalow" };
+  }
+  if (t === "house") {
+    return { filterTypes: ["Villa", "Bungalow"], selectedType: "Villa" };
+  }
+  if (t === "plot" || t === "plots") {
+    return { filterTypes: ["Plot"], selectedType: "Plot" };
+  }
+  if (t === "commercial") {
+    return { filterTypes: ["Commercial"], selectedType: "Commercial" };
+  }
+  if (t === "residential" || t === "resendential") {
+    return { filterTypes: ["Plot", "Villa", "Bungalow", "Resendential"], selectedType: "Resendential" };
+  }
+  return { filterTypes: ["Plot", "Villa", "Bungalow", "Resendential", "Commercial"], selectedType: "All" };
+}
 
-function SearchResultsContent() {
+function SearchResultsContent({ localityOverride, typeOverride }: { localityOverride?: string; typeOverride?: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { showPopup } = usePopup();
 
+  // Map slug to city/locality names
+  const slugToLocalityMap: Record<string, string> = {
+    "hinjawadi": "Hinjawadi",
+    "lonavala": "Lonavala",
+    "pawna": "Pawna",
+    "kanhe-phata": "Kanhe Phata",
+    "chakan": "Chakan",
+    "dhamane": "Dhamane",
+    "ghotawade": "Ghotawade",
+    "mulshi": "Mulshi",
+    "paud": "Paud",
+    "somatane-phata": "Somatane Phata",
+    "takve": "Takve",
+    "talegaon": "Talegaon",
+    "varale": "Varale",
+    "wakad": "Wakad",
+    "pune": "Pune",
+    "kamshet": "Kamshet",
+    "chakan-talegaon-midc": "Chakan / Talegaon MIDC",
+  };
+
+  const getDisplayNameFromSlug = (slug: string): string => {
+    const dec = decodeURIComponent(slug);
+    if (slugToLocalityMap[dec]) return slugToLocalityMap[dec];
+    // Case-insensitive check of keys
+    const lowerDec = dec.toLowerCase();
+    if (slugToLocalityMap[lowerDec]) return slugToLocalityMap[lowerDec];
+    // Fallback: replace hyphens with spaces and capitalize
+    return dec
+      .split("-")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
   // URL parameters
-  const initialCity = searchParams.get("city") || "Pune";
-  const initialType = searchParams.get("type") || "All";
+  const hasOverride = !!localityOverride;
+  const overrideName = localityOverride ? getDisplayNameFromSlug(localityOverride) : "";
+
+  // If it's a known city/locality option, set it as the initial city. Otherwise default to "Pune" or URL parameter.
+  const initialCity = hasOverride
+    ? (Object.values(slugToLocalityMap).includes(overrideName) ? overrideName : "Pune")
+    : (searchParams.get("city") || "Pune");
+
+  const initialType = typeOverride || searchParams.get("type") || "All";
   const initialBudget = searchParams.get("budget") || "All";
-  const initialQuery = searchParams.get("query") || "";
+
+  // If it's NOT a known city option but has an override, use it as the search query. Otherwise default to URL parameter.
+  const initialQuery = hasOverride
+    ? (Object.values(slugToLocalityMap).includes(overrideName) ? "" : overrideName)
+    : (searchParams.get("query") || "");
 
   // Component States
   const [properties, setProperties] = useState<Property[]>([]);
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [selectedCity, setSelectedCity] = useState(initialCity);
-  const [selectedType, setSelectedType] = useState(initialType);
+
+  const mappedInitial = mapQueryTypeToFilterTypes(initialType);
+  const [selectedType, setSelectedType] = useState(mappedInitial.selectedType);
   const [selectedBudget, setSelectedBudget] = useState(initialBudget);
 
   // Sidebar Filters
-  const [filterTypes, setFilterTypes] = useState<string[]>(
-    initialType !== "All" ? [initialType] : ["Flat", "House", "Plot", "Commercial"]
-  );
-  const [filterBhk, setFilterBhk] = useState<number[]>([1, 2, 3, 4]);
+  const [filterTypes, setFilterTypes] = useState<string[]>(mappedInitial.filterTypes);
+  const [filterBhk, setFilterBhk] = useState<string[]>(["Studio", "1", "2", "3", "4", "4+", "Office"]);
   const [maxBudget, setMaxBudget] = useState<number>(
     initialBudget !== "All" ? parseInt(initialBudget) : 1000 // In Lakhs
   );
@@ -99,8 +166,9 @@ function SearchResultsContent() {
 
     if (city) setSelectedCity(city);
     if (type) {
-      setSelectedType(type);
-      setFilterTypes(type !== "All" ? [type] : ["Flat", "House", "Plot", "Commercial"]);
+      const { filterTypes: mapped, selectedType: sel } = mapQueryTypeToFilterTypes(type);
+      setSelectedType(sel);
+      setFilterTypes(mapped);
     }
     if (budget) {
       setSelectedBudget(budget);
@@ -108,6 +176,56 @@ function SearchResultsContent() {
     }
     if (query) setSearchQuery(query);
   }, [searchParams]);
+
+  // Map city display names to URL slugs
+  const cityToSlugMap: Record<string, string> = {
+    "Pune": "pune",
+    "Chakan": "chakan",
+    "Dhamane": "dhamane",
+    "Ghotawade": "ghotawade",
+    "Hinjawadi": "hinjawadi",
+    "Kanhe Phata": "kanhe-phata",
+    "Lonavala": "lonavala",
+    "Mulshi": "Mulshi",
+    "Paud": "paud",
+    "Pawna": "pawna",
+    "Somatane Phata": "somatane-phata",
+    "Takve": "takve",
+    "Talegaon": "talegaon",
+    "Varale": "varale",
+    "Wakad": "wakad",
+    "Kamshet": "kamshet",
+    "Chakan / Talegaon MIDC": "chakan-talegaon-midc",
+  };
+
+  // Map property type display values to URL prefixes
+  const typeToSlugPrefixMap: Record<string, string> = {
+    "All": "property",
+    "Plot": "plots",
+    "Villa": "villas",
+    "Bungalow": "bungalow",
+    "Resendential": "resendential",
+    "Commercial": "commercial",
+  };
+
+  // Build city slug from selectedCity state (fallback to "pune")
+  const getCurrentCitySlug = () => cityToSlugMap[selectedCity] || "pune";
+
+  // Navigate to /{type-prefix}-in-{city-slug} when a city is selected
+  const handleCityChange = (cityName: string) => {
+    setSelectedCity(cityName);
+    const citySlug = cityToSlugMap[cityName] || "pune";
+    const typePrefix = typeToSlugPrefixMap[selectedType] || "property";
+    router.push(`/${typePrefix}-in-${citySlug}`);
+  };
+
+  // Navigate to /{type-prefix}-in-{city-slug} when a type is selected
+  const handleTypeRouteChange = (typeVal: string) => {
+    handleQuickTypeChange(typeVal);
+    const citySlug = getCurrentCitySlug();
+    const typePrefix = typeToSlugPrefixMap[typeVal] || "property";
+    router.push(`/${typePrefix}-in-${citySlug}`);
+  };
 
   // Handle Search submit from upper bar
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -133,12 +251,9 @@ function SearchResultsContent() {
   };
 
   const handleQuickTypeChange = (tVal: string) => {
-    setSelectedType(tVal);
-    if (tVal === "All") {
-      setFilterTypes(["Flat", "House", "Plot", "Commercial"]);
-    } else {
-      setFilterTypes([tVal]);
-    }
+    const { filterTypes: mapped, selectedType: sel } = mapQueryTypeToFilterTypes(tVal);
+    setSelectedType(sel);
+    setFilterTypes(mapped);
   };
 
   // Toggle checklist filters
@@ -148,7 +263,7 @@ function SearchResultsContent() {
     );
   };
 
-  const toggleFilterBhk = (bhkVal: number) => {
+  const toggleFilterBhk = (bhkVal: string) => {
     setFilterBhk(prev =>
       prev.includes(bhkVal) ? prev.filter(b => b !== bhkVal) : [...prev, bhkVal]
     );
@@ -216,8 +331,12 @@ function SearchResultsContent() {
   // Filtering Logic
   const filteredProperties = properties.filter(p => {
     // 1. City Filter
-    if (selectedCity && selectedCity.toLowerCase() !== "pune" && p.city.toLowerCase() !== selectedCity.toLowerCase()) {
-      return false;
+    if (selectedCity && selectedCity.toLowerCase() !== "pune") {
+      const matchCity = p.city.toLowerCase().includes(selectedCity.toLowerCase());
+      const matchLocality = p.locality.toLowerCase().includes(selectedCity.toLowerCase());
+      if (!matchCity && !matchLocality) {
+        return false;
+      }
     }
 
     // 2. Search Text Query (matches project name, locality, city, title, description)
@@ -236,15 +355,24 @@ function SearchResultsContent() {
     }
 
     // 3. Property Type Checklist Filter
-    if (!filterTypes.includes(p.type)) {
+    const matchesType = filterTypes.includes(p.type) ||
+      (filterTypes.includes("Resendential") && ["Plot", "Villa", "Bungalow", "Resendential"].includes(p.type));
+    if (!matchesType) {
       return false;
     }
 
-    // 4. BHK Checklist Filter (Flats and Houses only)
-    if (p.type === "Flat" || p.type === "House") {
-      if (!filterBhk.includes(p.bhk) && !(p.bhk >= 4 && filterBhk.includes(4))) {
-        return false;
-      }
+    // 4. BHK / Config Filter
+    if (p.type === "Commercial") {
+      if (!filterBhk.includes("Office")) return false;
+    } else if (p.type === "Villa" || p.type === "Bungalow" || p.type === "Resendential") {
+      const matches =
+        (p.bhk === 0 && filterBhk.includes("Studio")) ||
+        (p.bhk === 1 && filterBhk.includes("1")) ||
+        (p.bhk === 2 && filterBhk.includes("2")) ||
+        (p.bhk === 3 && filterBhk.includes("3")) ||
+        (p.bhk === 4 && filterBhk.includes("4")) ||
+        (p.bhk >= 4 && filterBhk.includes("4+"));
+      if (!matches) return false;
     }
 
     // 5. Budget Range Filter
@@ -294,112 +422,127 @@ function SearchResultsContent() {
   });
 
   return (
-    <div className="w-full bg-[#f8f9fa] min-h-screen">
+    <div className="w-full bg-[#f8f9fa] min-h-screen overflow-x-hidden">
       <Navbar />
 
       {/* Dynamic Sub-header Search Bar */}
-      <div className="w-full bg-white border-b border-gray-200 py-4 shadow-sm sticky top-20 z-40">
+      <div className="w-full bg-white border-b border-gray-200 py-3 shadow-sm sticky top-20 z-40">
         <div className="max-w-[1200px] mx-auto px-4">
-          <form onSubmit={handleSearchSubmit} className="flex flex-wrap items-center gap-3">
+          <form onSubmit={handleSearchSubmit}>
 
-            {/* City Selector */}
-            <div className="relative min-w-[140px] flex-1 sm:flex-initial">
-              <select
-                value={selectedCity}
-                onChange={(e) => setSelectedCity(e.target.value)}
-                className="w-full h-11 px-3 bg-gray-50 border border-gray-300 rounded-3xl text-sm text-[#333] font-semibold outline-none focus:border-primary cursor-pointer appearance-none pr-8"
+            {/* Mobile Layout: 2 rows. Desktop: single row */}
+            <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3">
+
+              {/* Row 1 on mobile: City + Filter button */}
+              <div className="flex items-center gap-2 w-full md:w-auto md:shrink-0">
+
+                {/* City Selector */}
+                <div className="relative flex-1 md:flex-initial md:min-w-[140px]">
+                  <select
+                    value={selectedCity}
+                    onChange={(e) => handleCityChange(e.target.value)}
+                    className="w-full h-10 md:h-11 px-3 bg-gray-50 border border-gray-300 rounded-3xl text-sm text-[#333] font-semibold outline-none focus:border-primary cursor-pointer appearance-none pr-8"
+                  >
+                    <option value="Pune">Pune</option>
+                    <option value="Chakan">Chakan</option>
+                    <option value="Chakan / Talegaon MIDC">Chakan / Talegaon MIDC</option>
+                    <option value="Dhamane">Dhamane</option>
+                    <option value="Ghotawade">Ghotawade</option>
+                    <option value="Hinjawadi">Hinjawadi</option>
+                    <option value="Kamshet">Kamshet</option>
+                    <option value="Kanhe Phata">Kanhe Phata</option>
+                    <option value="Lonavala">Lonavala</option>
+                    <option value="Mulshi">Mulshi</option>
+                    <option value="Paud">Paud</option>
+                    <option value="Pawna">Pawna</option>
+                    <option value="Somatane Phata">Somatane Phata</option>
+                    <option value="Takve">Takve</option>
+                    <option value="Talegaon">Talegaon</option>
+                    <option value="Varale">Varale</option>
+                    <option value="Wakad">Wakad</option>
+                  </select>
+                  <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+                </div>
+
+                {/* Filter Toggle Button — only visible on mobile/tablet */}
+                <button
+                  type="button"
+                  onClick={() => setIsMobileFilterOpen(true)}
+                  className="lg:hidden shrink-0 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 h-10 md:h-11 w-10 md:w-auto md:px-4 rounded-lg flex items-center justify-center gap-2 font-bold text-sm transition-all shadow-sm active:scale-95"
+                  title="Show Filters"
+                >
+                  <SlidersHorizontal size={16} className="text-primary" />
+                  <span className="hidden md:inline">Filters</span>
+                </button>
+
+              </div>
+
+              {/* Row 2 on mobile: Search input (full width) */}
+              <div className="flex-1 relative w-full">
+                <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-primary" />
+                <input
+                  type="text"
+                  placeholder="Enter Locality, Project name or Keyword..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full h-10 md:h-11 pl-10 pr-4 bg-gray-50 border border-gray-300 rounded-3xl text-sm text-[#333] placeholder-gray-400 outline-none focus:border-primary focus:bg-white transition-all"
+                />
+              </div>
+
+              {/* Quick Type Selection — desktop only */}
+              <div className="relative min-w-[140px] hidden md:block">
+                <select
+                  value={selectedType}
+                  onChange={(e) => handleTypeRouteChange(e.target.value)}
+                  className="w-full h-11 px-3 bg-gray-50 border border-gray-300 rounded-3xl text-sm text-[#333] outline-none focus:border-primary cursor-pointer appearance-none pr-8"
+                >
+                  <option value="All">All Types</option>
+                  <option value="Plot">Plot</option>
+                  <option value="Villa">Villa</option>
+                  <option value="Bungalow">Bungalow</option>
+                  <option value="Resendential">Resendential</option>
+                  <option value="Commercial">Commercial</option>
+                </select>
+                <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+              </div>
+
+              {/* Quick Budget Selection — desktop only */}
+              <div className="relative min-w-[140px] hidden md:block">
+                <select
+                  value={selectedBudget}
+                  onChange={(e) => handleQuickBudgetChange(e.target.value)}
+                  className="w-full h-11 px-3 bg-gray-50 border border-gray-300 rounded-3xl text-sm text-[#333] outline-none focus:border-primary cursor-pointer appearance-none pr-8"
+                >
+                  <option value="All">Max Budget</option>
+                  <option value="30">₹30 Lac</option>
+                  <option value="50">₹50 Lac</option>
+                  <option value="90">₹90 Lac</option>
+                  <option value="150">₹1.5 Cr</option>
+                  <option value="300">₹3 Cr</option>
+                  <option value="500">₹5 Cr</option>
+                </select>
+                <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+              </div>
+
+              {/* Desktop Filter button */}
+              <button
+                type="button"
+                onClick={() => setIsMobileFilterOpen(true)}
+                className="hidden lg:flex shrink-0 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 h-11 px-4 rounded-lg items-center justify-center gap-2 font-bold text-sm transition-all shadow-sm active:scale-95"
+                title="Show Filters"
               >
-                <option value="Pune">Pune</option>
-                <option value="Chakan">Chakan</option>
-                <option value="Dhamane">Dhamane</option>
-                <option value="Ghotawade">Ghotawade</option>
-                <option value="Hinjewadi">Hinjewadi</option>
-                <option value="kanhe Phata">kanhe Phata</option>
-                <option value="Lonvala">Lonvala</option>
-                <option value="Malshi">Malshi</option>
-                <option value="Paud">Paud</option>
-                <option value="Pawna">Pawna</option>
-                <option value="Somatnane Phata">Somatnane Phata</option>
-                <option value="Takwe">Takwe</option>
-                <option value="Tale gaav">Tale gaav</option>
-                <option value="Varale">Varale</option>
-                <option value="Wakad">Wakad</option>
-              </select>
-              <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+                <SlidersHorizontal size={16} className="text-primary" />
+                Filters
+              </button>
+
             </div>
-
-            {/* Keyword Search Input */}
-            <div className="flex-1 min-w-[200px] relative">
-              <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-primary" />
-              <input
-                type="text"
-                placeholder="Enter Locality, Project name or Keyword..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-11 pl-10 pr-4 bg-gray-50 border border-gray-300 rounded-3xl text-sm text-[#333] placeholder-gray-400 outline-none focus:border-primary focus:bg-white transition-all"
-              />
-            </div>
-
-            {/* Quick Type Selection */}
-            <div className="relative min-w-[140px] hidden md:block">
-              <select
-                value={selectedType}
-                onChange={(e) => handleQuickTypeChange(e.target.value)}
-                className="w-full h-11 px-3 bg-gray-50 border border-gray-300 rounded-3xl text-sm text-[#333] outline-none focus:border-primary cursor-pointer appearance-none pr-8"
-              >
-                <option value="All">All Types</option>
-                <option value="Flat">Flats</option>
-                <option value="House">Houses</option>
-                <option value="Plot">Plots</option>
-                <option value="Commercial">Commercial</option>
-              </select>
-              <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
-            </div>
-
-            {/* Quick Budget Selection */}
-            <div className="relative min-w-[140px] hidden md:block">
-              <select
-                value={selectedBudget}
-                onChange={(e) => handleQuickBudgetChange(e.target.value)}
-                className="w-full h-11 px-3 bg-gray-50 border border-gray-300 rounded-3xl text-sm text-[#333] outline-none focus:border-primary cursor-pointer appearance-none pr-8"
-              >
-                <option value="All">Max Budget</option>
-                <option value="30">₹30 Lac</option>
-                <option value="50">₹50 Lac</option>
-                <option value="90">₹90 Lac</option>
-                <option value="150">₹1.5 Cr</option>
-                <option value="300">₹3 Cr</option>
-                <option value="500">₹5 Cr</option>
-              </select>
-              <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
-            </div>
-
-            {/* Submit Button */}
-            {/* <button
-              type="submit"
-              className="bg-primary hover:bg-primary-dark text-white h-11 px-6 rounded-3xl flex items-center gap-2 font-bold text-sm transition-all shadow-sm hover:shadow active:scale-95 animate-in fade-in duration-200"
-            >
-              <Search size={16} />
-              Search
-            </button> */}
-
-            {/* Filter Toggle Button for Mobile/Tablet */}
-            <button
-              type="button"
-              onClick={() => setIsMobileFilterOpen(true)}
-              className="lg:hidden bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 h-11 px-4 rounded-lg flex items-center justify-center gap-2 font-bold text-sm transition-all shadow-sm active:scale-95 shrink-0"
-              title="Show Filters"
-            >
-              <SlidersHorizontal size={16} className="text-primary" />
-              <span className="hidden sm:inline">Filters</span>
-            </button>
           </form>
         </div>
       </div>
 
       {/* Main Results Layout */}
       <div className="max-w-[1200px] mx-auto px-4 py-8">
-        <div className="flex gap-6 items-start">
+        <div className="flex gap-6 items-start w-full min-w-0">
 
           {/* LEFT SIDEBAR: FILTERS */}
           <aside className="w-[280px] shrink-0 bg-white rounded-xl border border-gray-200 shadow-sm p-5 sticky top-40 hidden lg:block">
@@ -410,8 +553,8 @@ function SearchResultsContent() {
               </h3>
               <button
                 onClick={() => {
-                  setFilterTypes(["Flat", "House", "Plot", "Commercial"]);
-                  setFilterBhk([1, 2, 3, 4]);
+                  setFilterTypes(["Plot", "Villa", "Bungalow", "Resendential", "Commercial"]);
+                  setFilterBhk(["Studio", "1", "2", "3", "4", "4+", "Office"]);
                   setMaxBudget(1000);
                   setFilterStatus("All");
                   setFilterPostedBy("All");
@@ -429,7 +572,7 @@ function SearchResultsContent() {
             <div className="mb-6">
               <h4 className="font-bold text-[#333] text-xs uppercase tracking-wide mb-3">Property Type</h4>
               <div className="space-y-2">
-                {["Flat", "House", "Plot", "Commercial"].map((t) => (
+                {["Plot", "Villa", "Bungalow", "Resendential", "Commercial"].map((t) => (
                   <label key={t} className="flex items-center gap-2.5 text-sm text-gray-600 hover:text-gray-800 cursor-pointer">
                     <input
                       type="checkbox"
@@ -443,21 +586,29 @@ function SearchResultsContent() {
               </div>
             </div>
 
-            {/* Filter Section: BHK Type */}
+            {/* Filter Section: BHK / Config Type */}
             <div className="mb-6">
-              <h4 className="font-bold text-[#333] text-xs uppercase tracking-wide mb-3">No. of Bedrooms (BHK)</h4>
-              <div className="grid grid-cols-2 gap-2">
-                {[1, 2, 3, 4].map((num) => (
+              <h4 className="font-bold text-[#333] text-xs uppercase tracking-wide mb-3">Configuration</h4>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { val: "Studio", label: "Studio" },
+                  { val: "1", label: "1 BHK" },
+                  { val: "2", label: "2 BHK" },
+                  { val: "3", label: "3 BHK" },
+                  { val: "4", label: "4 BHK" },
+                  { val: "4+", label: "4+ BHK" },
+                  { val: "Office", label: "Office" },
+                ].map(({ val, label }) => (
                   <button
-                    key={num}
+                    key={val}
                     type="button"
-                    onClick={() => toggleFilterBhk(num)}
-                    className={`h-9 rounded-3xl border text-xs font-semibold flex items-center justify-center transition-all ${filterBhk.includes(num)
+                    onClick={() => toggleFilterBhk(val)}
+                    className={`h-9 rounded-3xl border text-xs font-semibold flex items-center justify-center transition-all ${filterBhk.includes(val)
                       ? "bg-primary/10 border-primary text-primary"
                       : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
                       }`}
                   >
-                    {num === 4 ? "4+ BHK" : `${num} BHK`}
+                    {label}
                   </button>
                 ))}
               </div>
@@ -537,15 +688,15 @@ function SearchResultsContent() {
           </aside>
 
           {/* RIGHT SIDE: LISTINGS LIST */}
-          <main className="flex-1">
+          <main className="flex-1 w-full min-w-0">
 
             {/* Top Bar: Tabs, Summary & Sorting */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 mb-6">
 
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 pb-3 mb-3">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 pb-3 mb-3 w-full min-w-0">
 
                 {/* Custom MagicBricks Category Tabs */}
-                <div className="flex items-center gap-2 bg-gray-50 p-1 rounded-3xl w-fit">
+                <div className="flex items-center gap-1 md:gap-2 bg-gray-50 p-1 rounded-3xl w-full md:w-fit overflow-x-auto scrollbar-hide">
                   {[
                     { id: "All", label: "All Results" },
                     { id: "Projects", label: "Projects / Societies" },
@@ -554,7 +705,7 @@ function SearchResultsContent() {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id as any)}
-                      className={`px-4 py-2 text-xs font-bold rounded-3xl transition-all ${activeTab === tab.id
+                      className={`px-4 py-2 text-[11px] md:text-xs font-bold rounded-3xl transition-all whitespace-nowrap shrink-0 text-center flex-1 md:flex-none ${activeTab === tab.id
                         ? "bg-white text-primary shadow-sm"
                         : "text-gray-500 hover:text-gray-800"
                         }`}
@@ -565,8 +716,8 @@ function SearchResultsContent() {
                 </div>
 
                 {/* Sorting Select */}
-                <div className="flex items-center gap-2 self-end md:self-auto">
-                  <span className="text-xs text-gray-400 font-semibold">Sort by:</span>
+                <div className="flex items-center gap-2 self-end md:self-auto shrink-0">
+                  <span className="text-xs text-gray-400 font-semibold whitespace-nowrap">Sort by:</span>
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
@@ -582,26 +733,18 @@ function SearchResultsContent() {
               </div>
 
               {/* Summary Text */}
-              <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-500 m-0">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+                <p className="text-xs sm:text-sm text-gray-500 m-0 leading-relaxed">
                   Showing <span className="font-bold text-gray-800">{sortedProperties.length}</span> properties and projects found in{" "}
                   <span className="font-bold text-primary">{selectedCity}</span>
                 </p>
 
-                {/* Free property label */}
-                {/* <Link
-                  href="/post-property"
-                  className="text-xs text-primary-orange hover:text-primary-orange-dark font-bold flex items-center gap-1 hover:underline"
-                >
-                  <Sparkles size={13} />
-                  List a new property for free!
-                </Link> */}
                 <div
                   onClick={() => setIsReqModalOpen(true)}
-                  className="text-xs text-primary-orange hover:text-primary-orange-dark font-bold flex items-center gap-1 hover:underline"
+                  className="text-[11px] sm:text-xs text-primary-orange hover:text-primary-orange-dark font-bold flex items-center gap-1 hover:underline cursor-pointer shrink-0 self-start sm:self-auto"
                 >
-                  <Sparkles size={13} />
-                  Your dream home is waiting!
+                  <Sparkles size={13} className="shrink-0" />
+                  <span className="whitespace-nowrap">Your dream home is waiting!</span>
                 </div>
               </div>
 
@@ -628,7 +771,7 @@ function SearchResultsContent() {
                     >
                       {/* Left side: Premium Image Gallery / Slider */}
                       <div
-                        className="w-full md:w-[280px] h-[220px] md:h-auto shrink-0 bg-gray-900 relative overflow-hidden"
+                        className="w-full md:w-[320px] h-[220px] md:h-auto shrink-0 bg-gray-900 relative overflow-hidden"
                         onClick={(e) => e.stopPropagation()} // Stop propagation from card click
                       >
                         <img
@@ -729,7 +872,7 @@ function SearchResultsContent() {
                           </div>
 
                           {/* Property Title */}
-                          <h3 className="text-[#333] group-hover:text-primary text-lg font-bold leading-snug mb-1 transition-colors">
+                          <h3 className="text-[#333] group-hover:text-primary text-base sm:text-lg font-bold leading-snug mb-1 transition-colors">
                             {p.bhk > 0 ? `${p.bhk} BHK ` : ""}{p.type} {p.type === "Plot" ? "for Sale in" : "for Sale in"} {p.projectName}
                           </h3>
 
@@ -752,7 +895,7 @@ function SearchResultsContent() {
                             <div>
                               <span className="text-[10px] text-gray-400 font-semibold block uppercase">Price/sqft</span>
                               <span className="text-xs font-bold text-gray-700">
-                                {p.area ? `₹${Math.round((p.price * 100000) / parseInt(p.area))}/sqft` : "₹3,200/sqft"}
+                                {p.area ? `₹${Math.round((p.price * 100000) / parseInt(p.area.replace(/,/g, "")))}/sqft` : "₹3,200/sqft"}
                               </span>
                             </div>
                           </div>
@@ -765,7 +908,7 @@ function SearchResultsContent() {
                         </div>
 
                         {/* Lower Section: Price and Contacts */}
-                        <div className="flex items-center justify-between pt-2 border-t border-gray-100 mt-auto">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pt-2 border-t border-gray-100 mt-auto gap-3">
 
                           {/* Price Display */}
                           <div className="flex flex-col">
@@ -776,7 +919,7 @@ function SearchResultsContent() {
                           </div>
 
                           {/* CTA Actions */}
-                          <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-center gap-2 shrink-0" onClick={(e) => e.stopPropagation()}>
                             <button
                               onClick={() => {
                                 if (p.externalLink) {
@@ -785,16 +928,16 @@ function SearchResultsContent() {
                                   setDetailProperty(p);
                                 }
                               }}
-                              className="h-10 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-3xl text-xs font-bold transition-all border border-gray-200 flex items-center justify-center"
+                              className="h-9 px-3 sm:px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-3xl text-xs font-bold transition-all border border-gray-200 flex items-center justify-center whitespace-nowrap"
                             >
-                              <Maximize2 size={12} className="mr-1.5" />
+                              <Maximize2 size={12} className="mr-1" />
                               View Project
                             </button>
                             <button
                               onClick={() => setContactProperty(p)}
-                              className="h-10 px-5 bg-primary hover:bg-primary-dark text-white rounded-3xl text-xs font-bold transition-all flex items-center justify-center shadow-sm hover:shadow active:scale-95"
+                              className="h-9 px-3 sm:px-5 bg-primary hover:bg-primary-dark text-white rounded-3xl text-xs font-bold transition-all flex items-center justify-center shadow-sm hover:shadow active:scale-95 whitespace-nowrap"
                             >
-                              <Phone size={12} className="mr-1.5" />
+                              <Phone size={12} className="mr-1" />
                               Contact {p.postedBy === "Builder" ? "Builder" : "Owner"}
                             </button>
                           </div>
@@ -819,8 +962,8 @@ function SearchResultsContent() {
                     <div className="flex justify-center gap-3">
                       <button
                         onClick={() => {
-                          setFilterTypes(["Flat", "House", "Plot", "Commercial"]);
-                          setFilterBhk([1, 2, 3, 4]);
+                          setFilterTypes(["Plot", "Villa", "Bungalow", "Resendential", "Commercial"]);
+                          setFilterBhk(["Studio", "1", "2", "3", "4", "4+", "Office"]);
                           setMaxBudget(1000);
                           setFilterStatus("All");
                           setFilterPostedBy("All");
@@ -850,7 +993,7 @@ function SearchResultsContent() {
             {/* Bottom listing CTA banner */}
             <div className="bg-gradient-to-r from-[#0F3E66] to-rose-700 text-white rounded-xl p-6 shadow-md mt-10 flex flex-col md:flex-row items-center justify-between gap-4">
               <div>
-                <h3 className="font-bold text-lg mb-1 flex items-center gap-2">
+                <h3 className="font-bold text-lg mb-1 flex flex-wrap items-center gap-2">
                   <Sparkles size={18} className="text-yellow-300 animate-pulse" />
                   Did you found your  <span className="text-yellow-300 font-bold">#SapnoKaAddress</span>?
                 </h3>
@@ -1214,7 +1357,7 @@ function SearchResultsContent() {
               <div className="mb-6">
                 <h4 className="font-bold text-[#333] text-xs uppercase tracking-wide mb-3">Property Type</h4>
                 <div className="space-y-2">
-                  {["Flat", "House", "Plot", "Commercial"].map((t) => (
+                  {["Plot", "Villa", "Bungalow", "Resendential", "Commercial"].map((t) => (
                     <label key={t} className="flex items-center gap-2.5 text-sm text-gray-600 hover:text-gray-800 cursor-pointer">
                       <input
                         type="checkbox"
@@ -1228,21 +1371,29 @@ function SearchResultsContent() {
                 </div>
               </div>
 
-              {/* Filter Section: BHK Type */}
+              {/* Filter Section: Config Type */}
               <div className="mb-6">
-                <h4 className="font-bold text-[#333] text-xs uppercase tracking-wide mb-3">No. of Bedrooms (BHK)</h4>
-                <div className="grid grid-cols-2 gap-2">
-                  {[1, 2, 3, 4].map((num) => (
+                <h4 className="font-bold text-[#333] text-xs uppercase tracking-wide mb-3">Configuration</h4>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { val: "Studio", label: "Studio" },
+                    { val: "1", label: "1 BHK" },
+                    { val: "2", label: "2 BHK" },
+                    { val: "3", label: "3 BHK" },
+                    { val: "4", label: "4 BHK" },
+                    { val: "4+", label: "4+ BHK" },
+                    { val: "Office", label: "Office" },
+                  ].map(({ val, label }) => (
                     <button
-                      key={num}
+                      key={val}
                       type="button"
-                      onClick={() => toggleFilterBhk(num)}
-                      className={`h-9 rounded-lg border text-xs font-semibold flex items-center justify-center transition-all ${filterBhk.includes(num)
+                      onClick={() => toggleFilterBhk(val)}
+                      className={`h-9 rounded-lg border text-xs font-semibold flex items-center justify-center transition-all ${filterBhk.includes(val)
                         ? "bg-primary/10 border-primary text-primary"
                         : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
                         }`}
                     >
-                      {num === 4 ? "4+ BHK" : `${num} BHK`}
+                      {label}
                     </button>
                   ))}
                 </div>
@@ -1326,8 +1477,8 @@ function SearchResultsContent() {
               <button
                 type="button"
                 onClick={() => {
-                  setFilterTypes(["Flat", "House", "Plot", "Commercial"]);
-                  setFilterBhk([1, 2, 3, 4]);
+                  setFilterTypes(["Plot", "Villa", "Bungalow", "Resendential", "Commercial"]);
+                  setFilterBhk(["Studio", "1", "2", "3", "4", "4+", "Office"]);
                   setMaxBudget(1000);
                   setFilterStatus("All");
                   setFilterPostedBy("All");
@@ -1367,7 +1518,12 @@ function SearchResultsContent() {
   );
 }
 
-export default function SearchResultsPage() {
+interface SearchResultsPageProps {
+  localityOverride?: string;
+  typeOverride?: string;
+}
+
+export default function SearchResultsPage({ localityOverride, typeOverride }: SearchResultsPageProps) {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-gray-50 flex-col gap-3">
@@ -1375,7 +1531,7 @@ export default function SearchResultsPage() {
         <span className="text-sm font-semibold text-gray-500">Loading premium real-estate results...</span>
       </div>
     }>
-      <SearchResultsContent />
+      <SearchResultsContent localityOverride={localityOverride} typeOverride={typeOverride} />
     </Suspense>
   );
 }

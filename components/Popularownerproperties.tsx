@@ -7,30 +7,19 @@ import { Image, ChevronRight } from "lucide-react";
 const properties = [
     {
         id: 1,
-        type: "The f Row - Vogue Villas & NA Plots",
-        price: "₹35 Lac*",
-        area: "1,500 - 3,500 sqft",
-        locality: "Paud Mulshi, Pune",
-        status: "New Launch",
-        photos: 12,
-        img: "/Images/Projects/frow_banner.avif",
-        externalLink: "https://thefrow.in/",
+        type: "Beyond Bliss - Luxury 4 BHK Waterfront Villas",
+        price: "Price on Request",
+        area: "3,200 sqft",
+        locality: "Lonavala, Pune",
+        status: "Coming Soon",
+        photos: 14,
+        img: "/Images/Projects/beyond bliss lonavala.avif",
+        externalLink: "https://beyondblisslonavala.com/",
     },
     {
         id: 2,
-        type: "Codename Tathastu - Premium NA Plots",
-        price: "₹45 Lac*",
-        area: "1,200 - 2,500 sqft",
-        locality: "Ghotawade, Near Hinjewadi, Pune",
-        status: "Under Construction",
-        photos: 8,
-        img: "/Images/Projects/tatasthu_banner.avif",
-        externalLink: "https://codenametathastu.com/",
-    },
-    {
-        id: 3,
         type: "The Pawna Villas - Waterfront Luxury Villas",
-        price: "Price on Request",
+        price: "₹2.75 Cr",
         area: "2,500 - 5,000 sqft",
         locality: "Pawna Lake, near Lonavala, Pune",
         status: "Gated Community",
@@ -39,17 +28,29 @@ const properties = [
         externalLink: "https://thepawnavillas.com/",
     },
     {
+        id: 3,
+        type: "18 Aangan - Premium Residential NA Plots",
+        price: "₹1.89 Cr*",
+        area: "1,800 sqft",
+        locality: "Maan, Hinjawadi, Pune",
+        status: "Coming Soon",
+        photos: 10,
+        img: "/Images/Projects/Aangan 18.avif",
+        externalLink: "https://www.risingspaces.in/18-aangan",
+    },
+    {
         id: 4,
-        type: "Codename OWNEDGE - Commercial NA Plots",
-        price: "₹25 Lac*",
-        area: "1,500 - 3,000 sqft",
-        locality: "Somatane Phata, Pune",
-        status: "Ongoing Project",
-        photos: 6,
-        img: "/Images/Projects/OwnEdge.avif",
-        externalLink: "https://www.risingspaces.in/own-edge",
+        type: "The f Row - Vogue Villas & NA Plots",
+        price: "Price on Request",
+        area: "1,500 - 3,500 sqft",
+        locality: "Paud Mulshi, Pune",
+        status: "New Launch",
+        photos: 12,
+        img: "/Images/Projects/frow_banner.avif",
+        externalLink: "https://thefrow.in/",
     },
 ];
+
 
 export default function PopularOwnerProperties() {
     const handleCardClick = (link?: string) => {
@@ -65,13 +66,13 @@ export default function PopularOwnerProperties() {
                 {/* Heading Row */}
                 <div className="flex items-center justify-between mb-1">
                     <h2 className="text-[#333] text-xl font-semibold">
-                        Exclusive Projects
+                        Exclusive Properties
                     </h2>
                     <Link
                         href="/search"
                         className="text-primary text-sm font-semibold flex items-center gap-1 hover:underline no-underline"
                     >
-                        See all Projects <ChevronRight size={16} />
+                        See all Properties <ChevronRight size={16} />
                     </Link>
                 </div>
                 <div className="w-10 h-[3px] bg-[#FFC107] mb-6" />

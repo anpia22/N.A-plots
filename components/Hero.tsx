@@ -177,17 +177,19 @@ export default function Hero() {
                         {[
                           "Pune",
                           "Chakan",
+                          "Chakan / Talegaon MIDC",
                           "Dhamane",
                           "Ghotawade",
-                          "Hinjewadi",
-                          "kanhe Phata",
-                          "Lonvala",
-                          "Malshi",
+                          "Hinjawadi",
+                          "Kamshet",
+                          "Kanhe Phata",
+                          "Lonavala",
+                          "Mulshi",
                           "Paud",
                           "Pawna",
-                          "Somatnane Phata",
-                          "Takwe",
-                          "Tale gaav",
+                          "Somatane Phata",
+                          "Takve",
+                          "Talegaon",
                           "Varale",
                           "Wakad"
                         ].map((c) => (<button
@@ -254,7 +256,7 @@ export default function Hero() {
                         className="absolute left-0 right-0 top-[105%] bg-white border border-gray-200 rounded-xl shadow-xl z-50 p-2 overflow-hidden w-[140px]"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        {["All", "Plots", "Villas", "Commercial", "Houses"].map((t) => (
+                        {["All", "Villas", "Bungalow", "Residential", "Commercial"].map((t) => (
                           <button
                             key={t}
                             type="button"

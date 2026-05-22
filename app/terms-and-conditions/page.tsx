@@ -120,8 +120,8 @@ export default function TermsAndConditionsPage() {
                       key={sec.id}
                       onClick={() => scrollToSection(sec.id)}
                       className={`text-left text-xs font-semibold py-2 px-3 rounded-lg transition-all duration-200 cursor-pointer border-none outline-none ${isActive
-                          ? "bg-primary/5 text-primary font-bold shadow-sm translate-x-1"
-                          : "text-text-secondary hover:text-text-primary hover:bg-gray-50"
+                        ? "bg-primary/5 text-primary font-bold shadow-sm translate-x-1"
+                        : "text-text-secondary hover:text-text-primary hover:bg-gray-50"
                         }`}
                     >
                       {sec.label}
@@ -174,7 +174,7 @@ export default function TermsAndConditionsPage() {
                 3. Property Listings Guidelines
               </h2>
               <p className="text-sm sm:text-base leading-relaxed">
-                If you list a property (flat, villa, plot, commercial plot/office) on the Platform, you must adhere to the following rules:
+                If you list a property (Plot, Villa, Bungalow, Resendential, Commercial) on the Platform, you must adhere to the following rules:
               </p>
               <ul className="list-disc pl-5 text-sm space-y-2 leading-relaxed">
                 <li><strong>Ownership and Rights:</strong> You must own the listed property or possess explicit written authorization from the owner/builder to publish the listing.</li>

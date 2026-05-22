@@ -1,7 +1,7 @@
 export interface Property {
   id: string | number;
   title: string;
-  type: "Flat" | "Plot" | "House" | "Commercial";
+  type: "Plot" | "Commercial" | "Villa" | "Bungalow" | "Resendential";
   bhk: number; // 0 for plot/commercial
   price: number; // in Lakhs (e.g. 85 for 85 Lac, 250 for 2.5 Cr)
   priceFormatted: string; // e.g. "₹85 Lac", "₹2.5 Cr"
@@ -28,6 +28,7 @@ export interface Property {
 
 export const seedProperties: Property[] = [
   // === COMPLETED PROJECTS (READY TO MOVE) ===
+  /*
   {
     id: "completed_24k_premium",
     title: "24K PREMIUM - Sanctioned Residential NA Plot in Maan",
@@ -39,7 +40,7 @@ export const seedProperties: Property[] = [
     priceFormatted: "₹35 Lac*",
     area: "1,800 sqft",
     locality: "Maan",
-    city: "Hinjewadi",
+    city: "Hinjawadi",
     status: "Ready to Move",
     postedBy: "Builder",
     isProject: true,
@@ -66,7 +67,7 @@ export const seedProperties: Property[] = [
     priceFormatted: "₹36 Lac*",
     area: "1,800 sqft",
     locality: "Maan",
-    city: "Hinjewadi",
+    city: "Hinjawadi",
     status: "Ready to Move",
     postedBy: "Builder",
     isProject: true,
@@ -93,7 +94,7 @@ export const seedProperties: Property[] = [
     priceFormatted: "₹40 Lac*",
     area: "1,800 sqft",
     locality: "Marunji",
-    city: "Hinjewadi",
+    city: "Hinjawadi",
     status: "Ready to Move",
     postedBy: "Builder",
     isProject: true,
@@ -138,7 +139,7 @@ export const seedProperties: Property[] = [
   },
   {
     id: "completed_cambridge_county",
-    title: "CAMBRIDGE COUNTY - Premium Residential NA Plot near Hinjewadi",
+    title: "CAMBRIDGE COUNTY - Premium Residential NA Plot near Hinjawadi",
     projectName: "CAMBRIDGE COUNTY",
     builderName: "Rising Spaces",
     type: "Plot",
@@ -146,8 +147,8 @@ export const seedProperties: Property[] = [
     price: 28,
     priceFormatted: "₹28 Lac*",
     area: "1,800 sqft",
-    locality: "Rihe near Hinjewadi",
-    city: "Hinjewadi",
+    locality: "Rihe near Hinjawadi",
+    city: "Hinjawadi",
     status: "Ready to Move",
     postedBy: "Builder",
     isProject: true,
@@ -158,7 +159,7 @@ export const seedProperties: Property[] = [
       "/Images/Projects/24K PREMIUM ASSETS.avif"
     ],
     photosCount: 3,
-    description: "CAMBRIDGE COUNTY at Rihe, situated just a short drive from the Hinjewadi IT Park, is a signature completed NA plot development by Rising Spaces. Boasting breathtaking hilltop panoramas and pollution-free environments, the community provides perfectly planned plots with immediate possession, demarcated boundaries, concrete roads, and round-the-clock security.",
+    description: "CAMBRIDGE COUNTY at Rihe, situated just a short drive from the Hinjawadi IT Park, is a signature completed NA plot development by Rising Spaces. Boasting breathtaking hilltop panoramas and pollution-free environments, the community provides perfectly planned plots with immediate possession, demarcated boundaries, concrete roads, and round-the-clock security.",
     facing: "East",
     amenities: ["Gated Community", "Demarcated Plots", "Concrete Roads", "Water Supply", "Street Lights", "CCTV Security"],
     postedDate: "Completed Project"
@@ -174,7 +175,7 @@ export const seedProperties: Property[] = [
     priceFormatted: "₹34 Lac*",
     area: "1,800 sqft",
     locality: "Somatne Phata",
-    city: "Somatnane Phata",
+    city: "Somatane Phata",
     status: "Ready to Move",
     postedBy: "Builder",
     isProject: true,
@@ -192,7 +193,7 @@ export const seedProperties: Property[] = [
   },
   {
     id: "completed_saffron_city",
-    title: "SAFFRON CITY - Prime Commercial NA Plot near Hinjewadi",
+    title: "SAFFRON CITY - Prime Commercial NA Plot near Hinjawadi",
     projectName: "SAFFRON CITY",
     builderName: "Rising Spaces",
     type: "Commercial",
@@ -200,8 +201,8 @@ export const seedProperties: Property[] = [
     price: 42,
     priceFormatted: "₹42 Lac*",
     area: "1,800 sqft",
-    locality: "Rihe near Hinjewadi",
-    city: "Hinjewadi",
+    locality: "Rihe near Hinjawadi",
+    city: "Hinjawadi",
     status: "Ready to Move",
     postedBy: "Builder",
     isProject: true,
@@ -212,7 +213,7 @@ export const seedProperties: Property[] = [
       "/Images/Projects/OwnEdge.avif"
     ],
     photosCount: 3,
-    description: "SAFFRON CITY is a strategically completed, premium commercial NA plotting layout situated in Rihe near Hinjewadi. Designed to satisfy high-potential commercial ventures, offices, or retail outlets, it offers excellent frontage, extra-wide high-load concrete roads, commercial-grade electrical cabling, ready water lines, and supreme connectivity to major transport routes.",
+    description: "SAFFRON CITY is a strategically completed, premium commercial NA plotting layout situated in Rihe near Hinjawadi. Designed to satisfy high-potential commercial ventures, offices, or retail outlets, it offers excellent frontage, extra-wide high-load concrete roads, commercial-grade electrical cabling, ready water lines, and supreme connectivity to major transport routes.",
     facing: "North",
     amenities: ["Commercial Zone", "Wide Roads", "High Visibility", "Underground Cabling", "Water Connection", "Street Lights", "CCTV Security"],
     postedDate: "Completed Project"
@@ -228,7 +229,7 @@ export const seedProperties: Property[] = [
     priceFormatted: "₹32 Lac*",
     area: "1,800 sqft",
     locality: "Shirgaon",
-    city: "kanhe Phata",
+    city: "Kanhe Phata",
     status: "Ready to Move",
     postedBy: "Builder",
     isProject: true,
@@ -255,7 +256,7 @@ export const seedProperties: Property[] = [
     priceFormatted: "₹50 Lac*",
     area: "1,800 sqft",
     locality: "Near Wipro Circle Maan Road",
-    city: "Hinjewadi",
+    city: "Hinjawadi",
     status: "Ready to Move",
     postedBy: "Builder",
     isProject: true,
@@ -266,11 +267,12 @@ export const seedProperties: Property[] = [
       "/Images/Projects/OwnEdge.avif"
     ],
     photosCount: 3,
-    description: "Streets of Europe is an ultra-premium, fully completed commercial plotting masterpiece by Rising Spaces, located right on Maan Road near the bustling Wipro Circle in Hinjewadi, Pune. Replicating modern European high-street planning, it provides premium-grade commercial plots ideal for high-end retail, gourmet restaurants, corporate showrooms, or corporate workspaces, offering maximum footfall and visibility.",
+    description: "Streets of Europe is an ultra-premium, fully completed commercial plotting masterpiece by Rising Spaces, located right on Maan Road near the bustling Wipro Circle in Hinjawadi, Pune. Replicating modern European high-street planning, it provides premium-grade commercial plots ideal for high-end retail, gourmet restaurants, corporate showrooms, or corporate workspaces, offering maximum footfall and visibility.",
     facing: "West",
     amenities: ["Commercial High Street", "Premium Concrete Roads", "High Visibility", "Water Connection", "Underground Cabling", "Grand Entrance", "24/7 Security"],
     postedDate: "Completed Project"
   },
+  */
 
   // === ONGOING PROJECTS (UNDER CONSTRUCTION) ===
   {
@@ -281,9 +283,9 @@ export const seedProperties: Property[] = [
     type: "Plot",
     bhk: 0,
     price: 35,
-    priceFormatted: "₹35 Lac*",
+    priceFormatted: "Price on Request",
     area: "1,800 sqft",
-    locality: "Paud",
+    locality: "Paud / Mulshi",
     city: "Paud",
     status: "Under Construction",
     postedBy: "Builder",
@@ -308,20 +310,20 @@ export const seedProperties: Property[] = [
     type: "Commercial",
     bhk: 0,
     price: 45,
-    priceFormatted: "₹45 Lac*",
+    priceFormatted: "₹75 Lac*",
     area: "1,886 sqft",
     locality: "Ghotawade",
-    city: "Ghotawade",
+    city: "Hinjawadi",
     status: "Under Construction",
     postedBy: "Builder",
     isProject: true,
-    img: "/Images/Projects/tatasthu_banner.avif",
+    img: "/Images/Projects/tathastu.jpeg",
     images: [
-      "/Images/Projects/tatasthu_banner.avif",
-      "/Images/Projects/eco town.avif"
+      "/Images/Projects/tathastu.jpeg",
+      "/Images/Projects/tathastu2.jpeg"
     ],
     photosCount: 2,
-    description: "Codename Tathastu offers high-demand, masterfully planned commercial NA plots in Ghotawade near Hinjewadi IT park. Gated plotting township spread across a massive landscape with premium specifications.",
+    description: "Codename Tathastu offers high-demand, masterfully planned commercial NA plots in Ghotawade near Hinjawadi IT park. Gated plotting township spread across a massive landscape with premium specifications.",
     facing: "West",
     amenities: ["Commercial Zone", "Concrete Roads", "Underground Electricity", "Water Supply", "Street Lights", "CCTV Security"],
     postedDate: "2 days ago",
@@ -335,7 +337,7 @@ export const seedProperties: Property[] = [
     type: "Commercial",
     bhk: 0,
     price: 110,
-    priceFormatted: "₹1.1 Cr*",
+    priceFormatted: "₹2.75 Cr*",
     area: "1,400 sqft",
     locality: "Pawna",
     city: "Pawna",
@@ -362,17 +364,17 @@ export const seedProperties: Property[] = [
     type: "Commercial",
     bhk: 0,
     price: 25,
-    priceFormatted: "₹25 Lac*",
+    priceFormatted: "Price on Request",
     area: "1,838 sqft",
     locality: "Somatane",
-    city: "Somatnane Phata",
+    city: "Somatane Phata",
     status: "Under Construction",
     postedBy: "Builder",
     isProject: true,
-    img: "/Images/Projects/OwnEdge.avif",
+    img: "/Images/Projects/ownedge.jpeg",
     images: [
-      "/Images/Projects/OwnEdge.avif",
-      "/Images/Projects/SAFFRON CITY.avif"
+      "/Images/Projects/ownedge.jpeg",
+      "/Images/Projects/ownedge2.jpeg"
     ],
     photosCount: 2,
     description: "Codename OWNEDGE is a high-visibility commercial plotting project located at Somatane Phata along the busy Expressway corridor, giving businesses the prime location edge they require.",
@@ -389,10 +391,10 @@ export const seedProperties: Property[] = [
     type: "Commercial",
     bhk: 0,
     price: 20,
-    priceFormatted: "₹20 Lac*",
+    priceFormatted: "₹15.38 Lacs*",
     area: "1,038 sqft",
     locality: "Kanhe Phata",
-    city: "kanhe Phata",
+    city: "Kanhe Phata",
     status: "Under Construction",
     postedBy: "Builder",
     isProject: true,
@@ -416,17 +418,17 @@ export const seedProperties: Property[] = [
     type: "Commercial",
     bhk: 0,
     price: 12,
-    priceFormatted: "₹12 Lac*",
+    priceFormatted: "Price on Request",
     area: "435 sqft",
     locality: "Varale",
-    city: "Varale",
+    city: "Talegaon",
     status: "Under Construction",
     postedBy: "Builder",
     isProject: true,
-    img: "/Images/Projects/Pratham.avif",
+    img: "/Images/Projects/pratham.jpeg",
     images: [
-      "/Images/Projects/Pratham.avif",
-      "/Images/Projects/Joytown.avif"
+      "/Images/Projects/pratham.jpeg",
+      // "/Images/Projects/pratham2.jpeg"
     ],
     photosCount: 2,
     description: "Codename Pratham provides smart-sized, high-yielding commercial NA plots located in the Varale industrial and logistics belt near Pune, perfect for office fronts and small business warehouses.",
@@ -443,17 +445,17 @@ export const seedProperties: Property[] = [
     type: "Plot",
     bhk: 0,
     price: 38,
-    priceFormatted: "₹38 Lac*",
+    priceFormatted: "₹19 Lac*",
     area: "1,886 sqft",
     locality: "Dhamane",
-    city: "Dhamane",
+    city: "Chakan / Talegaon MIDC",
     status: "Under Construction",
     postedBy: "Builder",
     isProject: true,
-    img: "/Images/Projects/joy estate banner.avif",
+    img: "/Images/Projects/joyestate.jpeg",
     images: [
-      "/Images/Projects/joy estate banner.avif",
-      "/Images/Projects/Aangan 18.avif"
+      "/Images/Projects/joyestate.jpeg",
+      // "/Images/Projects/Aangan 18.avif"
     ],
     photosCount: 2,
     description: "Codename Joy Estate offers beautifully structured, premium residential NA plots in Dhamane, Pune. Nestled in tranquil landscapes, this gated retreat includes modular roads, recreation gardens, and underground cable connections.",
@@ -470,10 +472,10 @@ export const seedProperties: Property[] = [
     type: "Commercial",
     bhk: 0,
     price: 24,
-    priceFormatted: "₹24 Lac*",
+    priceFormatted: "₹26 Lac*",
     area: "1,161 sqft",
     locality: "Khadkale",
-    city: "Lonvala",
+    city: "Kamshet",
     status: "Under Construction",
     postedBy: "Builder",
     isProject: true,
@@ -497,17 +499,17 @@ export const seedProperties: Property[] = [
     type: "Plot",
     bhk: 0,
     price: 26,
-    priceFormatted: "₹26 Lac*",
+    priceFormatted: "₹39 Lac*",
     area: "1,248 sqft",
     locality: "Kanhe Phata",
-    city: "kanhe Phata",
+    city: "Kanhe Phata",
     status: "Under Construction",
     postedBy: "Builder",
     isProject: true,
-    img: "/Images/Projects/Mountville.avif",
+    img: "/Images/Projects/mountville.jpeg",
     images: [
-      "/Images/Projects/Mountville.avif",
-      "/Images/Projects/CAMBRIDGE COUNTY.avif"
+      "/Images/Projects/mountville.jpeg",
+      // "/Images/Projects/CAMBRIDGE COUNTY.avif"
     ],
     photosCount: 2,
     description: "Mountville offers pristine valley-facing residential NA plots at Kanhe Phata, designed for scenic weekend villas and luxurious hill retreats under secure gated parameters.",
@@ -524,10 +526,10 @@ export const seedProperties: Property[] = [
     type: "Commercial",
     bhk: 0,
     price: 40,
-    priceFormatted: "₹40 Lac*",
+    priceFormatted: "₹1,499/sq.ft.",
     area: "1,800 sqft",
     locality: "Takve, Kanhe Phata",
-    city: "Takwe",
+    city: "Kanhe Phata",
     status: "Under Construction",
     postedBy: "Builder",
     isProject: true,
@@ -551,7 +553,7 @@ export const seedProperties: Property[] = [
     type: "Commercial",
     bhk: 0,
     price: 39,
-    priceFormatted: "₹39 Lac*",
+    priceFormatted: "Price on Request",
     area: "1,800 sqft",
     locality: "Ghotawade",
     city: "Ghotawade",
@@ -564,7 +566,7 @@ export const seedProperties: Property[] = [
       "/Images/Projects/tatasthu_banner.avif"
     ],
     photosCount: 2,
-    description: "Eco Town is a commercial plotting development with sustainable architecture in Ghotawade near Hinjewadi, incorporating eco-friendly infrastructure and modern commercial workspaces.",
+    description: "Eco Town is a commercial plotting development with sustainable architecture in Ghotawade near Hinjawadi, incorporating eco-friendly infrastructure and modern commercial workspaces.",
     facing: "North-East",
     amenities: ["Eco-Friendly Gated", "Water Connection", "Underground Cabling", "Internal Asphalt Roads", "Street Lights"],
     postedDate: "3 days ago",
@@ -580,17 +582,17 @@ export const seedProperties: Property[] = [
     type: "Plot",
     bhk: 0,
     price: 29,
-    priceFormatted: "₹29 Lac*",
+    priceFormatted: "₹1.89 Cr*",
     area: "1,800 sqft",
     locality: "Maan",
-    city: "Hinjewadi",
+    city: "Hinjawadi",
     status: "Under Construction",
     postedBy: "Builder",
     isProject: true,
-    img: "/Images/Projects/Aangan 18.avif",
+    img: "/Images/Projects/18angan.jpeg",
     images: [
-      "/Images/Projects/Aangan 18.avif",
-      "/Images/Projects/24K PREMIUM ASSETS.avif"
+      "/Images/Projects/18angan.jpeg",
+      // "/Images/Projects/24K PREMIUM ASSETS.avif"
     ],
     photosCount: 2,
     description: "Aangan 18 is a highly-anticipated, upcoming premium residential plotting project in Maan, Pune. Spanning over pristine landscape near the Hinjawadi IT Hub, it features high-specification residential plotting developments under a secure gated network.",
@@ -604,20 +606,20 @@ export const seedProperties: Property[] = [
     title: "Beyond Bliss Lonavala - Luxury 4 BHK Waterfront Villas",
     projectName: "Beyond Bliss Lonavala",
     builderName: "Rising Spaces",
-    type: "House",
+    type: "Villa",
     bhk: 4,
     price: 250,
-    priceFormatted: "₹2.5 Cr*",
+    priceFormatted: "Price on Request",
     area: "3,200 sqft",
     locality: "Lonavala",
-    city: "Lonvala",
+    city: "Lonavala",
     status: "Under Construction",
     postedBy: "Builder",
     isProject: true,
     img: "/Images/Projects/beyond bliss lonavala.avif",
     images: [
       "/Images/Projects/beyond bliss lonavala.avif",
-      "/Images/Projects/pawna villas banner.avif"
+      // "/Images/Projects/pawna villas banner.avif"
     ],
     photosCount: 2,
     description: "Beyond Bliss Lonavala offers an ultra-exclusive upcoming luxury gated villa township nestled in the misty valleys of Lonavala. Beautifully constructed signature 4 BHK waterfront villas with private pools, sky gardens, and scenic terrace decks.",
@@ -646,15 +648,15 @@ export function getStoredProperties(): Property[] {
 export function saveProperty(property: Omit<Property, "id" | "postedDate" | "photosCount" | "img" | "images"> & { img?: string }) {
   if (typeof window === "undefined") return null;
   const stored = getStoredProperties();
-  
+
   // Set default images based on property type if none provided
   let defaultImg = "/Images/Projects/24K PREMIUM ASSETS.avif";
   let defaultImages = [defaultImg];
-  
+
   if (property.type === "Plot") {
     defaultImg = "/Images/Projects/Aangan 18.avif";
     defaultImages = [defaultImg];
-  } else if (property.type === "House") {
+  } else if (property.type === "Villa" || property.type === "Bungalow") {
     defaultImg = "/Images/Projects/beyond bliss lonavala.avif";
     defaultImages = [
       defaultImg,

@@ -28,7 +28,7 @@ interface RequirementFormProps {
 
 export default function RequirementForm({
     initialCity = "Pune",
-    initialType = "Flat",
+    initialType = "Plots",
     initialBudget = "All",
     isModal = false,
     onClose
@@ -234,9 +234,12 @@ export default function RequirementForm({
                                 onChange={(e) => setType(e.target.value)}
                                 className="w-full h-11 px-3 bg-white border border-gray-200 rounded-xl text-sm text-gray-700 font-semibold outline-none focus:border-primary transition-all cursor-pointer"
                             >
-                                <option value="Flat">Flat / Apartment</option>
-                                <option value="House">House / Villa</option>
+                                {/* <option value="Flat">Flat / Apartment</option> */}
+                                {/* <option value="House">House / Villa</option> */}
                                 <option value="Plot">Plot / Land</option>
+                                <option value="Villa">Villa</option>
+                                <option value="Bungalow">Bungalow</option>
+                                <option value="Resendential">Resendential</option>
                                 <option value="Commercial">Commercial Office/Shop</option>
                             </select>
                         </div>
@@ -325,7 +328,7 @@ export default function RequirementForm({
                     </div>
 
                     {/* BHK Type selection (flats/houses only) */}
-                    {(type === "Flat" || type === "House") && (
+                    {(type === "Villa" || type === "Bungalow") && (
                         <div>
                             <label className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">Select BHK Configuration</label>
                             <div className="flex flex-wrap gap-2">
@@ -547,7 +550,7 @@ export default function RequirementForm({
                     <div>
                         <span className="text-gray-400 block text-[10px] uppercase">Property Type</span>
                         <span className="text-gray-700 font-bold text-sm">
-                            {(type === "Flat" || type === "House") && bhk.length > 0 ? `${bhk.sort().join(", ")} BHK ` : ""}
+                            {(type === "Villa" || type === "Bungalow") && bhk.length > 0 ? `${bhk.sort().join(", ")} BHK ` : ""}
                             {type}
                         </span>
                     </div>

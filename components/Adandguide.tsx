@@ -97,33 +97,33 @@ Gram Panchayats do NOT have legal power to convert agricultural land to NA land.
 > NAPLOTPUNE exclusively features Collector NA / PMRDA Sanctioned plots. Projects like 24K Premium and The f Row offer fully-approved layouts with bank loan options from leading financial institutions.`
   },
   {
-    id: "blog_hinjewadi_hotspot",
-    title: "Why Maan and Marunji are the Top Plot Hotspots Near Hinjewadi",
+    id: "blog_hinjawadi_hotspot",
+    title: "Why Maan and Marunji are the Top Plot Hotspots Near Hinjawadi",
     category: "Market Trends",
     date: "May 08, 2026",
     readTime: "4 min read",
     img: "/Images/AdAndBlog/Gemini_Generated_Image_liow76liow76liow.png",
-    short: "With the Hinjewadi-Shivajinagar Metro Line and Ring Road, Hinjewadi's adjoining areas are experiencing huge land appreciation.",
-    fullContent: `### Hinjewadi's Expansion Beyond Tech Parks
-Hinjewadi employs over 400,000 tech professionals. As commercial development saturates Phase 1, 2, and 3, residential demand is spilling into Maan and Marunji.
+    short: "With the Hinjawadi-Shivajinagar Metro Line and Ring Road, Hinjawadi's adjoining areas are experiencing huge land appreciation.",
+    fullContent: `### Hinjawadi's Expansion Beyond Tech Parks
+Hinjawadi employs over 400,000 tech professionals. As commercial development saturates Phase 1, 2, and 3, residential demand is spilling into Maan and Marunji.
 
 ### Key Growth Drivers
 
 **1. Infrastructure & Connectivity**
-- **Pune Metro Line 3:** The 23-km elevated metro connecting Hinjewadi to Shivajinagar is nearing completion, with stations near Maan dramatically reducing commute times.
+- **Pune Metro Line 3:** The 23-km elevated metro connecting Hinjawadi to Shivajinagar is nearing completion, with stations near Maan dramatically reducing commute times.
 - **PMRDA Ring Road:** The 128-km Ring Road will pass through these sectors, offering direct Mumbai-Pune Expressway access.
 
 **2. Walk-To-Work Culture**
 - Maan and Marunji are just 5–10 minutes from Wipro, Infosys, Cognizant, and TCS campuses — ideal for techies tired of traffic.
 
 **3. High ROI Potential**
-- Ready apartments in Hinjewadi cost ₹7,500+ per sqft, while NA plots in Maan-Marunji are available at ₹30–40 Lacs for 1,800 sqft.
+- Ready apartments in Hinjawadi cost ₹7,500+ per sqft, while NA plots in Maan-Marunji are available at ₹30–40 Lacs for 1,800 sqft.
 - Land prices in Maan have grown 18–22% annually over the last 5 years, outpacing apartment appreciation.
 
 ### Gated Plotting vs. Standalone Land
 Standalone village land carries security and encroachment risks. Gated communities provide concrete roads, water supply, electricity, security, and clubhouse amenities.
 
-> NAPLOTPUNE's flagship projects — 24K Premium and 24K Real Assets in Maan, and 24K Solitaire Assets in Marunji — represent premier gated investments at the doorstep of Hinjewadi IT Hub.`
+> NAPLOTPUNE's flagship projects — 24K Premium and 24K Real Assets in Maan, and 24K Solitaire Assets in Marunji — represent premier gated investments at the doorstep of Hinjawadi IT Hub.`
   },
   {
     id: "blog_vogue_living",

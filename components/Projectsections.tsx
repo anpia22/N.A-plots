@@ -262,7 +262,8 @@ const newProjects = [
         bhk: "Residential NA Plots",
         price: "19 Lacs",
         marketedBy: "Rising Spaces",
-        img: "/Images/Projects/joy estate banner.avif",
+        // img: "/Images/Projects/joy estate banner.avif",
+        img: "/images/projects/joyestate.jpeg",
         externalLink: "https://codenamejoyestate.com/",
     },
     {
@@ -273,7 +274,8 @@ const newProjects = [
         bhk: "Commercial NA",
         price: "1,499/sq.ft.",
         marketedBy: "Rising Spaces",
-        img: "/Images/Projects/RedStone_Webbanner.avif",
+        // img: "/Images/Projects/RedStone_Webbanner.avif",
+        img: "/images/projects/redstoneinsta.jpg",
         externalLink: "https://www.risingspaces.in/red-stone",
     },
     {
@@ -284,7 +286,7 @@ const newProjects = [
         bhk: "Commercial NA",
         price: "Price on Request",
         marketedBy: "Rising Spaces",
-        img: "/Images/Projects/eco town.avif",
+        img: "/Images/Projects/ecotown.jpg",
         externalLink: "https://www.risingspaces.in/eco-town",
     },
     {
@@ -295,7 +297,8 @@ const newProjects = [
         bhk: "Commercial NA",
         price: "Price on Request",
         marketedBy: "Rising Spaces",
-        img: "/Images/Projects/Pratham.avif",
+        // img: "/Images/Projects/Pratham.avif",
+        img: "/Images/Projects/pratham.jpeg",
         externalLink: "https://codenamepratham.in/",
     },
     {
@@ -306,7 +309,8 @@ const newProjects = [
         bhk: "Commercial NA",
         price: "15.38 Lacs",
         marketedBy: "Rising Spaces",
-        img: "/Images/Projects/Prakriti.avif",
+        // img: "/Images/Projects/Prakriti.avif",
+        img: "/Images/Projects/prakritiinsta.jpg",
         externalLink: "https://codenameprakriti.com/",
     },
     {
@@ -317,7 +321,8 @@ const newProjects = [
         bhk: "Commercial NA",
         price: "Price on Request",
         marketedBy: "Rising Spaces",
-        img: "/Images/Projects/OwnEdge.avif",
+        // img: "/Images/Projects/OwnEdge.avif",
+        img: "/images/projects/ownedge.jpeg",
         externalLink: "https://www.risingspaces.in/own-edge",
     },
 ];
@@ -333,10 +338,10 @@ export function NewProjectCard({ project }: ProjectCardProps) {
     return (
         <div
             onClick={handleClick}
-            className="w-full group border border-gray-200 rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-shadow cursor-pointer flex items-stretch"
+            className="w-full group border border-gray-200 rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-shadow cursor-pointer grid grid-cols-2 items-stretch"
         >
             {/* Left image */}
-            <div className="w-[130px] shrink-0 overflow-hidden">
+            <div className="w-full shrink-0 overflow-hidden">
                 <img
                     src={project.img}
                     alt={project.name}
@@ -413,7 +418,7 @@ export function NewProjectGallery() {
                 <div className="md:hidden block">
                     <div ref={containerRef} className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide snap-x snap-mandatory scroll-smooth">
                         {newProjects.map((p) => (
-                            <div key={p.id} className="w-[290px] min-w-[290px] max-w-[290px] shrink-0 snap-start">
+                            <div key={p.id} className="w-[355px] min-w-[355px] max-w-[355px] shrink-0 snap-start">
                                 <NewProjectCard project={p} />
                             </div>
                         ))}

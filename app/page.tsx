@@ -2,9 +2,9 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import PropertyCategories from "@/components/Propertycategories";
 import PopularOwnerProperties from "@/components/Popularownerproperties";
-import Mbpreferredagents from "@/components/Mbpreferredagents";
-import MagicHomes from "@/components/Magichomes";
-import MagicSection from "@/components/MagicSection";
+import PreferredAgents from "@/components/Preferredagents";
+import NAPlotsExplorer from "@/components/Naplotsexplorer";
+import NAPlotsFeatures from "@/components/NAPlotsFeatures";
 import Propworth from "@/components/Propworth";
 import Explorelocalities from "@/components/Explorelocalities";
 import Exclusiveandadvice from "@/components/Exclusiveandadvice";
@@ -20,10 +20,10 @@ export default function Home() {
       <Hero />
       <PropertyCategories />
       <PopularOwnerProperties />
-      {/* <Mbpreferredagents /> */}
-      <MagicHomes />
+      {/* <PreferredAgents /> */}
+      <NAPlotsExplorer />
       <Projectsections />
-      <MagicSection />
+      <NAPlotsFeatures />
       <Propworth />
       <Explorelocalities />
       <Exclusiveandadvice />

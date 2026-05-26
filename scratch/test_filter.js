@@ -69,7 +69,7 @@ const properties = [ongoing_tathastu, upcoming_aangan_18];
 // Initial states as defined in page.tsx for Hinjawadi
 const selectedCity = "Hinjawadi";
 const searchQuery = "";
-const filterTypes = ["Plot", "Villa", "Bungalow", "Resendential", "Commercial"];
+const filterTypes = ["Plot", "Villa", "Bungalow", "Residential", "Commercial"];
 const filterBhk = ["Studio", "1", "2", "3", "4", "4+", "Office"];
 const maxBudget = 1000;
 const filterStatus = "All";
@@ -110,7 +110,7 @@ const filtered = properties.filter(p => {
 
   // 3. Property Type Checklist Filter
   const matchesType = filterTypes.includes(p.type) ||
-    (filterTypes.includes("Resendential") && ["Plot", "Villa", "Bungalow", "Resendential"].includes(p.type));
+    (filterTypes.includes("Residential") && ["Plot", "Villa", "Bungalow", "Residential"].includes(p.type));
   if (!matchesType) {
     console.log(`Type filter failed for ${p.id}. p.type: ${p.type}`);
     return false;
@@ -122,7 +122,7 @@ const filtered = properties.filter(p => {
       console.log(`BHK filter failed for commercial ${p.id}`);
       return false;
     }
-  } else if (p.type === "Villa" || p.type === "Bungalow" || p.type === "Resendential") {
+  } else if (p.type === "Villa" || p.type === "Bungalow" || p.type === "Residential") {
     const matches =
       (p.bhk === 0 && filterBhk.includes("Studio")) ||
       (p.bhk === 1 && filterBhk.includes("1")) ||

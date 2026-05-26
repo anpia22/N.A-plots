@@ -32,6 +32,21 @@ import {
   Info,
   Sparkles
 } from "lucide-react";
+
+const locations = [
+  "Pune",
+  "Chakan/Talegaon MIDC",
+  "Ghotawade",
+  "Hinjewadi",
+  "Kamshet",
+  "Kanhe Phata",
+  "Lonavala",
+  "Pawna",
+  "Pund/Mulshi",
+  "Talegaon",
+  "Other"
+];
+
 function mapQueryTypeToFilterTypes(type: string): { filterTypes: string[], selectedType: string } {
   const t = type.toLowerCase();
   if (t === "villa" || t === "villas") {
@@ -49,10 +64,10 @@ function mapQueryTypeToFilterTypes(type: string): { filterTypes: string[], selec
   if (t === "commercial") {
     return { filterTypes: ["Commercial"], selectedType: "Commercial" };
   }
-  if (t === "residential" || t === "resendential") {
-    return { filterTypes: ["Plot", "Villa", "Bungalow", "Resendential"], selectedType: "Resendential" };
+  if (t === "residential") {
+    return { filterTypes: ["Plot", "Villa", "Bungalow", "Residential"], selectedType: "Residential" };
   }
-  return { filterTypes: ["Plot", "Villa", "Bungalow", "Resendential", "Commercial"], selectedType: "All" };
+  return { filterTypes: ["Plot", "Villa", "Bungalow", "Residential", "Commercial"], selectedType: "All" };
 }
 
 function SearchResultsContent({ localityOverride, typeOverride }: { localityOverride?: string; typeOverride?: string }) {
@@ -149,8 +164,58 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
   const [leadName, setLeadName] = useState("");
   const [leadPhone, setLeadPhone] = useState("");
   const [leadEmail, setLeadEmail] = useState("");
+  const [leadPropertyType, setLeadPropertyType] = useState("");
+  const [leadLocation, setLeadLocation] = useState("");
   const [leadMessage, setLeadMessage] = useState("");
   const [leadSubmitted, setLeadSubmitted] = useState(false);
+
+  // Auto-fill property type and location when contactProperty modal is opened
+  useEffect(() => {
+    if (contactProperty) {
+      // Map Property Type
+      let mappedType = "";
+      if (contactProperty.type) {
+        const t = contactProperty.type;
+        if (t === "Plot") {
+          mappedType = "NA-Plots/Land";
+        } else if (t === "Residential") {
+          mappedType = "Residential";
+        } else if (t === "Commercial") {
+          mappedType = "Commercial Shop/Office";
+        } else if (t === "Villa" || t === "Bungalow") {
+          mappedType = "Banglow/Villa";
+        }
+      }
+      setLeadPropertyType(mappedType);
+
+      // Map Location
+      let mappedLoc = "Other";
+      const locAndCity = `${contactProperty.locality || ""} ${contactProperty.city || ""}`.toLowerCase();
+
+      if (locAndCity.includes("pune")) {
+        mappedLoc = "Pune";
+      } else if (locAndCity.includes("chakan") || locAndCity.includes("talegaon midc") || locAndCity.includes("talegaon / chakan")) {
+        mappedLoc = "Chakan/Talegaon MIDC";
+      } else if (locAndCity.includes("ghotawade")) {
+        mappedLoc = "Ghotawade";
+      } else if (locAndCity.includes("hinjewadi") || locAndCity.includes("hinjawadi")) {
+        mappedLoc = "Hinjewadi";
+      } else if (locAndCity.includes("kamshet")) {
+        mappedLoc = "Kamshet";
+      } else if (locAndCity.includes("kanhe")) {
+        mappedLoc = "Kanhe Phata";
+      } else if (locAndCity.includes("lonavala")) {
+        mappedLoc = "Lonavala";
+      } else if (locAndCity.includes("pawna")) {
+        mappedLoc = "Pawna";
+      } else if (locAndCity.includes("mulshi") || locAndCity.includes("paud") || locAndCity.includes("pund")) {
+        mappedLoc = "Pund/Mulshi";
+      } else if (locAndCity.includes("talegaon") || locAndCity.includes("varale") || locAndCity.includes("somatane")) {
+        mappedLoc = "Talegaon";
+      }
+      setLeadLocation(mappedLoc);
+    }
+  }, [contactProperty]);
 
   // Detect mobile viewport for imagemobile swap
   const [isMobile, setIsMobile] = useState(false);
@@ -214,7 +279,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
     "Plot": "plots",
     "Villa": "villas",
     "Bungalow": "bungalow",
-    "Resendential": "resendential",
+    "Residential": "residential",
     "Commercial": "commercial",
   };
 
@@ -319,23 +384,63 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
   };
 
   // Submit Contact Lead Form
-  const handleLeadSubmit = (e: React.FormEvent) => {
+  const [isLeadSubmitting, setIsLeadSubmitting] = useState(false);
+  const [leadSubmitError, setLeadSubmitError] = useState("");
+
+  const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!leadName || !leadPhone || !leadEmail) {
+    if (!leadName || !leadPhone || !leadEmail || !leadPropertyType || !leadLocation) {
       showPopup("Please fill in all required fields.", "warning", "Validation Error");
       return;
     }
-    setLeadSubmitted(true);
-    setTimeout(() => {
+
+    setIsLeadSubmitting(true);
+    setLeadSubmitError("");
+
+    const formData = {
+      full_name: leadName,
+      mobile_number: leadPhone,
+      email_address: leadEmail,
+      property_type: leadPropertyType,
+      location: leadLocation,
+      message: leadMessage
+    };
+
+    try {
+      const response = await fetch("https://api.risingspaces.in/api/forms/forms/6a158501fbaedc3f5f68b738/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ data: formData })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to submit lead");
+      }
+
+      setLeadSubmitted(true);
+
       // Clear lead capture state and close modal
-      setLeadSubmitted(false);
-      setLeadName("");
-      setLeadPhone("");
-      setLeadEmail("");
-      setLeadMessage("");
-      setContactProperty(null);
-      showPopup("Thank you! The property advertiser will contact you shortly.", "success", "Request Sent");
-    }, 1500);
+      setTimeout(() => {
+        setLeadSubmitted(false);
+        setLeadName("");
+        setLeadPhone("");
+        setLeadEmail("");
+        setLeadPropertyType("");
+        setLeadLocation("");
+        setLeadMessage("");
+        setContactProperty(null);
+        showPopup("Thank you! The property advertiser will contact you shortly.", "success", "Request Sent");
+      }, 2000);
+    } catch (error: any) {
+      console.error("Error submitting lead:", error);
+      setLeadSubmitError(error.message || "Failed to send inquiry. Please try again.");
+      showPopup(error.message || "Failed to send inquiry. Please try again.", "error", "Submission Error");
+    } finally {
+      setIsLeadSubmitting(false);
+    }
   };
 
   // Filtering Logic
@@ -366,7 +471,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
 
     // 3. Property Type Checklist Filter
     const matchesType = filterTypes.includes(p.type) ||
-      (filterTypes.includes("Resendential") && ["Plot", "Villa", "Bungalow", "Resendential"].includes(p.type));
+      (filterTypes.includes("Residential") && ["Plot", "Villa", "Bungalow", "Residential"].includes(p.type));
     if (!matchesType) {
       return false;
     }
@@ -374,7 +479,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
     // 4. BHK / Config Filter
     if (p.type === "Commercial") {
       if (!filterBhk.includes("Office")) return false;
-    } else if (p.type === "Villa" || p.type === "Bungalow" || p.type === "Resendential") {
+    } else if (p.type === "Villa" || p.type === "Bungalow" || p.type === "Residential") {
       const matches =
         (p.bhk === 0 && filterBhk.includes("Studio")) ||
         (p.bhk === 1 && filterBhk.includes("1")) ||
@@ -510,7 +615,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                   <option value="Plot">Plot</option>
                   <option value="Villa">Villa</option>
                   <option value="Bungalow">Bungalow</option>
-                  <option value="Resendential">Resendential</option>
+                  <option value="Residential">Residential</option>
                   <option value="Commercial">Commercial</option>
                 </select>
                 <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
@@ -563,7 +668,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
               </h3>
               <button
                 onClick={() => {
-                  setFilterTypes(["Plot", "Villa", "Bungalow", "Resendential", "Commercial"]);
+                  setFilterTypes(["Plot", "Villa", "Bungalow", "Residential", "Commercial"]);
                   setFilterBhk(["Studio", "1", "2", "3", "4", "4+", "Office"]);
                   setMaxBudget(1000);
                   setFilterStatus("All");
@@ -582,7 +687,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
             <div className="mb-6">
               <h4 className="font-bold text-[#333] text-xs uppercase tracking-wide mb-3">Property Type</h4>
               <div className="space-y-2">
-                {["Plot", "Villa", "Bungalow", "Resendential", "Commercial"].map((t) => (
+                {["Plot", "Villa", "Bungalow", "Residential", "Commercial"].map((t) => (
                   <label key={t} className="flex items-center gap-2.5 text-sm text-gray-600 hover:text-gray-800 cursor-pointer">
                     <input
                       type="checkbox"
@@ -705,7 +810,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
 
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 pb-3 mb-3 w-full min-w-0">
 
-                {/* Custom MagicBricks Category Tabs */}
+                {/* Custom Category Tabs */}
                 <div className="flex items-center gap-1 md:gap-2 bg-gray-50 p-1 rounded-3xl w-full md:w-fit overflow-x-auto scrollbar-hide">
                   {[
                     { id: "All", label: "All Results" },
@@ -938,14 +1043,14 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                                   setDetailProperty(p);
                                 }
                               }}
-                              className="h-9 px-3 sm:px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-3xl text-xs font-bold transition-all border border-gray-200 flex items-center justify-center whitespace-nowrap"
+                              className="h-9 px-3 sm:px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-3xl text-xs font-bold transition-all border border-gray-200 flex items-center justify-center whitespace-nowrap cursor-pointer"
                             >
                               <Maximize2 size={12} className="mr-1" />
                               View Project
                             </button>
                             <button
                               onClick={() => setContactProperty(p)}
-                              className="h-9 px-3 sm:px-5 bg-primary hover:bg-primary-dark text-white rounded-3xl text-xs font-bold transition-all flex items-center justify-center shadow-sm hover:shadow active:scale-95 whitespace-nowrap"
+                              className="h-9 px-3 sm:px-5 bg-primary hover:bg-primary-dark text-white rounded-3xl text-xs font-bold transition-all flex items-center justify-center shadow-sm hover:shadow active:scale-95 whitespace-nowrap cursor-pointer"
                             >
                               <Phone size={12} className="mr-1" />
                               Contact {p.postedBy === "Builder" ? "Builder" : "Owner"}
@@ -972,7 +1077,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                     <div className="flex justify-center gap-3">
                       <button
                         onClick={() => {
-                          setFilterTypes(["Plot", "Villa", "Bungalow", "Resendential", "Commercial"]);
+                          setFilterTypes(["Plot", "Villa", "Bungalow", "Residential", "Commercial"]);
                           setFilterBhk(["Studio", "1", "2", "3", "4", "4+", "Office"]);
                           setMaxBudget(1000);
                           setFilterStatus("All");
@@ -1029,14 +1134,14 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
       {contactProperty && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setContactProperty(null)}>
           <div
-            className="bg-white rounded-3xl w-full max-w-[480px] shadow-2xl overflow-hidden relative border border-gray-100 animate-in fade-in zoom-in-95 duration-200"
+            className="bg-white rounded-3xl w-full max-w-[480px]  h-[95vh] shadow-2xl overflow-y-scroll scrollbar-hide relative border border-gray-100 animate-in fade-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header branding */}
             <div className="bg-primary text-white p-5 relative">
               <button
                 onClick={() => setContactProperty(null)}
-                className="absolute right-4 top-4 text-white/80 hover:text-white transition-colors"
+                className="absolute right-4 top-4 text-white/80 hover:text-white transition-colors cursor-pointer"
               >
                 <X size={20} />
               </button>
@@ -1044,7 +1149,8 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                 LEAD INQUIRY FORM
               </span>
               <h3 className="font-extrabold text-lg mt-2 mb-1 leading-snug">
-                Contact {contactProperty.postedBy === "Builder" ? "Builder" : "Owner"}
+                {/* Contact {contactProperty.postedBy === "Builder" ? "Builder" : "Owner"} */}
+                Contact
               </h3>
               <p className="text-white/80 text-xs leading-relaxed truncate">
                 For: {contactProperty.bhk > 0 ? `${contactProperty.bhk} BHK ` : ""}{contactProperty.type} at {contactProperty.projectName}
@@ -1122,6 +1228,58 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                       </div>
                     </div>
 
+                    {/* Property Type */}
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wide mb-1.5">
+                        Property Type <span className="text-primary">*</span>
+                      </label>
+                      <div className="relative">
+                        <Home size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <select
+                          name="propertyType"
+                          id="propertyType"
+                          value={leadPropertyType}
+                          onChange={(e) => setLeadPropertyType(e.target.value)}
+                          required
+                          className="w-full h-11 pl-10 pr-4 border border-gray-300 rounded-lg text-sm text-[#333] placeholder-gray-400 outline-none focus:border-primary"
+                        >
+                          <option value="" disabled>Select Property Type</option>
+                          <option value="NA-Plots/Land">NA-Plots/Land</option>
+                          <option value="Residential">Residential</option>
+                          <option value="Commercial Shop/Office">Commercial Shop/Office</option>
+                          <option value="Banglow/Villa">Banglow/Villa</option>
+                          <option value="Row House">Row House</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* Location */}
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wide mb-1.5">
+                        Location <span className="text-primary">*</span>
+                      </label>
+                      <div className="relative">
+                        <MapPin size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <select
+                          name="location"
+                          id="location"
+                          value={leadLocation}
+                          onChange={(e) => setLeadLocation(e.target.value)}
+                          required
+                          className="w-full h-11 pl-10 pr-4 border border-gray-300 rounded-lg text-sm text-[#333] placeholder-gray-400 outline-none focus:border-primary"
+                        >
+                          <option value="" disabled>
+                            Select Location
+                          </option>
+                          {locations.map((location) => (
+                            <option key={location} value={location}>
+                              {location}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+
                     {/* Custom Message */}
                     <div>
                       <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wide mb-1.5">
@@ -1137,13 +1295,43 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                     </div>
                   </div>
 
+                  {/* consern box */}
+                  <div className="mt-4 flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      required
+                      className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary cursor-pointer"
+                    />
+                    <span className="text-gray-500 text-xs ml-2 cursor-pointer inline">I agree to the <Link href="/terms-and-conditions" className="underline hover:text-primary font-semibold">terms and conditions</Link> and <Link href="/privacy-policy" className="underline hover:text-primary font-semibold">privacy policy</Link>.</span>
+                  </div>
+
+                  {leadSubmitError && (
+                    <div className="bg-rose-50 border border-rose-100 rounded-xl p-3 text-xs text-rose-600 font-semibold flex items-center gap-2 mt-4">
+                      <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
+                      {leadSubmitError}
+                    </div>
+                  )}
+
                   {/* Submit button */}
                   <button
                     type="submit"
-                    className="w-full h-12 bg-primary hover:bg-primary-dark text-white rounded-lg font-bold text-sm transition-all mt-6 shadow-sm hover:shadow flex items-center justify-center gap-2"
+                    disabled={isLeadSubmitting}
+                    className="w-full h-12 bg-primary hover:bg-primary-dark disabled:bg-primary/50 text-white rounded-lg font-bold text-sm transition-all mt-6 shadow-sm hover:shadow flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <Mail size={16} />
-                    Send Inquiry Details
+                    {isLeadSubmitting ? (
+                      <>
+                        <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Sending Inquiry...
+                      </>
+                    ) : (
+                      <>
+                        <Mail size={16} />
+                        Send Inquiry Details
+                      </>
+                    )}
                   </button>
 
                   <p className="text-[10px] text-gray-400 text-center mt-3.5 leading-relaxed">
@@ -1367,7 +1555,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
               <div className="mb-6">
                 <h4 className="font-bold text-[#333] text-xs uppercase tracking-wide mb-3">Property Type</h4>
                 <div className="space-y-2">
-                  {["Plot", "Villa", "Bungalow", "Resendential", "Commercial"].map((t) => (
+                  {["Plot", "Villa", "Bungalow", "Residential", "Commercial"].map((t) => (
                     <label key={t} className="flex items-center gap-2.5 text-sm text-gray-600 hover:text-gray-800 cursor-pointer">
                       <input
                         type="checkbox"
@@ -1487,7 +1675,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
               <button
                 type="button"
                 onClick={() => {
-                  setFilterTypes(["Plot", "Villa", "Bungalow", "Resendential", "Commercial"]);
+                  setFilterTypes(["Plot", "Villa", "Bungalow", "Residential", "Commercial"]);
                   setFilterBhk(["Studio", "1", "2", "3", "4", "4+", "Office"]);
                   setMaxBudget(1000);
                   setFilterStatus("All");

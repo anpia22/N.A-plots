@@ -162,6 +162,8 @@ const socials = [
 
 // ─── Link Helper ──────────────────────────────────────────────────────────────
 const getLinkHref = (heading: string, linkText: string) => {
+    const slugify = (str: string) => str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
     // 1. Static links in "Company"
     if (heading === "Company") {
         const text = linkText.trim().toLowerCase();
@@ -176,7 +178,7 @@ const getLinkHref = (heading: string, linkText: string) => {
         let prefix = "property";
         if (text.includes("villa")) prefix = "villas";
         else if (text.includes("bungalow")) prefix = "bungalow";
-        else if (text.includes("residential")) prefix = "resendential";
+        else if (text.includes("residential")) prefix = "residential";
         else if (text.includes("commercial")) prefix = "commercial";
         else if (text.includes("plot")) prefix = "plots";
         return `/${prefix}-in-pune`;
@@ -184,6 +186,17 @@ const getLinkHref = (heading: string, linkText: string) => {
 
     // 3. Top Projects
     if (heading === "Top Projects") {
+        const text = linkText.trim();
+        if (text === "The f Row") return "https://thefrow.in/";
+        if (text === "Codename Tathastu") return "https://codenametathastu.com/";
+        if (text === "The Pawna Villas") return "https://thepawnavillas.com/";
+        if (text === "Codename OWNEDGE") return "https://www.risingspaces.in/own-edge";
+        if (text === "Codename Prakriti") return "https://codenameprakriti.com/";
+        if (text === "Codename Joy Estate") return "https://codenamejoyestate.com/";
+        if (text === "Mountville") return "https://www.risingspaces.in/mountville";
+        if (text === "Red Stone") return "https://www.risingspaces.in/red-stone";
+        if (text === "Eco Town") return "https://www.risingspaces.in/eco-town";
+        if (text === "Aangan 18") return "https://www.risingspaces.in/18-aangan";
         return `/search?query=${encodeURIComponent(linkText)}`;
     }
 
@@ -191,7 +204,7 @@ const getLinkHref = (heading: string, linkText: string) => {
     if (heading === "Properties in Pune" || heading === "Locality Guides") {
         let city = linkText.split(" in ")[1] || linkText.split(",")[0];
         if (!city) city = linkText;
-        const citySlug = city.trim().toLowerCase().replace(/\s+/g, '-');
+        const citySlug = slugify(city);
         return `/property-in-${citySlug}`;
     }
 
@@ -203,11 +216,11 @@ const getLinkHref = (heading: string, linkText: string) => {
             let prefix = "property";
             if (typeStr.includes("villa")) prefix = "villas";
             else if (typeStr.includes("bungalow")) prefix = "bungalow";
-            else if (typeStr.includes("residential")) prefix = "resendential";
+            else if (typeStr.includes("residential")) prefix = "residential";
             else if (typeStr.includes("commercial")) prefix = "commercial";
             else if (typeStr.includes("plot")) prefix = "plots";
 
-            const citySlug = parts[1].trim().toLowerCase().replace(/\s+/g, '-');
+            const citySlug = slugify(parts[1]);
             return `/${prefix}-in-${citySlug}`;
         }
     }
@@ -255,16 +268,22 @@ export default function Footer() {
                                 {col.heading}
                             </h4>
                             <ul className="flex flex-col gap-2">
-                                {col.links.map((link) => (
-                                    <li key={link}>
-                                        <Link
-                                            href={getLinkHref(col.heading, link)}
-                                            className="text-[#555] text-xs hover:text-primary transition-colors leading-relaxed"
-                                        >
-                                            {link}
-                                        </Link>
-                                    </li>
-                                ))}
+                                {col.links.map((link) => {
+                                    const href = getLinkHref(col.heading, link);
+                                    const isExternal = href.startsWith("http");
+                                    return (
+                                        <li key={link}>
+                                            <Link
+                                                href={href}
+                                                target={isExternal ? "_blank" : undefined}
+                                                rel={isExternal ? "noopener noreferrer" : undefined}
+                                                className="text-[#555] text-xs hover:text-primary transition-colors leading-relaxed"
+                                            >
+                                                {link}
+                                            </Link>
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         </div>
                     ))}
@@ -281,16 +300,22 @@ export default function Footer() {
                                     {section.title}
                                 </h4>
                                 <ul className="flex flex-col gap-2">
-                                    {section.links.map((item) => (
-                                        <li key={item}>
-                                            <Link
-                                                href={getLinkHref(section.title, item)}
-                                                className="text-[#555] text-xs hover:text-primary transition-colors leading-relaxed"
-                                            >
-                                                {item}
-                                            </Link>
-                                        </li>
-                                    ))}
+                                    {section.links.map((item) => {
+                                        const href = getLinkHref(section.title, item);
+                                        const isExternal = href.startsWith("http");
+                                        return (
+                                            <li key={item}>
+                                                <Link
+                                                    href={href}
+                                                    target={isExternal ? "_blank" : undefined}
+                                                    rel={isExternal ? "noopener noreferrer" : undefined}
+                                                    className="text-[#555] text-xs hover:text-primary transition-colors leading-relaxed"
+                                                >
+                                                    {item}
+                                                </Link>
+                                            </li>
+                                        );
+                                    })}
                                 </ul>
                             </div>
                         ))}
@@ -323,10 +348,10 @@ export default function Footer() {
             <div className="border-t border-gray-100 bg-[#f5f5f5]">
                 <div className="max-w-[1200px] mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-2">
                     <p className="text-[#888] text-xs text-center md:text-left">
-                        © 2025 Rising Spaces. All Rights Reserved.
+                        © 2026 NA Plot Pune. All Rights Reserved.
                     </p>
                     <div className="flex items-center gap-4">
-                        {["Privacy Policy", "Terms of Use", "Grievance Redressal"].map((item) => (
+                        {["Privacy Policy", "Terms of Use"].map((item) => (
                             <Link key={item} href={getLinkHref("Company", item)} className="text-[#888] text-xs hover:text-primary transition-colors">
                                 {item}
                             </Link>

@@ -1,7 +1,7 @@
 export interface Property {
   id: string | number;
   title: string;
-  type: "Plot" | "Commercial" | "Villa" | "Bungalow" | "Resendential";
+  type: "Plot" | "Commercial" | "Villa" | "Bungalow" | "Residential";
   bhk: number; // 0 for plot/commercial
   price: number; // in Lakhs (e.g. 85 for 85 Lac, 250 for 2.5 Cr)
   priceFormatted: string; // e.g. "₹85 Lac", "₹2.5 Cr"
@@ -284,7 +284,7 @@ export const seedProperties: Property[] = [
     type: "Plot",
     bhk: 0,
     price: 35,
-    priceFormatted: "Price on Request",
+    priceFormatted: "75 Lacs*",
     area: "1,800 sqft",
     locality: "Paud / Mulshi",
     city: "Paud",
@@ -311,7 +311,7 @@ export const seedProperties: Property[] = [
     type: "Commercial",
     bhk: 0,
     price: 45,
-    priceFormatted: "₹75 Lac*",
+    priceFormatted: "₹83 Lacs*",
     area: "1,886 sqft",
     locality: "Ghotawade",
     city: "Hinjawadi",
@@ -367,7 +367,7 @@ export const seedProperties: Property[] = [
     type: "Commercial",
     bhk: 0,
     price: 25,
-    priceFormatted: "Price on Request",
+    priceFormatted: "60 Lacs*",
     area: "1,838 sqft",
     locality: "Somatane",
     city: "Somatane Phata",
@@ -395,7 +395,7 @@ export const seedProperties: Property[] = [
     type: "Commercial",
     bhk: 0,
     price: 20,
-    priceFormatted: "₹15.38 Lacs*",
+    priceFormatted: "₹19.50 Lacs*",
     area: "1,038 sqft",
     locality: "Kanhe Phata",
     city: "Kanhe Phata",
@@ -419,10 +419,10 @@ export const seedProperties: Property[] = [
     title: "Codename Pratham - Compact Commercial NA Plots in Varale",
     projectName: "Codename Pratham",
     builderName: "Rising Spaces",
-    type: "Commercial",
+    type: "Residential",
     bhk: 0,
     price: 12,
-    priceFormatted: "Price on Request",
+    priceFormatted: "42 Lacs*",
     area: "435 sqft",
     locality: "Varale",
     city: "Talegaon",
@@ -477,7 +477,7 @@ export const seedProperties: Property[] = [
     bhk: 0,
     price: 24,
     priceFormatted: "₹26 Lac*",
-    area: "1,161 sqft",
+    area: "2000 sqft*",
     locality: "Khadkale",
     city: "Kamshet",
     status: "Under Construction",
@@ -557,7 +557,7 @@ export const seedProperties: Property[] = [
     type: "Commercial",
     bhk: 0,
     price: 39,
-    priceFormatted: "Price on Request",
+    priceFormatted: "56.34 Lacs*",
     area: "1,800 sqft",
     locality: "Ghotawade",
     city: "Ghotawade",
@@ -639,7 +639,7 @@ export const seedProperties: Property[] = [
 // Helper functions for Local Storage interaction
 export function getStoredProperties(): Property[] {
   if (typeof window === "undefined") return [];
-  const stored = localStorage.getItem("magic_homes_properties");
+  const stored = localStorage.getItem("na_plots_properties");
   if (!stored) return [];
   try {
     return JSON.parse(stored);
@@ -691,7 +691,7 @@ export function saveProperty(property: Omit<Property, "id" | "postedDate" | "pho
   };
 
   stored.unshift(newProperty);
-  localStorage.setItem("magic_homes_properties", JSON.stringify(stored));
+  localStorage.setItem("na_plots_properties", JSON.stringify(stored));
   return newProperty;
 }
 

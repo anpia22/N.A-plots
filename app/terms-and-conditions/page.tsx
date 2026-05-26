@@ -174,7 +174,7 @@ export default function TermsAndConditionsPage() {
                 3. Property Listings Guidelines
               </h2>
               <p className="text-sm sm:text-base leading-relaxed">
-                If you list a property (Plot, Villa, Bungalow, Resendential, Commercial) on the Platform, you must adhere to the following rules:
+                If you list a property (Plot, Villa, Bungalow, Residential, Commercial) on the Platform, you must adhere to the following rules:
               </p>
               <ul className="list-disc pl-5 text-sm space-y-2 leading-relaxed">
                 <li><strong>Ownership and Rights:</strong> You must own the listed property or possess explicit written authorization from the owner/builder to publish the listing.</li>

@@ -31,7 +31,7 @@ const prefixToTypeMap: Record<string, string> = {
   "plots-in-": "Plot",
   "villas-in-": "Villa",
   "bungalow-in-": "Bungalow",
-  "resendential-in-": "Resendential",
+  "residential-in-": "Residential",
   "commercial-in-": "Commercial",
 };
 
@@ -74,7 +74,7 @@ export async function generateMetadata(props: { params: Params }): Promise<Metad
       parsed.type === "Plot" ? "NA Plots" :
         parsed.type === "Villa" ? "Villas" :
           parsed.type === "Bungalow" ? "Bungalows" :
-            parsed.type === "Resendential" ? "Residential Properties" :
+            parsed.type === "Residential" ? "Residential Properties" :
               parsed.type === "Commercial" ? "Commercial Properties" :
                 "Properties";
 

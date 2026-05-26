@@ -9,7 +9,7 @@ const properties = [
     {
         id: 1,
         type: "Residential NA Plot",
-        price: "Price on Request",
+        price: "75 Lacs*",
         locality: "Paud, Pune",
         status: "Under Construction",
         photos: 2,
@@ -39,7 +39,7 @@ const properties = [
     {
         id: 4,
         type: "Commercial NA ",
-        price: "Price on Request",
+        price: "₹60 Lacs*",
         locality: "Somatane, Pune",
         status: "Under Construction",
         photos: 2,
@@ -192,6 +192,7 @@ interface Tool {
     desc: string;
     linkText: string;
     href: string;
+    disabled?: boolean;
 }
 
 const tools: Tool[] = [
@@ -202,6 +203,7 @@ const tools: Tool[] = [
         desc: "Estimate your monthly installments for NA plot purchases.",
         linkText: "Calculate Now",
         href: "#emi-calculator",
+        disabled: false
     },
     {
         id: 2,
@@ -210,6 +212,7 @@ const tools: Tool[] = [
         desc: "Schedule a free guided site visit to our premium projects.",
         linkText: "Schedule Visit",
         href: "#book-visit",
+        disabled: true
     },
     {
         id: 3,
@@ -223,6 +226,7 @@ const tools: Tool[] = [
         desc: "Build your dream villa with our end-to-end contracting services.",
         linkText: "View Portfolio",
         href: "#construction",
+        disabled: true
     },
     {
         id: 4,
@@ -240,6 +244,7 @@ const tools: Tool[] = [
         desc: "Get expert advice on Pune's fastest-growing land corridors.",
         linkText: "Talk to an Expert",
         href: "#advisory",
+        disabled: true
     },
 ];
 
@@ -251,18 +256,18 @@ interface ToolCardProps {
 function ToolCard({ tool, onClick }: ToolCardProps) {
     return (
         <div
-            onClick={onClick}
-            className="border border-gray-200 rounded-2xl px-5 py-6 bg-white hover:shadow-md transition-shadow cursor-pointer flex flex-col h-full gap-4"
+            onClick={tool.disabled ? undefined : onClick}
+            className={`border border-gray-200 rounded-2xl px-5 py-6 bg-white flex flex-col h-full gap-4 transition-shadow
+                ${tool.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-md cursor-pointer'}`}
         >
-            {/* Icon */}
             <div className="h-10 flex items-end">{tool.icon}</div>
-
-            {/* Text */}
             <div className="flex-1 flex flex-col">
                 <h3 className="text-[#1a1a1a] font-bold text-base mb-2">{tool.title}</h3>
                 <p className="text-[#666] text-sm leading-snug mb-4 flex-1">{tool.desc}</p>
                 <button
-                    className="text-primary font-semibold text-sm flex items-center gap-1 hover:underline text-left mt-auto cursor-pointer"
+                    disabled={tool.disabled}
+                    className={`text-primary font-semibold text-sm flex items-center gap-1 text-left mt-auto
+                        ${tool.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:underline cursor-pointer'}`}
                 >
                     {tool.linkText} <ArrowRight size={14} />
                 </button>

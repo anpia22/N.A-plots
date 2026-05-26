@@ -3,9 +3,9 @@
 import { useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-// ─── Shared: magicHomes badge ─────────────────────────────────────────────────
+// ─── Shared: NAPlots badge ─────────────────────────────────────────────────
 
-function MagicHomesBadge() {
+function NAPlotsBadge() {
     return (
         <span className="inline-flex items-center border border-[#D8232A] rounded px-1.5 py-0.5 ml-1.5 align-middle whitespace-nowrap shrink-0 select-none gap-1">
             <span className="text-[#D8232A] font-bold text-[10px] md:text-xs italic whitespace-nowrap" style={{ fontFamily: "Georgia, serif" }}>
@@ -33,7 +33,7 @@ const topProjects = [
         developer: "Rising Spaces",
         locality: "Paud, Pune",
         bhk: "Residential NA Plots",
-        price: "Price on Request",
+        price: "75 Lacs*",
         marketedBy: "Rising Spaces",
         img: "/Images/Projects/frow_banner.avif",
         externalLink: "https://thefrow.in/",
@@ -179,7 +179,7 @@ export function TopProjects() {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-y-2 gap-x-4 mb-2">
                     <h2 className="text-[#1a1a1a] text-lg sm:text-xl font-bold flex items-center flex-wrap gap-1 md:gap-2">
                         <span className="whitespace-nowrap">Top Projects</span>
-                        <MagicHomesBadge />
+                        <NAPlotsBadge />
                     </h2>
                     <a href="/top-projects" className="text-[#D8232A] text-xs sm:text-sm font-semibold flex items-center gap-1 hover:underline whitespace-nowrap">
                         See all Projects <ChevronRight size={14} />
@@ -260,7 +260,7 @@ const newProjects = [
         developer: "Rising Spaces",
         locality: "Dhamane, Pune",
         bhk: "Residential NA Plots",
-        price: "19 Lacs",
+        price: "19 Lacs*",
         marketedBy: "Rising Spaces",
         // img: "/Images/Projects/joy estate banner.avif",
         img: "/images/projects/joyestate.jpeg",
@@ -284,7 +284,7 @@ const newProjects = [
         developer: "Rising Spaces",
         locality: "Ghotawade, Pune",
         bhk: "Commercial NA",
-        price: "Price on Request",
+        price: "56.34 Lacs*",
         marketedBy: "Rising Spaces",
         img: "/Images/Projects/ecotown.jpg",
         externalLink: "https://www.risingspaces.in/eco-town",
@@ -294,8 +294,8 @@ const newProjects = [
         name: "Codename Pratham",
         developer: "Rising Spaces",
         locality: "Varale, Pune",
-        bhk: "Commercial NA",
-        price: "Price on Request",
+        bhk: "Residential NA",
+        price: "42 Lacs*",
         marketedBy: "Rising Spaces",
         // img: "/Images/Projects/Pratham.avif",
         img: "/Images/Projects/pratham.jpeg",
@@ -307,7 +307,7 @@ const newProjects = [
         developer: "Rising Spaces",
         locality: "Kanhe Phata, Pune",
         bhk: "Commercial NA",
-        price: "15.38 Lacs",
+        price: "19.50 Lacs*",
         marketedBy: "Rising Spaces",
         // img: "/Images/Projects/Prakriti.avif",
         img: "/Images/Projects/prakritiinsta.jpg",
@@ -319,7 +319,7 @@ const newProjects = [
         developer: "Rising Spaces",
         locality: "Somatane, Pune",
         bhk: "Commercial NA",
-        price: "Price on Request",
+        price: "₹60 Lacs*",
         marketedBy: "Rising Spaces",
         // img: "/Images/Projects/OwnEdge.avif",
         img: "/images/projects/ownedge.jpeg",
@@ -399,7 +399,7 @@ export function NewProjectGallery() {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-y-2 gap-x-4 mb-2">
                     <h2 className="text-[#1a1a1a] text-lg sm:text-xl font-bold flex items-center flex-wrap gap-1 md:gap-2">
                         <span className="whitespace-nowrap">Top Investment Destinations</span>
-                        <MagicHomesBadge />
+                        <NAPlotsBadge />
                     </h2>
                     <a href="/top-investment-destinations" className="text-[#D8232A] text-xs sm:text-sm font-semibold flex items-center gap-1 hover:underline whitespace-nowrap">
                         See all Projects <ChevronRight size={14} />

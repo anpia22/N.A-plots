@@ -28,7 +28,7 @@ export default function Navbar() {
             <Link href="/plots-in-pune" className="hover:text-primary transition-colors no-underline">Plots</Link>
             <Link href="/villas-in-pune" className="hover:text-primary transition-colors no-underline">Villa</Link>
             <Link href="/bungalow-in-pune" className="hover:text-primary transition-colors no-underline">Bungalow</Link>
-            <Link href="/resendential-in-pune" className="hover:text-primary transition-colors no-underline">Resendential</Link>
+            <Link href="/residential-in-pune" className="hover:text-primary transition-colors no-underline">Residential</Link>
             <Link href="/commercial-in-pune" className="hover:text-primary transition-colors no-underline">Commercial</Link>
             {/* <Link href="/search?query=Premium&sort=relevance" className="hover:text-primary transition-colors no-underline">New Projects</Link> */}
           </div>

@@ -7,6 +7,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RequirementForm from "@/components/RequirementForm";
+import { sendRequirementEmail } from "@/lib/emailjs";
 import {
   getMergedProperties,
   Property
@@ -407,7 +408,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
     };
 
     try {
-      const response = await fetch("https://api.risingspaces.in/api/forms/forms/6a158501fbaedc3f5f68b738/submit", {
+      const response = await fetch("https://api.risingspaces.in/api/forms/forms/6a1a887908f48d67c940d713/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -418,6 +419,34 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to submit lead");
+      }
+      try {
+        await fetch("https://script.google.com/macros/s/AKfycbxAjismnp5ffxStXNL9qSRfqI5eRkJ3LrC9P0X0USwTb4uVR68vJ8hTCiHqEY1zOoZ96Q/exec", {
+          method: "POST",
+          body: JSON.stringify({
+            name: leadName,
+            phone: leadPhone,
+            email: leadEmail,
+            configuration: leadPropertyType,
+            message: `Location: ${leadLocation}. ${leadMessage}`,
+            project_name: "naplot",
+          }),
+        });
+      } catch (sheetError) {
+        console.error("Sheet sync failed:", sheetError);
+      }
+
+      try {
+        await sendRequirementEmail({
+          name: leadName,
+          email: leadEmail,
+          phone: leadPhone,
+          property_type: leadPropertyType,
+          location: leadLocation,
+          message: leadMessage || "—",
+        });
+      } catch (emailError) {
+        console.error("Email notification failed:", emailError);
       }
 
       setLeadSubmitted(true);
@@ -537,7 +566,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
   });
 
   return (
-    <div className="w-full bg-[#f8f9fa] min-h-screen overflow-x-hidden">
+    <div className="w-full bg-[#f8f9fa] min-h-screen overflow-x-hidden z-10">
       <Navbar />
 
       {/* Dynamic Sub-header Search Bar */}

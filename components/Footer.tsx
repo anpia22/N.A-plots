@@ -1,6 +1,9 @@
 'use client';
 
+import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
+import Image from "next/image";
 
 // Custom high-fidelity inline SVGs to avoid old/incompatible lucide-react brand icon issues
 const FacebookIcon = ({ size = 16 }: { size?: number }) => (
@@ -228,90 +231,127 @@ const getLinkHref = (heading: string, linkText: string) => {
     return "#";
 };
 
+// ─── Crafted By Bar (Portal) ─────────────────────────────────────────────────
+// Rendered directly on document.body to escape <main>'s white stacking context
+// This is what makes the parallax reveal work correctly.
+
+function CraftedByBar() {
+    const barRef = useRef<HTMLDivElement>(null);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        return () => {
+            // Clean up body padding when unmounted
+            document.body.style.paddingBottom = '';
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!barRef.current) return;
+        const updatePadding = () => {
+            if (barRef.current) {
+                document.body.style.paddingBottom = barRef.current.offsetHeight + 'px';
+            }
+        };
+        updatePadding();
+        const ro = new ResizeObserver(updatePadding);
+        ro.observe(barRef.current);
+        window.addEventListener('resize', updatePadding);
+        return () => {
+            ro.disconnect();
+            window.removeEventListener('resize', updatePadding);
+            document.body.style.paddingBottom = '';
+        };
+    }, [mounted]);
+
+    if (!mounted) return null;
+
+    return createPortal(
+        <div
+            ref={barRef}
+            className="fixed bottom-0 left-0 right-0 z-[1] bg-[#0d0d0d] border-t border-neutral-800"
+            style={{ boxShadow: '0 -8px 32px rgba(0,0,0,0.35)' }}
+        >
+            <div className="max-w-[1200px] mx-auto px-4 py-5 flex items-center justify-center gap-2.5">
+                <p className="text-neutral-400 text-xs text-center flex items-center flex-wrap justify-center gap-2.5">
+                    Carefully Crafted By
+                    <Link
+                        href="https://digitalizetheglobe.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-neutral-200 hover:text-white transition-colors duration-200 flex items-center gap-2 font-semibold"
+                    >
+                        <Image
+                            src="Images/logo1.png"
+                            alt="Digitalize The Globe Logo"
+                            width={250}
+                            height={30}
+                            className="h-15 w-auto brightness-0 invert opacity-80 hover:opacity-100 transition-opacity"
+                        />
+                        Digitalize The Globe
+                    </Link>
+                </p>
+            </div>
+        </div>,
+        document.body
+    );
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function Footer() {
     return (
-        <footer className="w-full bg-white border-t border-gray-100 mt-10">
+        <footer className="w-full bg-white z-10">
+            {/* Main Footer Wrapper to prevent overlapping & establish solid background above the fixed footer */}
+            <div className="w-full relative z-10 bg-white border-t border-gray-100 mt-10 ">
 
-            {/* ── Post Property CTA Banner ── */}
-            {/* <div className="bg-[#fff9f0] border-b border-[#f0e0cc]">
-                <div className="max-w-[1200px] mx-auto px-4 py-6 flex items-center justify-between gap-6">
-                    <div className="flex items-center gap-5">
-                        <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                            <svg viewBox="0 0 48 48" width="36" height="36" fill="none">
-                                <path d="M24 6L4 22h6v20h28V22h6L24 6z" fill="#0F3E66" opacity="0.15" stroke="#0F3E66" strokeWidth="2.5" strokeLinejoin="round" />
-                                <rect x="18" y="32" width="12" height="10" rx="2" fill="#0F3E66" opacity="0.5" />
-                            </svg>
+                {/* ── Post Property CTA Banner ── */}
+                {/* <div className="bg-[#fff9f0] border-b border-[#f0e0cc]">
+                    <div className="max-w-[1200px] mx-auto px-4 py-6 flex items-center justify-between gap-6">
+                        <div className="flex items-center gap-5">
+                            <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                                <svg viewBox="0 0 48 48" width="36" height="36" fill="none">
+                                    <path d="M24 6L4 22h6v20h28V22h6L24 6z" fill="#0F3E66" opacity="0.15" stroke="#0F3E66" strokeWidth="2.5" strokeLinejoin="round" />
+                                    <rect x="18" y="32" width="12" height="10" rx="2" fill="#0F3E66" opacity="0.5" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 className="text-[#1a1a1a] font-bold text-lg leading-tight">
+                                    Post your Property for Free
+                                </h3>
+                                <p className="text-[#555] text-sm mt-0.5">
+                                    List it on  and get genuine leads
+                                </p>
+                            </div>
                         </div>
-                        <div>
-                            <h3 className="text-[#1a1a1a] font-bold text-lg leading-tight">
-                                Post your Property for Free
-                            </h3>
-                            <p className="text-[#555] text-sm mt-0.5">
-                                List it on  and get genuine leads
-                            </p>
-                        </div>
+                        <button className="shrink-0 bg-primary hover:bg-primary-dark text-white font-bold text-sm px-8 py-3 rounded-full transition-colors shadow-md">
+                            Post Property FREE
+                        </button>
                     </div>
-                    <button className="shrink-0 bg-primary hover:bg-primary-dark text-white font-bold text-sm px-8 py-3 rounded-full transition-colors shadow-md">
-                        Post Property FREE
-                    </button>
-                </div>
-            </div> */}
+                </div> */}
 
-            {/* ── Main Footer Links ── */}
-            <div className="max-w-[1200px] mx-auto px-4 py-10">
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8">
-                    {footerColumns.map((col) => (
-                        <div key={col.heading}>
-                            <h4 className="text-[#1a1a1a] font-bold text-sm uppercase tracking-wide mb-4">
-                                {col.heading}
-                            </h4>
-                            <ul className="flex flex-col gap-2">
-                                {col.links.map((link) => {
-                                    const href = getLinkHref(col.heading, link);
-                                    const isExternal = href.startsWith("http");
-                                    return (
-                                        <li key={link}>
-                                            <Link
-                                                href={href}
-                                                target={isExternal ? "_blank" : undefined}
-                                                rel={isExternal ? "noopener noreferrer" : undefined}
-                                                className="text-[#555] text-xs hover:text-primary transition-colors leading-relaxed"
-                                            >
-                                                {link}
-                                            </Link>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            {/* ── Additional Link Sections ── */}
-            <div className="border-t border-gray-100">
+                {/* ── Main Footer Links ── */}
                 <div className="max-w-[1200px] mx-auto px-4 py-10">
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8">
-                        {additionalSections.map((section, idx) => (
-                            <div key={idx}>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8">
+                        {footerColumns.map((col) => (
+                            <div key={col.heading}>
                                 <h4 className="text-[#1a1a1a] font-bold text-sm uppercase tracking-wide mb-4">
-                                    {section.title}
+                                    {col.heading}
                                 </h4>
                                 <ul className="flex flex-col gap-2">
-                                    {section.links.map((item) => {
-                                        const href = getLinkHref(section.title, item);
+                                    {col.links.map((link) => {
+                                        const href = getLinkHref(col.heading, link);
                                         const isExternal = href.startsWith("http");
                                         return (
-                                            <li key={item}>
+                                            <li key={link}>
                                                 <Link
                                                     href={href}
                                                     target={isExternal ? "_blank" : undefined}
                                                     rel={isExternal ? "noopener noreferrer" : undefined}
                                                     className="text-[#555] text-xs hover:text-primary transition-colors leading-relaxed"
                                                 >
-                                                    {item}
+                                                    {link}
                                                 </Link>
                                             </li>
                                         );
@@ -321,44 +361,81 @@ export default function Footer() {
                         ))}
                     </div>
                 </div>
-            </div>
 
-
-
-            {/* ── Awards / Trust Badges ── */}
-            <div className="border-t border-gray-100">
-                <div className="max-w-[1200px] mx-auto px-4 py-5 grid grid-cols-2 md:flex flex-wrap items-center justify-center gap-8">
-                    {[
-                        "Best Plotted Development",
-                        "Excellence in Real Estate",
-                        "Most Trusted Developer",
-                        "Premium Lifestyle Projects",
-                    ].map((badge) => (
-                        <div key={badge} className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-full bg-[#FFC107]/20 flex items-center justify-center">
-                                <span className="text-[#FFC107] text-base">★</span>
-                            </div>
-                            <span className="text-[#555] text-xs font-medium">{badge}</span>
+                {/* ── Additional Link Sections ── */}
+                <div className="border-t border-gray-100">
+                    <div className="max-w-[1200px] mx-auto px-4 py-10">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8">
+                            {additionalSections.map((section, idx) => (
+                                <div key={idx}>
+                                    <h4 className="text-[#1a1a1a] font-bold text-sm uppercase tracking-wide mb-4">
+                                        {section.title}
+                                    </h4>
+                                    <ul className="flex flex-col gap-2">
+                                        {section.links.map((item) => {
+                                            const href = getLinkHref(section.title, item);
+                                            const isExternal = href.startsWith("http");
+                                            return (
+                                                <li key={item}>
+                                                    <Link
+                                                        href={href}
+                                                        target={isExternal ? "_blank" : undefined}
+                                                        rel={isExternal ? "noopener noreferrer" : undefined}
+                                                        className="text-[#555] text-xs hover:text-primary transition-colors leading-relaxed"
+                                                    >
+                                                        {item}
+                                                    </Link>
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                </div>
+                            ))}
                         </div>
-                    ))}
+                    </div>
                 </div>
-            </div>
 
-            {/* ── Copyright ── */}
-            <div className="border-t border-gray-100 bg-[#f5f5f5]">
-                <div className="max-w-[1200px] mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-2">
-                    <p className="text-[#888] text-xs text-center md:text-left">
-                        © 2026 NA Plot Pune. All Rights Reserved.
-                    </p>
-                    <div className="flex items-center gap-4">
-                        {["Privacy Policy", "Terms of Use"].map((item) => (
-                            <Link key={item} href={getLinkHref("Company", item)} className="text-[#888] text-xs hover:text-primary transition-colors">
-                                {item}
-                            </Link>
+
+
+                {/* ── Awards / Trust Badges ── */}
+                <div className="border-t border-gray-100">
+                    <div className="max-w-[1200px] mx-auto px-4 py-5 grid grid-cols-2 md:flex flex-wrap items-center justify-center gap-8">
+                        {[
+                            "Best Plotted Development",
+                            "Excellence in Real Estate",
+                            "Most Trusted Developer",
+                            "Premium Lifestyle Projects",
+                        ].map((badge) => (
+                            <div key={badge} className="flex items-center gap-2">
+                                <div className="w-8 h-8 rounded-full bg-[#FFC107]/20 flex items-center justify-center">
+                                    <span className="text-[#FFC107] text-base">★</span>
+                                </div>
+                                <span className="text-[#555] text-xs font-medium">{badge}</span>
+                            </div>
                         ))}
                     </div>
                 </div>
+
+                {/* ── Copyright ── */}
+                <div className="border-t border-gray-100 bg-[#f5f5f5] shadow-[0_-4px_20px_rgba(0,0,0,0.02)]">
+                    <div className="max-w-[1200px] mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-2">
+                        <p className="text-[#888] text-xs text-center md:text-left">
+                            © 2026 NA Plot Pune. All Rights Reserved.
+                        </p>
+                        <div className="flex items-center gap-4">
+                            {["Privacy Policy", "Terms of Use"].map((item) => (
+                                <Link key={item} href={getLinkHref("Company", item)} className="text-[#888] text-xs hover:text-primary transition-colors">
+                                    {item}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
             </div>
+
+            {/* ── Crafted By: rendered as a body-level portal for parallax reveal ── */}
+            <CraftedByBar />
 
         </footer>
     );

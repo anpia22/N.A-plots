@@ -173,7 +173,7 @@ export function TopProjects() {
     }, []);
 
     return (
-        <section className="w-full bg-white py-8">
+        <section className="w-full bg-white py-8 z-10">
             <div className="max-w-[1200px] mx-auto px-4">
                 {/* Heading row */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-y-2 gap-x-4 mb-2">
@@ -338,7 +338,7 @@ export function NewProjectCard({ project }: ProjectCardProps) {
     return (
         <div
             onClick={handleClick}
-            className="w-full group border border-gray-200 rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-shadow cursor-pointer grid grid-cols-2 items-stretch"
+            className="w-full group border border-gray-200 rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-shadow cursor-pointer grid grid-cols-2 items-stretch z-10"
         >
             {/* Left image */}
             <div className="w-full shrink-0 overflow-hidden">
@@ -393,7 +393,7 @@ export function NewProjectGallery() {
     };
 
     return (
-        <section className="w-full bg-white py-8">
+        <section className="w-full bg-white py-8 z-10">
             <div className="max-w-[1200px] mx-auto px-4">
                 {/* Heading row */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-y-2 gap-x-4 mb-2">

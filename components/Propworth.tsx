@@ -76,7 +76,7 @@ export default function PropWorth() {
     };
 
     return (
-        <section className="w-full bg-white py-6">
+        <section className="w-full bg-white py-6 z-10">
             <div className="max-w-[1200px] mx-auto px-4">
                 <div
                     className="relative rounded-2xl overflow-hidden"

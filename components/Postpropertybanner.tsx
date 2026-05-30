@@ -10,7 +10,7 @@ import { AnimatePresence } from "framer-motion";
 export default function PostPropertyBanner() {
     const [isReqModalOpen, setIsReqModalOpen] = useState(false);
     return (
-        <section className="w-[calc(100%-2rem)] md:w-full max-w-[1200px] mx-auto flex flex-col sm:flex-row items-center justify-between bg-[#fff9e6] rounded-xl px-6 py-5 md:px-8 shadow-sm gap-4">
+        <section className="w-[calc(100%-2rem)] md:w-full max-w-[1200px] mx-auto flex flex-col sm:flex-row items-center justify-between bg-[#fff9e6] rounded-xl px-6 py-5 md:px-8 shadow-sm gap-4 z-10">
 
             {/* Left: Text */}
             <div className="flex flex-col gap-1 items-center sm:items-start text-center sm:text-left">

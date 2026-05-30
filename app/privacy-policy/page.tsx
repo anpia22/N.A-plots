@@ -64,7 +64,7 @@ export default function PrivacyPolicyPage() {
   };
 
   return (
-    <div className="w-full bg-[#F8FAFC] min-h-screen font-body text-[#475569]">
+    <div className="w-full bg-[#F8FAFC] min-h-screen font-body text-[#475569] z-10">
       <Navbar />
 
       {/* Breadcrumbs & Header Hero */}

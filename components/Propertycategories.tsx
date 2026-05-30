@@ -91,7 +91,7 @@ export default function PropertyCategories() {
     };
 
     return (
-        <section className="w-full bg-white pt-4 pb-10">
+        <section className="w-full bg-white pt-4 pb-10 z-10">
             <div className="max-w-[1200px] mx-auto px-4">
                 {/* Heading */}
                 <h2 className="text-[#333] text-xl font-semibold mb-1">

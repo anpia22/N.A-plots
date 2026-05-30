@@ -78,7 +78,7 @@ const topProjectsList: Project[] = [
 
 export default function TopProjectsPage() {
     return (
-        <div className="w-full bg-[#f8f9fa] min-h-screen flex flex-col">
+        <div className="w-full bg-[#f8f9fa] min-h-screen flex flex-col z-10">
             <Navbar />
             
             {/* Breadcrumb / Header area */}
@@ -98,7 +98,7 @@ export default function TopProjectsPage() {
 
             {/* Grid layout */}
             <div className="flex-1 max-w-[1200px] mx-auto px-4 py-8 w-full">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
                     {topProjectsList.map((project) => (
                         <TopProjectCard key={project.id} project={project} />
                     ))}

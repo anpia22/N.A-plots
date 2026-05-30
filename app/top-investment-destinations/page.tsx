@@ -16,7 +16,7 @@ const investmentProjectsList: Project[] = [
         bhk: "Residential NA Plots",
         price: "19 Lacs",
         marketedBy: "Rising Spaces",
-        img: "/Images/Projects/joy estate banner.avif",
+        img: "/Images/Projects/joyestate.jpeg",
         externalLink: "https://codenamejoyestate.com/",
     },
     {
@@ -27,7 +27,7 @@ const investmentProjectsList: Project[] = [
         bhk: "Commercial NA",
         price: "1,499/sq.ft.",
         marketedBy: "Rising Spaces",
-        img: "/Images/Projects/RedStone_Webbanner.avif",
+        img: "/Images/Projects/redstoneinsta.jpg",
         externalLink: "https://www.risingspaces.in/red-stone",
     },
     {
@@ -36,9 +36,9 @@ const investmentProjectsList: Project[] = [
         developer: "Rising Spaces",
         locality: "Ghotawade, Pune",
         bhk: "Commercial NA",
-        price: "Price on Request",
+        price: "56.34 Lacs*",
         marketedBy: "Rising Spaces",
-        img: "/Images/Projects/eco town.avif",
+        img: "/Images/Projects/ecotown.jpg",
         externalLink: "https://www.risingspaces.in/eco-town",
     },
     {
@@ -47,9 +47,9 @@ const investmentProjectsList: Project[] = [
         developer: "Rising Spaces",
         locality: "Varale, Pune",
         bhk: "Commercial NA",
-        price: "Price on Request",
+        price: "42 Lacs*",
         marketedBy: "Rising Spaces",
-        img: "/Images/Projects/Pratham.avif",
+        img: "/Images/Projects/pratham.jpeg",
         externalLink: "https://codenamepratham.in/",
     },
     {
@@ -58,9 +58,9 @@ const investmentProjectsList: Project[] = [
         developer: "Rising Spaces",
         locality: "Kanhe Phata, Pune",
         bhk: "Commercial NA",
-        price: "15.38 Lacs",
+        price: "19.50 Lacs*",
         marketedBy: "Rising Spaces",
-        img: "/Images/Projects/Prakriti.avif",
+        img: "/Images/Projects/prakritiinsta.jpg",
         externalLink: "https://codenameprakriti.com/",
     },
     {
@@ -69,9 +69,9 @@ const investmentProjectsList: Project[] = [
         developer: "Rising Spaces",
         locality: "Somatane, Pune",
         bhk: "Commercial NA",
-        price: "Price on Request",
+        price: "60 Lacs*",
         marketedBy: "Rising Spaces",
-        img: "/Images/Projects/OwnEdge.avif",
+        img: "/Images/Projects/ownedge.jpeg",
         externalLink: "https://www.risingspaces.in/own-edge",
     },
     {
@@ -82,7 +82,7 @@ const investmentProjectsList: Project[] = [
         bhk: "Commercial NA Plots",
         price: "₹2.75 Cr",
         marketedBy: "Rising Spaces",
-        img: "/Images/Projects/pawna villas banner.avif",
+        img: "/Images/Projects/pawna.png",
         externalLink: "https://thepawnavillas.com/",
     },
     {
@@ -100,7 +100,7 @@ const investmentProjectsList: Project[] = [
 
 export default function TopInvestmentDestinationsPage() {
     return (
-        <div className="w-full bg-[#f8f9fa] min-h-screen flex flex-col">
+        <div className="w-full bg-[#f8f9fa] min-h-screen flex flex-col z-10">
             <Navbar />
             
             {/* Breadcrumb / Header area */}

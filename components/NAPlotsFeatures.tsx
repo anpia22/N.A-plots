@@ -32,7 +32,7 @@ function BankCard({ bank }: { bank: Bank }) {
 
 export default function NAPlotsFeatures() {
     return (
-        <section className="w-full bg-white py-8">
+        <section className="w-full bg-white py-8 z-10">
             <div className="max-w-[1200px] mx-auto px-4 space-y-6">
 
                 {/* ── Site Visits Banner ── */}

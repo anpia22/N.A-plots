@@ -147,7 +147,7 @@ function PropertyCard({ property }: { property: Property }) {
 
 export function PremiumProperties() {
     return (
-        <section className="w-full bg-white py-8">
+        <section className="w-full bg-white py-8 z-10">
             <div className="max-w-[1200px] mx-auto px-4">
                 {/* Heading */}
                 <div className="flex items-center justify-between mb-1">
@@ -312,7 +312,7 @@ function EMICalculator() {
     };
 
     return (
-        <div className="w-full">
+        <div className="w-full z-10">
             <div className="flex items-center gap-3 mb-6">
                 {/* <div className="bg-red-50 p-2 rounded-full text-primary">
                     <Calculator size={24} />
@@ -464,7 +464,7 @@ export function AdviceTools() {
     const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
 
     return (
-        <section className="w-full bg-white py-8">
+        <section className="w-full bg-white py-8 z-10">
             <div className="max-w-[1200px] mx-auto px-4">
                 {/* Heading */}
                 <h2 className="text-[#1a1a1a] text-xl font-semibold mb-1">Advice &amp; Tools</h2>

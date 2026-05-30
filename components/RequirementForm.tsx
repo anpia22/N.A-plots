@@ -4,588 +4,719 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
-    User,
-    Mail,
-    Phone,
-    MapPin,
-    Home,
-    DollarSign,
-    CheckCircle2,
-    X,
-    Check,
-    ArrowRight,
-    ClipboardList,
-    Sparkles
+  User,
+  Mail,
+  Phone,
+  MapPin,
+  Home,
+  DollarSign,
+  CheckCircle2,
+  X,
+  Check,
+  ArrowRight,
+  ClipboardList,
+  Sparkles,
 } from "lucide-react";
+import { sendRequirementEmail } from "@/lib/emailjs";
 
 interface RequirementFormProps {
-    initialCity?: string;
-    initialType?: string;
-    initialBudget?: string;
-    isModal?: boolean;
-    onClose?: () => void;
+  initialCity?: string;
+  initialType?: string;
+  initialBudget?: string;
+  isModal?: boolean;
+  onClose?: () => void;
 }
 
 const locations = [
-    "Pune",
-    "Chakan/Talegaon MIDC",
-    "Ghotawade",
-    "Hinjewadi",
-    "Kamshet",
-    "Kanhe Phata",
-    "Lonavala",
-    "Pawna",
-    "Pund/Mulshi",
-    "Talegaon",
-    "Other"
+  "Pune",
+  "Chakan/Talegaon MIDC",
+  "Ghotawade",
+  "Hinjewadi",
+  "Kamshet",
+  "Kanhe Phata",
+  "Lonavala",
+  "Pawna",
+  "Pund/Mulshi",
+  "Talegaon",
+  "Other",
 ];
 
 export default function RequirementForm({
-    initialCity = "Pune",
-    initialType = "Plot",
-    isModal = false,
-    onClose
+  initialCity = "Pune",
+  initialType = "Plot",
+  isModal = false,
+  onClose,
 }: RequirementFormProps) {
-    // Form State
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
-    const [type, setType] = useState("");
-    const [location, setLocation] = useState("");
-    const [message, setMessage] = useState("");
-    const [agree, setAgree] = useState(true);
+  // Form State
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [type, setType] = useState("");
+  const [location, setLocation] = useState("");
+  const [message, setMessage] = useState("");
+  const [agree, setAgree] = useState(true);
 
-    // Field Errors
-    const [errors, setErrors] = useState<Record<string, string>>({});
-    const [isSubmitted, setIsSubmitted] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+  // Field Errors
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Validation handler
-    const validateField = (fieldName: string, value: any) => {
-        let errorMsg = "";
-        if (fieldName === "name") {
-            if (!value.trim()) {
-                errorMsg = "Full Name is required";
-            } else if (value.trim().length < 3) {
-                errorMsg = "Name must be at least 3 characters";
-            }
-        }
-        if (fieldName === "email") {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!value.trim()) {
-                errorMsg = "Email Address is required";
-            } else if (!emailRegex.test(value)) {
-                errorMsg = "Please enter a valid email address";
-            }
-        }
-        if (fieldName === "phone") {
-            const phoneRegex = /^[6-9]\d{9}$/;
-            if (!value) {
-                errorMsg = "Mobile Number is required";
-            } else if (!phoneRegex.test(value)) {
-                errorMsg = "Enter a valid 10-digit mobile number starting with 6-9";
-            }
-        }
-        if (fieldName === "type") {
-            if (!value) {
-                errorMsg = "Property Type is required";
-            }
-        }
-        if (fieldName === "location") {
-            if (!value) {
-                errorMsg = "Location is required";
-            }
-        }
-        if (fieldName === "agree") {
-            if (!value) {
-                errorMsg = "You must agree to receive notifications";
-            }
-        }
-
-        setErrors((prev) => {
-            const updated = { ...prev };
-            if (errorMsg) {
-                updated[fieldName] = errorMsg;
-            } else {
-                delete updated[fieldName];
-            }
-            return updated;
-        });
-
-        return !errorMsg;
-    };
-
-    // Submit Handler
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        // Validate all fields
-        const isNameValid = validateField("name", name);
-        const isEmailValid = validateField("email", email);
-        const isPhoneValid = validateField("phone", phone);
-        const isTypeValid = validateField("type", type);
-        const isLocationValid = validateField("location", location);
-        const isAgreeValid = validateField("agree", agree);
-
-        if (!isNameValid || !isEmailValid || !isPhoneValid || !isTypeValid || !isLocationValid || !isAgreeValid) {
-            return;
-        }
-
-        setIsSubmitting(true);
-
-        // Clear any previous submit error
-        setErrors(prev => {
-            const updated = { ...prev };
-            delete updated.submit;
-            return updated;
-        });
-
-        const formData = {
-            full_name: name,
-            mobile_number: phone,
-            email_address: email,
-            property_type: type,
-            location: location,
-            message: message
-        };
-
-        try {
-            const response = await fetch("https://api.risingspaces.in/api/forms/forms/6a158501fbaedc3f5f68b738/submit", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ data: formData })
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || "Form submission failed");
-            }
-
-            const result = await response.json();
-            console.log("Form submitted successfully:", result);
-
-            setIsSubmitted(true);
-
-            // Save requirement to localStorage
-            const reqObj = {
-                id: "req-" + Date.now(),
-                name,
-                email,
-                phone,
-                type,
-                location,
-                message,
-                date: new Date().toLocaleDateString()
-            };
-
-            try {
-                const existing = JSON.parse(localStorage.getItem("user_requirements") || "[]");
-                localStorage.setItem("user_requirements", JSON.stringify([reqObj, ...existing]));
-            } catch (err) {
-                console.error("Could not save to localStorage", err);
-            }
-        } catch (error: any) {
-            console.error("Error submitting form:", error);
-            setErrors(prev => ({
-                ...prev,
-                submit: error.message || "Failed to submit form. Please check your connection and try again."
-            }));
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
-    const resetForm = () => {
-        setName("");
-        setEmail("");
-        setPhone("");
-        setType("");
-        setLocation("");
-        setMessage("");
-        setErrors({});
-        setIsSubmitted(false);
-    };
-
-    // The actual form content
-    const formElement = (
-        <div className="w-full overflow-y-scroll h-[85vh] scrollbar-hide text-left">
-            <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
-                <div>
-                    <span className="underline decoration-primary decoration-dotted underline-offset-4 text-primary text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider mb-2 inline-block">
-                        Matching Alerts
-                    </span>
-                    <h2 className="text-[#0F172A] text-xl md:text-2xl font-bold flex items-center gap-2">
-                        <ClipboardList className="text-primary" size={22} />
-                        Post Your Property Requirement
-                    </h2>
-                    <p className="text-gray-500 text-xs mt-1">
-                        Can't find what you are looking for? Give us your details, and top agents/owners will contact you!
-                    </p>
-                </div>
-                {isModal && onClose && (
-                    <button
-                        onClick={onClose}
-                        className="w-9 h-9 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-400 hover:text-gray-600 flex items-center justify-center transition-all cursor-pointer border border-gray-200"
-                    >
-                        <X size={18} />
-                    </button>
-                )}
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-5">
-                {/* Single Form Fields Box */}
-                <div className="bg-gray-50/50 border border-gray-100 rounded-2xl p-4 md:p-5 space-y-4">
-                    <h3 className="text-sm font-bold text-gray-700 flex items-center gap-1.5 border-b border-gray-100 pb-2 mb-1">
-                        <Home size={15} className="text-primary" />
-                        Property Requirements & Contact Details
-                    </h3>
-
-                    {/* Row 1: Full Name & Mobile Number */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {/* Full Name */}
-                        <div>
-                            <label className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2 flex items-center gap-1">
-                                Full Name <span className="text-rose-500 font-black">*</span>
-                            </label>
-                            <div className="relative">
-                                <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                                <input
-                                    type="text"
-                                    placeholder="Enter your full name"
-                                    value={name}
-                                    onChange={(e) => {
-                                        setName(e.target.value);
-                                        if (errors.name) validateField("name", e.target.value);
-                                    }}
-                                    onBlur={(e) => validateField("name", e.target.value)}
-                                    className={`w-full h-11 pl-10 pr-4 bg-white border rounded-xl text-sm text-gray-700 placeholder-gray-400 outline-none transition-all ${errors.name
-                                        ? "border-rose-400 focus:border-rose-500 bg-rose-50/10"
-                                        : "border-gray-200 focus:border-primary"
-                                        }`}
-                                />
-                            </div>
-                            {errors.name && (
-                                <p className="text-rose-500 text-[11px] font-semibold mt-1 flex items-center gap-1">
-                                    <span className="w-1 h-1 rounded-full bg-rose-500" /> {errors.name}
-                                </p>
-                            )}
-                        </div>
-
-                        {/* Mobile Number */}
-                        <div>
-                            <label className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2 flex items-center gap-1">
-                                Mobile Number <span className="text-rose-500 font-black">*</span>
-                            </label>
-                            <div className="relative">
-                                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-bold text-gray-400">+91</span>
-                                <input
-                                    type="tel"
-                                    placeholder="9876543210"
-                                    maxLength={10}
-                                    value={phone}
-                                    onChange={(e) => {
-                                        const val = e.target.value.replace(/\D/g, "");
-                                        setPhone(val);
-                                        if (errors.phone) validateField("phone", val);
-                                    }}
-                                    onBlur={(e) => validateField("phone", e.target.value)}
-                                    className={`w-full h-11 pl-14 pr-4 bg-white border rounded-xl text-sm text-gray-700 placeholder-gray-400 outline-none transition-all ${errors.phone
-                                        ? "border-rose-400 focus:border-rose-500 bg-rose-50/10"
-                                        : "border-gray-200 focus:border-primary"
-                                        }`}
-                                />
-                            </div>
-                            {errors.phone && (
-                                <p className="text-rose-500 text-[11px] font-semibold mt-1 flex items-center gap-1">
-                                    <span className="w-1 h-1 rounded-full bg-rose-500" /> {errors.phone}
-                                </p>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Row 2: Email Address & Property Type */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {/* Email Address */}
-                        <div>
-                            <label className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2 flex items-center gap-1">
-                                Email Address <span className="text-rose-500 font-black">*</span>
-                            </label>
-                            <div className="relative">
-                                <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                                <input
-                                    type="email"
-                                    placeholder="name@example.com"
-                                    value={email}
-                                    onChange={(e) => {
-                                        setEmail(e.target.value);
-                                        if (errors.email) validateField("email", e.target.value);
-                                    }}
-                                    onBlur={(e) => validateField("email", e.target.value)}
-                                    className={`w-full h-11 pl-10 pr-4 bg-white border rounded-xl text-sm text-gray-700 placeholder-gray-400 outline-none transition-all ${errors.email
-                                        ? "border-rose-400 focus:border-rose-500 bg-rose-50/10"
-                                        : "border-gray-200 focus:border-primary"
-                                        }`}
-                                />
-                            </div>
-                            {errors.email && (
-                                <p className="text-rose-500 text-[11px] font-semibold mt-1 flex items-center gap-1">
-                                    <span className="w-1 h-1 rounded-full bg-rose-500" /> {errors.email}
-                                </p>
-                            )}
-                        </div>
-
-                        {/* Property Type */}
-                        <div>
-                            <label className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2 flex items-center gap-1">
-                                Property Type <span className="text-rose-500 font-black">*</span>
-                            </label>
-                            <select
-                                value={type}
-                                onChange={(e) => {
-                                    setType(e.target.value);
-                                    if (errors.type) validateField("type", e.target.value);
-                                }}
-                                onBlur={(e) => validateField("type", e.target.value)}
-                                className={`w-full h-11 px-3 bg-white border rounded-xl text-sm text-gray-700 font-semibold outline-none transition-all cursor-pointer ${errors.type
-                                    ? "border-rose-400 focus:border-rose-500 bg-rose-50/10"
-                                    : "border-gray-200 focus:border-primary"
-                                    }`}
-                            >
-                                <option value="" disabled>Select Type</option>
-                                <option value="Plot">Plot / Land</option>
-                                <option value="Villa">Villa</option>
-                                <option value="Bungalow">Bungalow</option>
-                                <option value="Residential">Residential</option>
-                                <option value="Commercial">Commercial Office/Shop</option>
-                            </select>
-                            {errors.type && (
-                                <p className="text-rose-500 text-[11px] font-semibold mt-1 flex items-center gap-1">
-                                    <span className="w-1 h-1 rounded-full bg-rose-500" /> {errors.type}
-                                </p>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Row 3: Location */}
-                    <div>
-                        <label className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2 flex items-center gap-1">
-                            Location <span className="text-rose-500 font-black">*</span>
-                        </label>
-                        <div className="relative">
-                            <MapPin size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-primary" />
-                            <select
-                                value={location}
-                                onChange={(e) => {
-                                    setLocation(e.target.value);
-                                    if (errors.location) validateField("location", e.target.value);
-                                }}
-                                onBlur={(e) => validateField("location", e.target.value)}
-                                className={`w-full h-11 pl-10 pr-4 bg-white border rounded-xl text-sm text-gray-700 font-semibold outline-none transition-all cursor-pointer ${errors.location
-                                    ? "border-rose-400 focus:border-rose-500 bg-rose-50/10"
-                                    : "border-gray-200 focus:border-primary"
-                                    }`}
-                            >
-                                <option value="" disabled>Select Location</option>
-                                {locations.map((loc) => (
-                                    <option key={loc} value={loc}>{loc}</option>
-                                ))}
-                            </select>
-                        </div>
-                        {errors.location && (
-                            <p className="text-rose-500 text-[11px] font-semibold mt-1 flex items-center gap-1">
-                                <span className="w-1 h-1 rounded-full bg-rose-500" /> {errors.location}
-                            </p>
-                        )}
-                    </div>
-
-                    {/* Row 4: Inquiry Message (Optional) */}
-                    <div>
-                        <label className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">
-                            Message <span className="text-gray-400 font-normal text-[10px]">(Optional)</span>
-                        </label>
-                        <textarea
-                            rows={3}
-                            placeholder="Please enter details of your property requirements (e.g. dimensions, amenities, preferred sub-localities)..."
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm text-gray-700 placeholder-gray-400 outline-none focus:border-primary transition-all resize-none"
-                        />
-                    </div>
-
-                    {/* Agreement Terms Checkbox */}
-                    <div className="pt-2">
-                        <label className="flex items-start gap-3 cursor-pointer">
-                            <input
-                                type="checkbox"
-                                checked={agree}
-                                onChange={(e) => {
-                                    setAgree(e.target.checked);
-                                    validateField("agree", e.target.checked);
-                                }}
-                                className="w-4.5 h-4.5 accent-primary rounded border-gray-300 focus:ring-0 cursor-pointer mt-0.5"
-                            />
-                            <span className="text-xs text-gray-500 leading-normal">
-                                I agree to be contacted by NAPlots and verified property sellers/agents via Call, SMS, or WhatsApp. I accept the <Link href="/terms-and-conditions" className="underline hover:text-[#0F172A] font-semibold">Terms of Use</Link> and <Link href="/privacy-policy" className="underline hover:text-[#0F172A] font-semibold">Privacy Policy</Link>.
-                            </span>
-                        </label>
-                        {errors.agree && (
-                            <p className="text-rose-500 text-[11px] font-semibold mt-1 flex items-center gap-1">
-                                <span className="w-1 h-1 rounded-full bg-rose-500" /> {errors.agree}
-                            </p>
-                        )}
-                    </div>
-                </div>
-
-                {errors.submit && (
-                    <div className="bg-rose-50 border border-rose-100 rounded-xl p-3 text-xs text-rose-600 font-semibold flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
-                        {errors.submit}
-                    </div>
-                )}
-
-                {/* Submit Buttons */}
-                <div className="pt-2 flex items-center justify-end gap-3">
-                    {isModal && onClose && (
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="h-12 px-6 rounded-xl border border-gray-200 text-sm font-bold text-gray-600 hover:bg-gray-50 transition-colors"
-                        >
-                            Cancel
-                        </button>
-                    )}
-                    <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="flex-1 md:flex-initial bg-primary hover:bg-primary-dark disabled:bg-red-400 text-white h-12 px-8 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-98 flex items-center justify-center gap-2 cursor-pointer"
-                    >
-                        {isSubmitting ? (
-                            <>
-                                <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                                </svg>
-                                Posting Requirement...
-                            </>
-                        ) : (
-                            <>
-                                Submit Requirement
-                                <ArrowRight size={16} />
-                            </>
-                        )}
-                    </button>
-                </div>
-            </form>
-        </div>
-    );
-
-    // Success Feedback Element
-    const successElement = (
-        <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-center py-10 px-5 flex flex-col items-center justify-center"
-        >
-            <div className="w-20 h-20 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center border border-emerald-100 mb-6 relative">
-                <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.15, type: "spring", stiffness: 150 }}
-                >
-                    <CheckCircle2 size={44} strokeWidth={2.5} />
-                </motion.div>
-
-                {/* Sparkle micro-elements */}
-                <span className="absolute -top-1 -right-1 text-yellow-400 animate-bounce">✨</span>
-                <span className="absolute -bottom-1 -left-1 text-emerald-400 animate-ping duration-1000">✨</span>
-            </div>
-
-            <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider mb-2.5">
-                Successfully Submitted
-            </span>
-            <h3 className="text-gray-800 text-xl md:text-2xl font-black mb-2">Requirement Posted Free!</h3>
-            <p className="text-gray-500 text-xs max-w-[480px] leading-relaxed mb-8">
-                Thank you, <span className="font-bold text-gray-800">{name}</span>! We have captured your requirement details. We will alert our premium, verified property owners and local agents in <span className="font-bold text-primary">{location}</span>.
-            </p>
-
-            {/* Submitted Requirement Details Summary */}
-            <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 text-left w-full max-w-[500px] mb-8 space-y-3 shadow-sm">
-                <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-gray-200 pb-2 mb-2 flex items-center gap-1.5">
-                    <Sparkles size={13} className="text-primary" /> Summary of matches requested:
-                </h4>
-                <div className="grid grid-cols-2 gap-y-3 gap-x-4 text-xs font-medium">
-                    <div>
-                        <span className="text-gray-400 block text-[10px] uppercase">Property Type</span>
-                        <span className="text-gray-700 font-bold text-sm">
-                            {type}
-                        </span>
-                    </div>
-                    <div>
-                        <span className="text-gray-400 block text-[10px] uppercase">Location Preference</span>
-                        <span className="text-gray-700 font-bold text-sm">{location}</span>
-                    </div>
-                    {message && (
-                        <div className="col-span-2">
-                            <span className="text-gray-400 block text-[10px] uppercase">Message</span>
-                            <span className="text-gray-700 font-medium block whitespace-pre-wrap">{message}</span>
-                        </div>
-                    )}
-                </div>
-            </div>
-
-            <div className="flex gap-3 w-full max-w-[320px]">
-                <button
-                    onClick={resetForm}
-                    className="flex-1 py-3 px-5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-bold transition-all border border-gray-200 flex items-center justify-center cursor-pointer"
-                >
-                    Post Another
-                </button>
-                {isModal && onClose ? (
-                    <button
-                        onClick={onClose}
-                        className="flex-1 py-3 px-5 bg-primary hover:bg-primary-dark text-white rounded-xl text-xs font-bold transition-all shadow active:scale-98 flex items-center justify-center cursor-pointer"
-                    >
-                        Close Window
-                    </button>
-                ) : (
-                    <button
-                        onClick={() => {
-                            if (onClose) onClose();
-                        }}
-                        className="flex-1 py-3 px-5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow active:scale-98 flex items-center justify-center cursor-pointer"
-                    >
-                        Done
-                    </button>
-                )}
-            </div>
-        </motion.div>
-    );
-
-    // Return layout based on modal prop
-    if (isModal) {
-        return (
-            <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto scrollbar-hide">
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                    transition={{ type: "spring", duration: 0.5 }}
-                    className="bg-white rounded-3xl shadow-2xl border border-gray-100 w-full max-w-[650px] p-6 md:p-8 relative overflow-hidden scrollbar-hide"
-                >
-                    {isSubmitted ? successElement : formElement}
-                </motion.div>
-            </div>
-        );
+  // Validation handler
+  const validateField = (fieldName: string, value: any) => {
+    let errorMsg = "";
+    if (fieldName === "name") {
+      if (!value.trim()) {
+        errorMsg = "Full Name is required";
+      } else if (value.trim().length < 3) {
+        errorMsg = "Name must be at least 3 characters";
+      }
+    }
+    if (fieldName === "email") {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!value.trim()) {
+        errorMsg = "Email Address is required";
+      } else if (!emailRegex.test(value)) {
+        errorMsg = "Please enter a valid email address";
+      }
+    }
+    if (fieldName === "phone") {
+      const phoneRegex = /^[6-9]\d{9}$/;
+      if (!value) {
+        errorMsg = "Mobile Number is required";
+      } else if (!phoneRegex.test(value)) {
+        errorMsg = "Enter a valid 10-digit mobile number starting with 6-9";
+      }
+    }
+    if (fieldName === "type") {
+      if (!value) {
+        errorMsg = "Property Type is required";
+      }
+    }
+    if (fieldName === "location") {
+      if (!value) {
+        errorMsg = "Location is required";
+      }
+    }
+    if (fieldName === "agree") {
+      if (!value) {
+        errorMsg = "You must agree to receive notifications";
+      }
     }
 
-    return (
-        <div className="bg-white rounded-3xl border border-gray-200 shadow-xl w-full p-2 md:p-8 relative overflow-hidden scrollbar-hide">
-            {/* Subtle design accents */}
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#0F3E66] via-[#0A2944] to-[#FFC107]" />
+    setErrors((prev) => {
+      const updated = { ...prev };
+      if (errorMsg) {
+        updated[fieldName] = errorMsg;
+      } else {
+        delete updated[fieldName];
+      }
+      return updated;
+    });
 
-            {isSubmitted ? successElement : formElement}
+    return !errorMsg;
+  };
+
+  // Submit Handler
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Validate all fields
+    const isNameValid = validateField("name", name);
+    const isEmailValid = validateField("email", email);
+    const isPhoneValid = validateField("phone", phone);
+    const isTypeValid = validateField("type", type);
+    const isLocationValid = validateField("location", location);
+    const isAgreeValid = validateField("agree", agree);
+
+    if (
+      !isNameValid ||
+      !isEmailValid ||
+      !isPhoneValid ||
+      !isTypeValid ||
+      !isLocationValid ||
+      !isAgreeValid
+    ) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    // Clear any previous submit error
+    setErrors((prev) => {
+      const updated = { ...prev };
+      delete updated.submit;
+      return updated;
+    });
+
+    const formData = {
+      full_name: name,
+      mobile_number: phone,
+      email_address: email,
+      property_type: type,
+      location: location,
+      message: message,
+      project_name: "naplot",
+    };
+
+    try {
+      const response = await fetch(
+        "https://api.risingspaces.in/api/forms/forms/6a1a887908f48d67c940d713/submit",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data: formData }),
+        },
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Form submission failed");
+      }
+
+      const result = await response.json();
+      console.log("Form submitted successfully:", result);
+
+      // ✅ ADD THIS BLOCK RIGHT HERE — after CMS success, before setIsSubmitted
+      try {
+        await fetch("https://script.google.com/macros/s/AKfycbxAjismnp5ffxStXNL9qSRfqI5eRkJ3LrC9P0X0USwTb4uVR68vJ8hTCiHqEY1zOoZ96Q/exec", {
+          method: "POST",
+          body: JSON.stringify({
+            name: name,
+            phone: phone,
+            email: email,
+            configuration: type, // property type
+            message: `Location: ${location}. ${message}`,
+            project_name: "naplot", // this routes it to NaplotRequirements sheet
+          }),
+        });
+      } catch (sheetError) {
+        console.error("Sheet sync failed:", sheetError); // silent fail — won't break form
+      }
+
+      try {
+        await sendRequirementEmail({
+          name,
+          email,
+          phone,
+          property_type: type,
+          location,
+          message: message || "—",
+        });
+      } catch (emailError) {
+        console.error("Email notification failed:", emailError);
+      }
+
+      setIsSubmitted(true);
+
+      // Save requirement to localStorage
+      const reqObj = {
+        id: "req-" + Date.now(),
+        name,
+        email,
+        phone,
+        type,
+        location,
+        message,
+        date: new Date().toLocaleDateString(),
+      };
+
+      try {
+        const existing = JSON.parse(
+          localStorage.getItem("user_requirements") || "[]",
+        );
+        localStorage.setItem(
+          "user_requirements",
+          JSON.stringify([reqObj, ...existing]),
+        );
+      } catch (err) {
+        console.error("Could not save to localStorage", err);
+      }
+    } catch (error: any) {
+      console.error("Error submitting form:", error);
+      setErrors((prev) => ({
+        ...prev,
+        submit:
+          error.message ||
+          "Failed to submit form. Please check your connection and try again.",
+      }));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const resetForm = () => {
+    setName("");
+    setEmail("");
+    setPhone("");
+    setType("");
+    setLocation("");
+    setMessage("");
+    setErrors({});
+    setIsSubmitted(false);
+  };
+
+  // The actual form content
+  const formElement = (
+    <div className="w-full overflow-y-scroll h-[85vh] scrollbar-hide text-left">
+      <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
+        <div>
+          <span className="underline decoration-primary decoration-dotted underline-offset-4 text-primary text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider mb-2 inline-block">
+            Matching Alerts
+          </span>
+          <h2 className="text-[#0F172A] text-xl md:text-2xl font-bold flex items-center gap-2">
+            <ClipboardList className="text-primary" size={22} />
+            Post Your Property Requirement
+          </h2>
+          <p className="text-gray-500 text-xs mt-1">
+            Can't find what you are looking for? Give us your details, and top
+            agents/owners will contact you!
+          </p>
         </div>
+        {isModal && onClose && (
+          <button
+            onClick={onClose}
+            className="w-9 h-9 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-400 hover:text-gray-600 flex items-center justify-center transition-all cursor-pointer border border-gray-200"
+          >
+            <X size={18} />
+          </button>
+        )}
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Single Form Fields Box */}
+        <div className="bg-gray-50/50 border border-gray-100 rounded-2xl p-4 md:p-5 space-y-4">
+          <h3 className="text-sm font-bold text-gray-700 flex items-center gap-1.5 border-b border-gray-100 pb-2 mb-1">
+            <Home size={15} className="text-primary" />
+            Property Requirements & Contact Details
+          </h3>
+
+          {/* Row 1: Full Name & Mobile Number */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Full Name */}
+            <div>
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2 flex items-center gap-1">
+                Full Name <span className="text-rose-500 font-black">*</span>
+              </label>
+              <div className="relative">
+                <User
+                  size={16}
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
+                />
+                <input
+                  type="text"
+                  placeholder="Enter your full name"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    if (errors.name) validateField("name", e.target.value);
+                  }}
+                  onBlur={(e) => validateField("name", e.target.value)}
+                  className={`w-full h-11 pl-10 pr-4 bg-white border rounded-xl text-sm text-gray-700 placeholder-gray-400 outline-none transition-all ${
+                    errors.name
+                      ? "border-rose-400 focus:border-rose-500 bg-rose-50/10"
+                      : "border-gray-200 focus:border-primary"
+                  }`}
+                />
+              </div>
+              {errors.name && (
+                <p className="text-rose-500 text-[11px] font-semibold mt-1 flex items-center gap-1">
+                  <span className="w-1 h-1 rounded-full bg-rose-500" />{" "}
+                  {errors.name}
+                </p>
+              )}
+            </div>
+
+            {/* Mobile Number */}
+            <div>
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2 flex items-center gap-1">
+                Mobile Number{" "}
+                <span className="text-rose-500 font-black">*</span>
+              </label>
+              <div className="relative">
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-bold text-gray-400">
+                  +91
+                </span>
+                <input
+                  type="tel"
+                  placeholder="9876543210"
+                  maxLength={10}
+                  value={phone}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/\D/g, "");
+                    setPhone(val);
+                    if (errors.phone) validateField("phone", val);
+                  }}
+                  onBlur={(e) => validateField("phone", e.target.value)}
+                  className={`w-full h-11 pl-14 pr-4 bg-white border rounded-xl text-sm text-gray-700 placeholder-gray-400 outline-none transition-all ${
+                    errors.phone
+                      ? "border-rose-400 focus:border-rose-500 bg-rose-50/10"
+                      : "border-gray-200 focus:border-primary"
+                  }`}
+                />
+              </div>
+              {errors.phone && (
+                <p className="text-rose-500 text-[11px] font-semibold mt-1 flex items-center gap-1">
+                  <span className="w-1 h-1 rounded-full bg-rose-500" />{" "}
+                  {errors.phone}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Row 2: Email Address & Property Type */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Email Address */}
+            <div>
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2 flex items-center gap-1">
+                Email Address{" "}
+                <span className="text-rose-500 font-black">*</span>
+              </label>
+              <div className="relative">
+                <Mail
+                  size={16}
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
+                />
+                <input
+                  type="email"
+                  placeholder="name@example.com"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (errors.email) validateField("email", e.target.value);
+                  }}
+                  onBlur={(e) => validateField("email", e.target.value)}
+                  className={`w-full h-11 pl-10 pr-4 bg-white border rounded-xl text-sm text-gray-700 placeholder-gray-400 outline-none transition-all ${
+                    errors.email
+                      ? "border-rose-400 focus:border-rose-500 bg-rose-50/10"
+                      : "border-gray-200 focus:border-primary"
+                  }`}
+                />
+              </div>
+              {errors.email && (
+                <p className="text-rose-500 text-[11px] font-semibold mt-1 flex items-center gap-1">
+                  <span className="w-1 h-1 rounded-full bg-rose-500" />{" "}
+                  {errors.email}
+                </p>
+              )}
+            </div>
+
+            {/* Property Type */}
+            <div>
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2 flex items-center gap-1">
+                Property Type{" "}
+                <span className="text-rose-500 font-black">*</span>
+              </label>
+              <select
+                value={type}
+                onChange={(e) => {
+                  setType(e.target.value);
+                  if (errors.type) validateField("type", e.target.value);
+                }}
+                onBlur={(e) => validateField("type", e.target.value)}
+                className={`w-full h-11 px-3 bg-white border rounded-xl text-sm text-gray-700 font-semibold outline-none transition-all cursor-pointer ${
+                  errors.type
+                    ? "border-rose-400 focus:border-rose-500 bg-rose-50/10"
+                    : "border-gray-200 focus:border-primary"
+                }`}
+              >
+                <option value="" disabled>
+                  Select Type
+                </option>
+                <option value="Plot">Plot / Land</option>
+                <option value="Villa">Villa</option>
+                <option value="Bungalow">Bungalow</option>
+                <option value="Residential">Residential</option>
+                <option value="Commercial">Commercial Office/Shop</option>
+              </select>
+              {errors.type && (
+                <p className="text-rose-500 text-[11px] font-semibold mt-1 flex items-center gap-1">
+                  <span className="w-1 h-1 rounded-full bg-rose-500" />{" "}
+                  {errors.type}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Row 3: Location */}
+          <div>
+            <label className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2 flex items-center gap-1">
+              Location <span className="text-rose-500 font-black">*</span>
+            </label>
+            <div className="relative">
+              <MapPin
+                size={16}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-primary"
+              />
+              <select
+                value={location}
+                onChange={(e) => {
+                  setLocation(e.target.value);
+                  if (errors.location)
+                    validateField("location", e.target.value);
+                }}
+                onBlur={(e) => validateField("location", e.target.value)}
+                className={`w-full h-11 pl-10 pr-4 bg-white border rounded-xl text-sm text-gray-700 font-semibold outline-none transition-all cursor-pointer ${
+                  errors.location
+                    ? "border-rose-400 focus:border-rose-500 bg-rose-50/10"
+                    : "border-gray-200 focus:border-primary"
+                }`}
+              >
+                <option value="" disabled>
+                  Select Location
+                </option>
+                {locations.map((loc) => (
+                  <option key={loc} value={loc}>
+                    {loc}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {errors.location && (
+              <p className="text-rose-500 text-[11px] font-semibold mt-1 flex items-center gap-1">
+                <span className="w-1 h-1 rounded-full bg-rose-500" />{" "}
+                {errors.location}
+              </p>
+            )}
+          </div>
+
+          {/* Row 4: Inquiry Message (Optional) */}
+          <div>
+            <label className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">
+              Message{" "}
+              <span className="text-gray-400 font-normal text-[10px]">
+                (Optional)
+              </span>
+            </label>
+            <textarea
+              rows={3}
+              placeholder="Please enter details of your property requirements (e.g. dimensions, amenities, preferred sub-localities)..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm text-gray-700 placeholder-gray-400 outline-none focus:border-primary transition-all resize-none"
+            />
+          </div>
+
+          {/* Agreement Terms Checkbox */}
+          <div className="pt-2">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={agree}
+                onChange={(e) => {
+                  setAgree(e.target.checked);
+                  validateField("agree", e.target.checked);
+                }}
+                className="w-4.5 h-4.5 accent-primary rounded border-gray-300 focus:ring-0 cursor-pointer mt-0.5"
+              />
+              <span className="text-xs text-gray-500 leading-normal">
+                I agree to be contacted by NAPlots and verified property
+                sellers/agents via Call, SMS, or WhatsApp. I accept the{" "}
+                <Link
+                  href="/terms-and-conditions"
+                  className="underline hover:text-[#0F172A] font-semibold"
+                >
+                  Terms of Use
+                </Link>{" "}
+                and{" "}
+                <Link
+                  href="/privacy-policy"
+                  className="underline hover:text-[#0F172A] font-semibold"
+                >
+                  Privacy Policy
+                </Link>
+                .
+              </span>
+            </label>
+            {errors.agree && (
+              <p className="text-rose-500 text-[11px] font-semibold mt-1 flex items-center gap-1">
+                <span className="w-1 h-1 rounded-full bg-rose-500" />{" "}
+                {errors.agree}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {errors.submit && (
+          <div className="bg-rose-50 border border-rose-100 rounded-xl p-3 text-xs text-rose-600 font-semibold flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
+            {errors.submit}
+          </div>
+        )}
+
+        {/* Submit Buttons */}
+        <div className="pt-2 flex items-center justify-end gap-3">
+          {isModal && onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              className="h-12 px-6 rounded-xl border border-gray-200 text-sm font-bold text-gray-600 hover:bg-gray-50 transition-colors"
+            >
+              Cancel
+            </button>
+          )}
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="flex-1 md:flex-initial bg-primary hover:bg-primary-dark disabled:bg-red-400 text-white h-12 px-8 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-98 flex items-center justify-center gap-2 cursor-pointer"
+          >
+            {isSubmitting ? (
+              <>
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
+                </svg>
+                Posting Requirement...
+              </>
+            ) : (
+              <>
+                Submit Requirement
+                <ArrowRight size={16} />
+              </>
+            )}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+
+  // Success Feedback Element
+  const successElement = (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="text-center py-10 px-5 flex flex-col items-center justify-center"
+    >
+      <div className="w-20 h-20 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center border border-emerald-100 mb-6 relative">
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.15, type: "spring", stiffness: 150 }}
+        >
+          <CheckCircle2 size={44} strokeWidth={2.5} />
+        </motion.div>
+
+        {/* Sparkle micro-elements */}
+        <span className="absolute -top-1 -right-1 text-yellow-400 animate-bounce">
+          ✨
+        </span>
+        <span className="absolute -bottom-1 -left-1 text-emerald-400 animate-ping duration-1000">
+          ✨
+        </span>
+      </div>
+
+      <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider mb-2.5">
+        Successfully Submitted
+      </span>
+      <h3 className="text-gray-800 text-xl md:text-2xl font-black mb-2">
+        Requirement Posted Free!
+      </h3>
+      <p className="text-gray-500 text-xs max-w-[480px] leading-relaxed mb-8">
+        Thank you, <span className="font-bold text-gray-800">{name}</span>! We
+        have captured your requirement details. We will alert our premium,
+        verified property owners and local agents in{" "}
+        <span className="font-bold text-primary">{location}</span>.
+      </p>
+
+      {/* Submitted Requirement Details Summary */}
+      <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 text-left w-full max-w-[500px] mb-8 space-y-3 shadow-sm">
+        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-gray-200 pb-2 mb-2 flex items-center gap-1.5">
+          <Sparkles size={13} className="text-primary" /> Summary of matches
+          requested:
+        </h4>
+        <div className="grid grid-cols-2 gap-y-3 gap-x-4 text-xs font-medium">
+          <div>
+            <span className="text-gray-400 block text-[10px] uppercase">
+              Property Type
+            </span>
+            <span className="text-gray-700 font-bold text-sm">{type}</span>
+          </div>
+          <div>
+            <span className="text-gray-400 block text-[10px] uppercase">
+              Location Preference
+            </span>
+            <span className="text-gray-700 font-bold text-sm">{location}</span>
+          </div>
+          {message && (
+            <div className="col-span-2">
+              <span className="text-gray-400 block text-[10px] uppercase">
+                Message
+              </span>
+              <span className="text-gray-700 font-medium block whitespace-pre-wrap">
+                {message}
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="flex gap-3 w-full max-w-[320px]">
+        <button
+          onClick={resetForm}
+          className="flex-1 py-3 px-5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-bold transition-all border border-gray-200 flex items-center justify-center cursor-pointer"
+        >
+          Post Another
+        </button>
+        {isModal && onClose ? (
+          <button
+            onClick={onClose}
+            className="flex-1 py-3 px-5 bg-primary hover:bg-primary-dark text-white rounded-xl text-xs font-bold transition-all shadow active:scale-98 flex items-center justify-center cursor-pointer"
+          >
+            Close Window
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              if (onClose) onClose();
+            }}
+            className="flex-1 py-3 px-5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow active:scale-98 flex items-center justify-center cursor-pointer"
+          >
+            Done
+          </button>
+        )}
+      </div>
+    </motion.div>
+  );
+
+  // Return layout based on modal prop
+  if (isModal) {
+    return (
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto scrollbar-hide">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9, y: 20 }}
+          transition={{ type: "spring", duration: 0.5 }}
+          className="bg-white rounded-3xl shadow-2xl border border-gray-100 w-full max-w-[650px] p-6 md:p-8 relative overflow-hidden scrollbar-hide"
+        >
+          {isSubmitted ? successElement : formElement}
+        </motion.div>
+      </div>
     );
+  }
+
+  return (
+    <div className="bg-white rounded-3xl border border-gray-200 shadow-xl w-full p-2 md:p-8 relative overflow-hidden scrollbar-hide">
+      {/* Subtle design accents */}
+      <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#0F3E66] via-[#0A2944] to-[#FFC107]" />
+
+      {isSubmitted ? successElement : formElement}
+    </div>
+  );
 }

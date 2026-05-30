@@ -100,7 +100,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="w-full bg-white py-10 lg:py-16">
+    <section className="w-full bg-white py-10 lg:py-16 z-10">
       <div className="max-w-[1200px] mx-auto px-4">
 
         {/* Title */}

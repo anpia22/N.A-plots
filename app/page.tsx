@@ -28,7 +28,8 @@ export default function Home() {
       <Explorelocalities />
       <Exclusiveandadvice />
       <Adandguide />
-      <PostPropertyBanner />
+      <div className="bg-white z-100"><PostPropertyBanner /></div>
+
       <Footer />
       {/* 
         Remaining sections to be implemented:

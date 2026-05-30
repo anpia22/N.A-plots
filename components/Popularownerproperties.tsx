@@ -60,7 +60,7 @@ export default function PopularOwnerProperties() {
     };
 
     return (
-        <section className="w-full bg-white py-10">
+        <section className="w-full bg-white py-10 z-10">
             <div className="max-w-[1200px] mx-auto px-4">
 
                 {/* Heading Row */}

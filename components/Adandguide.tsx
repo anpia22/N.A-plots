@@ -182,9 +182,9 @@ const videoGuides = [
 
 export function AdBanners() {
   return (
-    <section className="w-full bg-[#FCFDFE] py-8">
-      <div className="max-w-[1200px] mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <section className="w-full bg-[#FCFDFE] py-8 z-10">
+      <div className="max-w-[1200px] mx-auto px-4 z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 z-10">
 
           {/* Left Banner: Beyond Bliss Lonavala */}
           <div className="relative rounded-2xl overflow-hidden bg-slate-900 h-[220px] flex items-center group shadow-md border border-slate-800 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
@@ -331,7 +331,7 @@ export function RealEstateGuide() {
   }, [selectedCategory, searchQuery]);
 
   return (
-    <section className="w-full bg-white py-12 border-t border-gray-100">
+    <section className="w-full bg-white py-12 border-t border-gray-100 z-10">
       <div className="max-w-[1200px] mx-auto px-4">
 
         {/* Hub Heading */}
@@ -807,7 +807,7 @@ export function RealEstateGuide() {
 
 export default function AdAndGuide() {
   return (
-    <div className="w-full bg-[#FCFDFE]">
+    <div className="w-full bg-[#FCFDFE] z-10">
       <AdBanners />
       <RealEstateGuide />
     </div>

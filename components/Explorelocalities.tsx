@@ -153,7 +153,7 @@ export default function ExploreLocalities() {
     }, []);
 
     return (
-        <section className="w-full bg-white py-6">
+        <section className="w-full bg-white py-6 z-10">
             <div className="max-w-[1200px] mx-auto px-4">
                 <div className="flex flex-col lg:flex-row gap-5 items-stretch">
 

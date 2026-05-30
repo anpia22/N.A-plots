@@ -7,7 +7,7 @@
     "build": "next build",
     "zip": "powershell -Command \"Compress-Archive -Path out/* -DestinationPath netlify-deploy.zip -Force\"",
     "build:zip": "npm run build && npm run zip",
-    "start": "next start",
+    "start": "serve out -l 3010",
     "lint": "eslint"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-hook-form": "^7.75.0",
+    "serve": "^14.2.6",
     "swiper": "^12.1.4",
     "tailwind-merge": "^3.6.0",
     "zod": "^4.4.3",

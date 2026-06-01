@@ -1289,7 +1289,15 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                       </label>
                       <div className="relative">
                         <MapPin size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                        <select
+                        <input
+                          type="text"
+                          placeholder="Enter your location"
+                          value={leadLocation}
+                          onChange={(e) => setLeadLocation(e.target.value)}
+                          required
+                          className="w-full h-11 pl-10 pr-4 border border-gray-300 rounded-lg text-sm text-[#333] placeholder-gray-400 outline-none focus:border-primary"
+                        />
+                        {/* <select
                           name="location"
                           id="location"
                           value={leadLocation}
@@ -1305,7 +1313,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                               {location}
                             </option>
                           ))}
-                        </select>
+                        </select> */}
                       </div>
                     </div>
 

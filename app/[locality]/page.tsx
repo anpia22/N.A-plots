@@ -79,7 +79,7 @@ export async function generateMetadata(props: { params: Params }): Promise<Metad
                 "Properties";
 
   return {
-    title: `${typeLabel} in ${displayName} | Real Estate & NA Plots – Pune`,
+    title: `${typeLabel} in ${displayName}`,
     description: `Explore premium ${typeLabel.toLowerCase()} for sale in ${displayName}, Pune. Find your dream home or investment today!`,
   };
 }

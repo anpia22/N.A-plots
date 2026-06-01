@@ -263,7 +263,7 @@ const newProjects = [
         price: "19 Lacs*",
         marketedBy: "Rising Spaces",
         // img: "/Images/Projects/joy estate banner.avif",
-        img: "/images/projects/joyestate.jpeg",
+        img: "/Images/projects/joyestate.jpeg",
         externalLink: "https://codenamejoyestate.com/",
     },
     {
@@ -275,7 +275,7 @@ const newProjects = [
         price: "1,499/sq.ft.",
         marketedBy: "Rising Spaces",
         // img: "/Images/Projects/RedStone_Webbanner.avif",
-        img: "/images/projects/redstoneinsta.jpg",
+        img: "/Images/projects/redstoneinsta.jpg",
         externalLink: "https://www.risingspaces.in/red-stone",
     },
     {
@@ -322,7 +322,7 @@ const newProjects = [
         price: "₹60 Lacs*",
         marketedBy: "Rising Spaces",
         // img: "/Images/Projects/OwnEdge.avif",
-        img: "/images/projects/ownedge.jpeg",
+        img: "/Images/projects/ownedge.jpeg",
         externalLink: "https://www.risingspaces.in/own-edge",
     },
 ];

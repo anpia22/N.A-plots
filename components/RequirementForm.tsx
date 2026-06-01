@@ -449,7 +449,15 @@ export default function RequirementForm({
                 size={16}
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-primary"
               />
-              <select
+              <input
+                type="text"
+                placeholder="Enter your location"
+                value={location}
+                required
+                onChange={(e) => setLocation(e.target.value)}
+                className="w-full h-11 pl-10 pr-4 bg-white border rounded-xl text-sm text-gray-700 placeholder-gray-400 outline-none transition-all"
+              />
+              {/* <select
                 value={location}
                 onChange={(e) => {
                   setLocation(e.target.value);
@@ -471,7 +479,7 @@ export default function RequirementForm({
                     {loc}
                   </option>
                 ))}
-              </select>
+              </select> */}
             </div>
             {errors.location && (
               <p className="text-rose-500 text-[11px] font-semibold mt-1 flex items-center gap-1">

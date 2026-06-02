@@ -68,6 +68,45 @@ export async function generateMetadata(props: { params: Params }): Promise<Metad
 
   if (!parsed) return {};
 
+  const citySlugLower = parsed.citySlug.toLowerCase();
+  if (citySlugLower === "pune") {
+    if (parsed.type === "Plot") {
+      return {
+        title: "Verified Plots for Sale in Pune | Prime Investment Land",
+        description: "Find the best plots for sale in Pune. Explore verified residential & commercial land in prime locations with modern amenities. Book a site visit today!",
+        keywords: "plots for sale, na plots, rera registered plots, plots in pune, real estate projects in pune, residential plots, commercial plots, plots for sale in pune, plots near pune",
+      };
+    }
+    if (parsed.type === "Villa") {
+      return {
+        title: "Villas in Pune | Luxury & Premium Villas for Sale in Pune",
+        description: "Discover premium villas in Pune. Explore luxury villas for sale in top locations across Pune ideal for homebuyers and investors. Enquire now!",
+        keywords: "villas in pune, villas for sale, luxury villas in pune, villas near pune, villas for sale in pune, 4 bhk villa in pune, 3 bhk villa in pune",
+      };
+    }
+    if (parsed.type === "Bungalow") {
+      return {
+        title: "Bungalow for Sale in Pune | Find Your Dream Home in Pune",
+        description: "Looking for a bungalow for sale in Pune? Explore premium bungalows across top localities in Pune. Find your dream home or investment property today.",
+        keywords: "bungalow for sale in pune, premium bungalow, bungalows in pune, bungalows in hinjawadi, bungalows near baner",
+      };
+    }
+    if (parsed.type === "Residential") {
+      return {
+        title: "Premium Residential Properties in Pune",
+        description: "Discover premium residential properties in Pune. Explore secure, RERA-approved gated community plots to build your dream home. View top locations & pricing!",
+        keywords: "residential properties, residential projects in pune, plots for sale, na plots, residential properties in pune",
+      };
+    }
+    if (parsed.type === "Commercial") {
+      return {
+        title: "Best Commercial Properties in Pune | NA Plots & Spaces",
+        description: "Looking for commercial properties in Pune? Explore premium commercial property in Pune for sale shops, offices, and NA plots at the best locations. Invest today!",
+        keywords: "commercial properties in pune, commercial properties for sale, commercial projects in pune, commercial real estate, commercial property for sale near me, na plots, commercial properties",
+      };
+    }
+  }
+
   const displayName = getDisplayNameFromSlug(parsed.citySlug);
   const typeLabel =
     parsed.type === "All" ? "Properties" :

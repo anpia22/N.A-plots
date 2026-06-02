@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+
+export const metadata: Metadata = {
+  title: "NA Plots in Pune | Buy Residential & Commercial NA Plots",
+  description: "Explore verified NA plots in Pune for residential & commercial investment. RERA-approved layouts in Hinjawadi, Lonavala, Paud & more. Find your dream plot today!",
+  keywords: "na plots in pune, residential projects, commercial projects, projects in pune, rera approved, na plots, villas in pune, bungalows in pune",
+};
 import PropertyCategories from "@/components/Propertycategories";
 import PopularOwnerProperties from "@/components/Popularownerproperties";
 import PreferredAgents from "@/components/Preferredagents";

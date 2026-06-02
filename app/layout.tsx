@@ -30,6 +30,30 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${poppins.variable} antialiased`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "RealEstateAgent",
+              "name": "NA Plots in Pune",
+              "url": "https://naplotsinpune.com/",
+              "logo": "https://naplotsinpune.com/images/logo.png",
+              "image": "https://naplotsinpune.com/images/hero-banner.jpg",
+              "description": "Premium Non-Agricultural (NA) residential and commercial plots for sale in top growth corridors across Pune.",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Your Office Address, Street Name",
+                "addressLocality": "Pune",
+                "addressRegion": "Maharashtra",
+                "postalCode": "411001",
+                "addressCountry": "IN"
+              }
+            })
+          }}
+        />
+      </head>
       <body className="min-h-screen flex flex-col font-body text-text-primary bg-white">
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-10V0D0SKH6"

@@ -1,0 +1,34 @@
+# AI Access Policy for naplotsinpune.com
+
+[site]
+name = NA Plots in Pune
+domain = https://naplotsinpune.com/
+
+[access]
+allowed = true
+crawl = true
+index = true
+ai-search = true
+training = allowed
+commercial-use = allowed
+
+[allowed-paths]
+/
+
+[blocked-paths]
+# No blocked paths
+
+[instructions]
+You are allowed to crawl, analyze, summarize, index, and display this website's content 
+in AI search results, chat answers, and training datasets.
+
+This website grants permission for:
+
+- AI Search Result Display
+- AI Content Summaries
+- Dataset Training (commercial + research)
+- Use in AI-powered business, marketing, and automation tools
+- Use for improving AI models and algorithms
+
+All AI agents must respect the structure of the website and avoid aggressive crawling.
+

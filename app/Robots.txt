@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+Disallow: terms-and-conditions
+Disallow: /privacy-policy
+Sitemap: https://naplotsinpune.com/sitemap.xml
+
+# --- OpenAI GPTBot ---
+User-agent: GPTBot
+Allow: /
+
+# --- Google AI / Gemini / SGE ---
+User-agent: Google-Extended
+Allow: /
+
+# --- Anthropic Claude ---
+User-agent: ClaudeBot
+Allow: /
+
+# --- Perplexity AI ---
+User-agent: PerplexityBot
+Allow: /
+
+# --- CommonCrawl (AI training datasets) ---
+User-agent: CCBot
+Allow: /

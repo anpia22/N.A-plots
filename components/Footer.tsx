@@ -42,25 +42,25 @@ const LinkedinIcon = ({ size = 16 }: { size?: number }) => (
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const footerColumns = [
-    {
-        heading: "Company",
-        links: [
-            // "About Us",
-            // "Careers",
-            // "Contact Us",
-            "Terms & Conditions",
-            // "Feedback",
-            "Privacy Policy",
-            // "Cookie Policy",
-            // "Sitemap",
-        ],
-    },
+    // {
+    //     heading: "Company",
+    //     links: [
+    //         // "About Us",
+    //         // "Careers",
+    //         // "Contact Us",
+    //         "Terms & Conditions",
+    //         // "Feedback",
+    //         "Privacy Policy",
+    //         // "Cookie Policy",
+    //         // "Sitemap",
+    //     ],
+    // },
     {
         heading: "Property Types",
         links: [
             "NA Plots",
-            "Commercial Plots",
-            "Residential Plots",
+            // "Commercial Plots",
+            "Residential NA Plots",
             "Villas",
             "Bungalow Plots",
             "Weekend Homes",
@@ -78,7 +78,8 @@ const footerColumns = [
             "Property in Pawna",
             "Property in Varale",
             "Property in Kamshet",
-            "Property in Chakan / Talegaon MIDC",
+            "Property in Chakan",
+            "Property in Talegaon MIDC",
         ],
     },
     {
@@ -94,7 +95,11 @@ const footerColumns = [
             "Red Stone",
             "Eco Town",
             "Aangan 18",
+            "Pratham",
+            "Beyond Bliss",
+            "Crown Estate",
         ],
+
     },
     {
         heading: "Locality Guides",
@@ -108,35 +113,44 @@ const footerColumns = [
             "Pawna, Pune",
             "Varale, Pune",
             "Kamshet, Pune",
-            "Chakan / Talegaon MIDC, Pune",
+            "Chakan, Pune",
+            "Talegaon MIDC, Pune"
         ],
+    }, {
+        heading: "Villas",
+        links: ["Villas in Pune", "Villas in Lonavala", "Villas in Khandala", "Villas in Hinjawadi", "Villas in Wakad", "Villas in Baner", "Villas in Pawna", "Villas in Paud"]
     },
 ];
 
 const additionalSections = [
+
     {
-        title: "Villas",
-        links: ["Villas in Pune", "Villas in Lonavala", "Villas in Khandala", "Villas in Hinjawadi", "Villas in Wakad", "Villas in Baner", "Villas in Pawna", "Villas in Paud"]
+        title: "Villa for Sale",
+        links: ["Villa for Sale in Pune", "Villa for Sale in Lonavala", "Villa for Sale in Khandala", "Villa for Sale in Hinjawadi", "Villa for Sale in Wakad", "Villa for Sale in Baner", "Villa for Sale in Pawna", "Villa for Sale in Paud"]
     },
     {
         title: "Bungalows",
         links: ["Bungalows in Pune", "Bungalows in Lonavala", "Bungalows in Khandala", "Bungalows in Hinjawadi", "Bungalows in Wakad", "Bungalows in Baner", "Bungalows in Pawna"]
     },
     {
-        title: "Residential Plots",
-        links: ["Residential Plots in Pune", "Residential Plots in Hinjawadi", "Residential Plots in Maan", "Residential Plots in Dhamane", "Residential Plots in Paud", "Residential Plots in Lonavala", "Residential Plots in Shirgaon"]
+        title: "Bungalow for Sale",
+        links: ["Bungalow for Sale in Pune", "Bungalow for Sale in Lonavala", "Bungalow for Sale in Khandala", "Bungalow for Sale in Hinjawadi", "Bungalow for Sale in Wakad", "Bungalow for Sale in Baner", "Bungalow for Sale in Pawna"]
     },
     {
-        title: "Commercial Plots",
-        links: ["Commercial Plots in Pune", "Commercial Plots in Hinjawadi", "Commercial Plots in Ghotawade", "Commercial Plots in Somatane", "Commercial Plots in Kanhe Phata", "Commercial Plots in Varale", "Commercial Plots in Takve", "Commercial Plots in Kamshet", "Commercial Plots in Chakan / Talegaon MIDC"]
+        title: "Residential NA Plots",
+        links: ["Residential NA Plots in Pune", "Residential NA Plots in Hinjawadi", "Residential NA Plots in Maan", "Residential NA Plots in Dhamane", "Residential NA Plots in Paud", "Residential NA Plots in Lonavala", "Residential NA Plots in Shirgaon"]
     },
+    // {
+    //     title: "Commercial Plots",
+    //     links: ["Commercial Plots in Pune", "Commercial Plots in Hinjawadi", "Commercial Plots in Ghotawade", "Commercial Plots in Somatane", "Commercial Plots in Kanhe Phata", "Commercial Plots in Varale", "Commercial Plots in Takve", "Commercial Plots in Kamshet", "Commercial Plots in Chakan / Talegaon MIDC"]
+    // },
     {
         title: "NA Plots",
-        links: ["NA Plots in Pune", "NA Plots in Hinjawadi", "NA Plots in Maan", "NA Plots in Paud", "NA Plots in Somatane Phata", "NA Plots in Kanhe Phata", "NA Plots in Ghotawade", "NA Plots in Lonavala", "NA Plots in Kamshet", "NA Plots in Chakan / Talegaon MIDC"]
+        links: ["NA Plots in Pune", "NA Plots in Hinjawadi", "NA Plots in Maan", "NA Plots in Paud", "NA Plots in Somatane Phata", "NA Plots in Kanhe Phata", "NA Plots in Ghotawade", "NA Plots in Lonavala", "NA Plots in Kamshet", "NA Plots in Chakan ", "NA Plots in Talegaon MIDC"]
     },
     {
         title: "Properties",
-        links: ["Property in Pune", "Property in Hinjawadi", "Property in Maan", "Property in Paud", "Property in Somatane Phata", "Property in Kanhe Phata", "Property in Ghotawade", "Property in Lonavala", "Property in Kamshet", "Property in Chakan / Talegaon MIDC"]
+        links: ["Property in Pune", "Property in Hinjawadi", "Property in Maan", "Property in Paud", "Property in Somatane Phata", "Property in Kanhe Phata", "Property in Ghotawade", "Property in Lonavala", "Property in Kamshet", "Property in Chakan ", "Property in Talegaon MIDC"]
     }
 ];
 

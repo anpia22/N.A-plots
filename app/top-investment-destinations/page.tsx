@@ -24,7 +24,7 @@ const investmentProjectsList: Project[] = [
         name: "Red Stone",
         developer: "Rising Spaces",
         locality: "Takve, Kanhe Phata, Pune",
-        bhk: "Commercial NA",
+        bhk: "Residental NA Plots",
         price: "1,499/sq.ft.",
         marketedBy: "Rising Spaces",
         img: "/Images/Projects/redstoneinsta.jpg",
@@ -35,7 +35,7 @@ const investmentProjectsList: Project[] = [
         name: "Eco Town",
         developer: "Rising Spaces",
         locality: "Ghotawade, Pune",
-        bhk: "Commercial NA",
+        bhk: "Residential NA Plots",
         price: "56.34 Lacs*",
         marketedBy: "Rising Spaces",
         img: "/Images/Projects/ecotown.jpg",
@@ -46,7 +46,7 @@ const investmentProjectsList: Project[] = [
         name: "Codename Pratham",
         developer: "Rising Spaces",
         locality: "Varale, Pune",
-        bhk: "Commercial NA",
+        bhk: "Residential Property",
         price: "42 Lacs*",
         marketedBy: "Rising Spaces",
         img: "/Images/Projects/pratham.jpeg",
@@ -57,7 +57,7 @@ const investmentProjectsList: Project[] = [
         name: "Codename Prakriti",
         developer: "Rising Spaces",
         locality: "Kanhe Phata, Pune",
-        bhk: "Commercial NA",
+        bhk: "Residential NA Plots",
         price: "19.50 Lacs*",
         marketedBy: "Rising Spaces",
         img: "/Images/Projects/prakritiinsta.jpg",
@@ -68,7 +68,7 @@ const investmentProjectsList: Project[] = [
         name: "Codename OWNEDGE",
         developer: "Rising Spaces",
         locality: "Somatane, Pune",
-        bhk: "Commercial NA",
+        bhk: "Commercial Property",
         price: "60 Lacs*",
         marketedBy: "Rising Spaces",
         img: "/Images/Projects/ownedge.jpeg",
@@ -79,30 +79,30 @@ const investmentProjectsList: Project[] = [
         name: "The Pawna Villas",
         developer: "Rising Spaces",
         locality: "Pawna",
-        bhk: "Commercial NA Plots",
+        bhk: "Residential NA Plots",
         price: "₹2.75 Cr",
         marketedBy: "Rising Spaces",
         img: "/Images/Projects/pawna.png",
         externalLink: "https://thepawnavillas.com/",
     },
-    {
-        id: 8,
-        name: "Streets of Europe",
-        developer: "Rising Spaces",
-        locality: "Near Wipro Circle Maan Road",
-        bhk: "Commercial NA Plot",
-        price: "₹50 Lac",
-        marketedBy: "Rising Spaces",
-        img: "/Images/Projects/Streets of Europe.avif",
-        externalLink: "#",
-    }
+    // {
+    //     id: 8,
+    //     name: "Streets of Europe",
+    //     developer: "Rising Spaces",
+    //     locality: "Near Wipro Circle Maan Road",
+    //     bhk: "Commercial NA Plot",
+    //     price: "₹50 Lac",
+    //     marketedBy: "Rising Spaces",
+    //     img: "/Images/Projects/Streets of Europe.avif",
+    //     externalLink: "#",
+    // }
 ];
 
 export default function TopInvestmentDestinationsPage() {
     return (
         <div className="w-full bg-[#f8f9fa] min-h-screen flex flex-col z-10">
             <Navbar />
-            
+
             {/* Breadcrumb / Header area */}
             <div className="bg-white border-b border-gray-200 py-6">
                 <div className="max-w-[1200px] mx-auto px-4">

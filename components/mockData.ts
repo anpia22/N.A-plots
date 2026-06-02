@@ -8,8 +8,8 @@ export interface Property {
   area: string; // e.g. "985 sqft"
   locality: string;
   city: "Pune" | "Mumbai" | "Bangalore" | "Delhi NCR" | string;
-  status: "Ready to Move" | "Under Construction";
-  postedBy: "Owner" | "Builder" | "Agent";
+  status: "Residential NA Plots" | "Residential Property" | "Townhouses" | "Villas" | "Commercial NA Plots" | "Commercial Property" | string;
+  postedBy: "Rising Spaces";
   isProject: boolean; // True for builder project/society, false for individual owner properties
   projectName: string;
   builderName?: string;
@@ -43,7 +43,7 @@ export const seedProperties: Property[] = [
     locality: "Maan",
     city: "Hinjawadi",
     status: "Ready to Move",
-    postedBy: "Builder",
+    postedBy: "Rising Spaces",
     isProject: true,
     img: "/Images/Projects/24K PREMIUM ASSETS.avif",
     images: [
@@ -288,8 +288,8 @@ export const seedProperties: Property[] = [
     area: "1,800 sqft",
     locality: "Paud / Mulshi",
     city: "Paud",
-    status: "Under Construction",
-    postedBy: "Builder",
+    status: "Residential NA Plots",
+    postedBy: "Rising Spaces",
     isProject: true,
     img: "/Images/Projects/frowinsta.jpeg",
     images: [
@@ -315,8 +315,8 @@ export const seedProperties: Property[] = [
     area: "1,886 sqft",
     locality: "Ghotawade",
     city: "Hinjawadi",
-    status: "Under Construction",
-    postedBy: "Builder",
+    status: "Residential NA Plots",
+    postedBy: "Rising Spaces",
     isProject: true,
     img: "/Images/Projects/tathastu.jpeg",
     images: [
@@ -343,8 +343,8 @@ export const seedProperties: Property[] = [
     area: "1,400 sqft",
     locality: "Pawna",
     city: "Pawna",
-    status: "Under Construction",
-    postedBy: "Builder",
+    status: "Residential NA Plots",
+    postedBy: "Rising Spaces",
     isProject: true,
     img: "/Images/Projects/pawnalake.png",
     images: [
@@ -371,8 +371,8 @@ export const seedProperties: Property[] = [
     area: "1,838 sqft",
     locality: "Somatane",
     city: "Somatane Phata",
-    status: "Under Construction",
-    postedBy: "Builder",
+    status: "Commercial Property",
+    postedBy: "Rising Spaces",
     isProject: true,
     img: "/Images/Projects/ownedge.jpeg",
     images: [
@@ -399,8 +399,8 @@ export const seedProperties: Property[] = [
     area: "1,038 sqft",
     locality: "Kanhe Phata",
     city: "Kanhe Phata",
-    status: "Under Construction",
-    postedBy: "Builder",
+    status: "Residential NA Plots",
+    postedBy: "Rising Spaces",
     isProject: true,
     img: "/Images/Projects/prakritiinsta.jpg",
     images: [
@@ -426,8 +426,8 @@ export const seedProperties: Property[] = [
     area: "435 sqft",
     locality: "Varale",
     city: "Talegaon",
-    status: "Under Construction",
-    postedBy: "Builder",
+    status: "Residential Property",
+    postedBy: "Rising Spaces",
     isProject: true,
     img: "/Images/Projects/pratham.jpeg",
     images: [
@@ -453,8 +453,8 @@ export const seedProperties: Property[] = [
     area: "1,886 sqft",
     locality: "Dhamane",
     city: "Chakan / Talegaon MIDC",
-    status: "Under Construction",
-    postedBy: "Builder",
+    status: "Residential NA Plots",
+    postedBy: "Rising Spaces",
     isProject: true,
     img: "/Images/Projects/joyestate.jpeg",
     images: [
@@ -480,8 +480,8 @@ export const seedProperties: Property[] = [
     area: "2000 sqft*",
     locality: "Khadkale",
     city: "Kamshet",
-    status: "Under Construction",
-    postedBy: "Builder",
+    status: "Residential NA Plots",
+    postedBy: "Rising Spaces",
     isProject: true,
     img: "/Images/Projects/crownesate.jpeg",
     images: [
@@ -507,8 +507,8 @@ export const seedProperties: Property[] = [
     area: "1,248 sqft",
     locality: "Kanhe Phata",
     city: "Kanhe Phata",
-    status: "Under Construction",
-    postedBy: "Builder",
+    status: "Residential NA Plots",
+    postedBy: "Rising Spaces",
     isProject: true,
     img: "/Images/Projects/mountville.jpeg",
     images: [
@@ -534,8 +534,8 @@ export const seedProperties: Property[] = [
     area: "1,800 sqft",
     locality: "Takve, Kanhe Phata",
     city: "Kanhe Phata",
-    status: "Under Construction",
-    postedBy: "Builder",
+    status: "Residential NA Plots",
+    postedBy: "Rising Spaces",
     isProject: true,
     img: "/Images/Projects/redstoneinsta.jpg",
     images: [
@@ -561,8 +561,8 @@ export const seedProperties: Property[] = [
     area: "1,800 sqft",
     locality: "Ghotawade",
     city: "Ghotawade",
-    status: "Under Construction",
-    postedBy: "Builder",
+    status: "Residential NA Plots",
+    postedBy: "Rising Spaces",
     isProject: true,
     img: "/Images/Projects/ecotown.jpg",
     images: [
@@ -590,8 +590,8 @@ export const seedProperties: Property[] = [
     area: "1,800 sqft",
     locality: "Maan",
     city: "Hinjawadi",
-    status: "Under Construction",
-    postedBy: "Builder",
+    status: "Townhouses",
+    postedBy: "Rising Spaces",
     isProject: true,
     img: "/Images/Projects/18angan.jpeg",
     images: [
@@ -617,8 +617,8 @@ export const seedProperties: Property[] = [
     area: "3,200 sqft",
     locality: "Lonavala",
     city: "Lonavala",
-    status: "Under Construction",
-    postedBy: "Builder",
+    status: "Villas",
+    postedBy: "Rising Spaces",
     isProject: true,
     img: "/Images/Projects/beyondBliss.jpeg",
     images: [

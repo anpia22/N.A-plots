@@ -16,13 +16,20 @@ const slugToLocalityMap: Record<string, string> = {
   "mulshi": "Mulshi",
   "paud": "Paud",
   "somatane-phata": "Somatane Phata",
+  "somatane": "Somatane",
   "takve": "Takve",
   "talegaon": "Talegaon",
+  "talegaon-midc": "Talegaon MIDC",
   "varale": "Varale",
   "wakad": "Wakad",
   "pune": "Pune",
   "kamshet": "Kamshet",
   "chakan-talegaon-midc": "Chakan / Talegaon MIDC",
+  "khandala": "Khandala",
+  "baner": "Baner",
+  "maan": "Maan",
+  "shirgaon": "Shirgaon",
+
 };
 
 // All recognised URL prefixes and the type they map to
@@ -127,7 +134,9 @@ export function generateStaticParams() {
   const localities = [
     "hinjawadi", "lonavala", "pawna", "kanhe-phata",
     "chakan", "dhamane", "ghotawade", "mulshi",
-    "paud", "somatane-phata", "takve", "talegaon", "varale", "wakad", "pune", "kamshet", "chakan-talegaon-midc"
+    "paud", "somatane-phata", "somatane", "takve", "talegaon", "talegaon-midc",
+    "varale", "wakad", "pune", "kamshet", "chakan-talegaon-midc",
+    "khandala", "baner", "maan", "shirgaon"
   ];
 
   const params: { locality: string }[] = [];

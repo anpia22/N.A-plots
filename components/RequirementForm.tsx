@@ -29,7 +29,7 @@ interface RequirementFormProps {
 
 const locations = [
   "Pune",
-  "Chakan/Talegaon MIDC",
+  "Chakan", "Talegaon MIDC",
   "Ghotawade",
   "Hinjewadi",
   "Kamshet",
@@ -313,11 +313,10 @@ export default function RequirementForm({
                     if (errors.name) validateField("name", e.target.value);
                   }}
                   onBlur={(e) => validateField("name", e.target.value)}
-                  className={`w-full h-11 pl-10 pr-4 bg-white border rounded-xl text-sm text-gray-700 placeholder-gray-400 outline-none transition-all ${
-                    errors.name
+                  className={`w-full h-11 pl-10 pr-4 bg-white border rounded-xl text-sm text-gray-700 placeholder-gray-400 outline-none transition-all ${errors.name
                       ? "border-rose-400 focus:border-rose-500 bg-rose-50/10"
                       : "border-gray-200 focus:border-primary"
-                  }`}
+                    }`}
                 />
               </div>
               {errors.name && (
@@ -349,11 +348,10 @@ export default function RequirementForm({
                     if (errors.phone) validateField("phone", val);
                   }}
                   onBlur={(e) => validateField("phone", e.target.value)}
-                  className={`w-full h-11 pl-14 pr-4 bg-white border rounded-xl text-sm text-gray-700 placeholder-gray-400 outline-none transition-all ${
-                    errors.phone
+                  className={`w-full h-11 pl-14 pr-4 bg-white border rounded-xl text-sm text-gray-700 placeholder-gray-400 outline-none transition-all ${errors.phone
                       ? "border-rose-400 focus:border-rose-500 bg-rose-50/10"
                       : "border-gray-200 focus:border-primary"
-                  }`}
+                    }`}
                 />
               </div>
               {errors.phone && (
@@ -387,11 +385,10 @@ export default function RequirementForm({
                     if (errors.email) validateField("email", e.target.value);
                   }}
                   onBlur={(e) => validateField("email", e.target.value)}
-                  className={`w-full h-11 pl-10 pr-4 bg-white border rounded-xl text-sm text-gray-700 placeholder-gray-400 outline-none transition-all ${
-                    errors.email
+                  className={`w-full h-11 pl-10 pr-4 bg-white border rounded-xl text-sm text-gray-700 placeholder-gray-400 outline-none transition-all ${errors.email
                       ? "border-rose-400 focus:border-rose-500 bg-rose-50/10"
                       : "border-gray-200 focus:border-primary"
-                  }`}
+                    }`}
                 />
               </div>
               {errors.email && (
@@ -415,11 +412,10 @@ export default function RequirementForm({
                   if (errors.type) validateField("type", e.target.value);
                 }}
                 onBlur={(e) => validateField("type", e.target.value)}
-                className={`w-full h-11 px-3 bg-white border rounded-xl text-sm text-gray-700 font-semibold outline-none transition-all cursor-pointer ${
-                  errors.type
+                className={`w-full h-11 px-3 bg-white border rounded-xl text-sm text-gray-700 font-semibold outline-none transition-all cursor-pointer ${errors.type
                     ? "border-rose-400 focus:border-rose-500 bg-rose-50/10"
                     : "border-gray-200 focus:border-primary"
-                }`}
+                  }`}
               >
                 <option value="" disabled>
                   Select Type

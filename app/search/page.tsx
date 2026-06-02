@@ -36,7 +36,7 @@ import {
 
 const locations = [
   "Pune",
-  "Chakan/Talegaon MIDC",
+  "Chakan ", "Talegaon MIDC",
   "Ghotawade",
   "Hinjewadi",
   "Kamshet",
@@ -1082,7 +1082,8 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                               className="h-9 px-3 sm:px-5 bg-primary hover:bg-primary-dark text-white rounded-3xl text-xs font-bold transition-all flex items-center justify-center shadow-sm hover:shadow active:scale-95 whitespace-nowrap cursor-pointer"
                             >
                               <Phone size={12} className="mr-1" />
-                              Contact {p.postedBy === "Builder" ? "Builder" : "Owner"}
+                              {/* Contact {p.postedBy === "Builder" ? "Builder" : "Owner"} */}
+                              Schedule a Visit
                             </button>
                           </div>
 

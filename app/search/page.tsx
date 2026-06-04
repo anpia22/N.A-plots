@@ -1016,9 +1016,9 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                           </div>
 
                           {/* Property Title */}
-                          <h3 className="text-[#333] group-hover:text-primary text-base sm:text-lg font-bold leading-snug mb-1 transition-colors">
+                          <h1 className="text-[#333] group-hover:text-primary text-base sm:text-lg font-bold leading-snug mb-1 transition-colors">
                             {p.bhk > 0 ? `${p.bhk} BHK ` : ""}{p.type} {p.type === "Plot" ? "for Sale in" : "for Sale in"} {p.projectName}
-                          </h3>
+                          </h1>
 
                           {/* Locality */}
                           <p className="text-gray-500 text-sm flex items-center gap-1 mb-4">
@@ -1028,10 +1028,10 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
 
                           {/* Key Properties Grid */}
                           <div className="grid grid-cols-3 gap-2 py-3 border-y border-gray-100 mb-4 bg-gray-50/50 rounded-lg px-3">
-                            <div>
+                            <h2>
                               <span className="text-[10px] text-gray-400 font-semibold block uppercase">Super Area</span>
                               <span className="text-xs font-bold text-gray-700">{p.area || "N/A"}</span>
-                            </div>
+                            </h2>
                             <div>
                               <span className="text-[10px] text-gray-400 font-semibold block uppercase">Status</span>
                               <span className="text-xs font-bold text-gray-700">{p.status}</span>
@@ -1100,7 +1100,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                     <div className="w-16 h-16 bg-rose-50 text-primary rounded-full flex items-center justify-center mx-auto mb-4 border border-rose-100">
                       <Info size={30} />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">No Matching Properties Found</h3>
+                    <h1 className="text-xl font-bold text-gray-800 mb-2">No Matching Properties Found</h1>
                     <p className="text-gray-500 text-sm mb-6 leading-relaxed max-w-[500px] mx-auto">
                       We couldn't find any listings matching your search criteria in <span className="font-bold text-primary">{selectedCity}</span>. Try adjusting your filters or clearing search text.
                     </p>

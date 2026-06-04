@@ -62,8 +62,9 @@ const footerColumns = [
             // "Commercial Plots",
             "Residential NA Plots",
             "Villas",
-            "Bungalow Plots",
-            "Weekend Homes",
+            "Bungalow",
+            "Residential Properties"
+            // "Weekend Homes",
         ],
     },
     {
@@ -94,7 +95,7 @@ const footerColumns = [
             "Mountville",
             "Red Stone",
             "Eco Town",
-            "Aangan 18",
+            "18 Aangan",
             "Pratham",
             "Beyond Bliss",
             "Crown Estate",
@@ -213,7 +214,10 @@ const getLinkHref = (heading: string, linkText: string) => {
         if (text === "Mountville") return "https://www.risingspaces.in/mountville";
         if (text === "Red Stone") return "https://www.risingspaces.in/red-stone";
         if (text === "Eco Town") return "https://www.risingspaces.in/eco-town";
-        if (text === "Aangan 18") return "https://www.risingspaces.in/18-aangan";
+        if (text === "18 Aangan") return "https://www.risingspaces.in/18-aangan";
+        if (text === "Pratham") return "https://codenamepratham.in/";
+        if (text === "Beyond Bliss") return "https://beyondblisslonavala.com/";
+        if (text === "Crown Estate") return "https://crownestate.in/";
         return `/search?query=${encodeURIComponent(linkText)}`;
     }
 

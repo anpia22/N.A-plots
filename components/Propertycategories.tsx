@@ -55,7 +55,7 @@ export default function PropertyCategories() {
     const cards = [
         {
             id: 1,
-            count: "25+",
+            // count: "25+",
             label: "Residential NA Plots",
             explore: true,
             bg: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&q=80",
@@ -63,7 +63,7 @@ export default function PropertyCategories() {
         },
         {
             id: 2,
-            count: "5+",
+            // count: "5+",
             label: "Commercial Properties",
             explore: true,
             bg: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&q=80",
@@ -75,7 +75,7 @@ export default function PropertyCategories() {
         },
         {
             id: 4,
-            count: "11+",
+            // count: "11+",
             label: "Ongoing Projects",
             explore: true,
             bg: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400&q=80",
@@ -179,9 +179,9 @@ export default function PropertyCategories() {
 
                                 {/* Text */}
                                 <div className="absolute bottom-0 left-0 p-4 text-white">
-                                    {card.count && (
+                                    {/* {card.count && (
                                         <p className="text-2xl font-bold leading-tight">{card.count}</p>
-                                    )}
+                                    )} */}
                                     <p className="text-base font-semibold mb-3">{card.label}</p>
                                     {card.explore && (
                                         <p className="text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all">

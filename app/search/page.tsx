@@ -1064,7 +1064,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
 
                           {/* CTA Actions */}
                           <div className="flex items-center gap-2 shrink-0" onClick={(e) => e.stopPropagation()}>
-                            <button
+                            {/* <button
                               onClick={() => {
                                 if (p.externalLink) {
                                   window.open(p.externalLink, "_blank", "noopener,noreferrer");
@@ -1076,6 +1076,12 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                             >
                               <Maximize2 size={12} className="mr-1" />
                               View Project
+                            </button> */}
+                            <button
+                              onClick={() => { window.location.href = `tel: ${p.agentPhone}` }}
+                              className="h-9 px-3 sm:px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-3xl text-xs font-bold transition-all border border-gray-200 flex items-center justify-center whitespace-nowrap cursor-pointer"
+                            >
+                              Call for Site Visit
                             </button>
                             <button
                               onClick={() => setContactProperty(p)}
@@ -1085,6 +1091,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                               {/* Contact {p.postedBy === "Builder" ? "Builder" : "Owner"} */}
                               Schedule a Visit
                             </button>
+
                           </div>
 
                         </div>

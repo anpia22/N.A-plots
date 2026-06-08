@@ -25,6 +25,7 @@ export interface Property {
   amenities: string[];
   postedDate: string; // "Just Now", "2 days ago", etc.
   externalLink?: string;
+  agentPhone?: string;
 }
 
 export const seedProperties: Property[] = [
@@ -301,7 +302,8 @@ export const seedProperties: Property[] = [
     facing: "East",
     amenities: ["Gated Community", "Concrete Roads", "Underground Electricity", "Water Connection", "Street Lights", "CCTV Security"],
     postedDate: "Just Now",
-    externalLink: "https://thefrow.in/"
+    externalLink: "https://thefrow.in/",
+    agentPhone: "+91 9766931010",
   },
   {
     id: "ongoing_tathastu",
@@ -329,7 +331,8 @@ export const seedProperties: Property[] = [
     facing: "West",
     amenities: ["Commercial Zone", "Concrete Roads", "Underground Electricity", "Water Supply", "Street Lights", "CCTV Security"],
     postedDate: "2 days ago",
-    externalLink: "https://codenametathastu.com/"
+    externalLink: "https://codenametathastu.com/",
+    agentPhone: "+91 8007337788",
   },
   {
     id: "ongoing_pawna_villas",
@@ -357,7 +360,8 @@ export const seedProperties: Property[] = [
     facing: "North-East",
     amenities: ["Waterfront View", "Gated Security", "Concrete Roads", "Clubhouse", "24/7 Power Backup"],
     postedDate: "5 days ago",
-    externalLink: "https://thepawnavillas.com/"
+    externalLink: "https://thepawnavillas.com/",
+    agentPhone: "+91 7410008984",
   },
   {
     id: "ongoing_ownedge",
@@ -385,7 +389,8 @@ export const seedProperties: Property[] = [
     facing: "South-East",
     amenities: ["Commercial Zone", "Wide Roads", "High Visibility", "Water Connection", "Underground Cabling"],
     postedDate: "1 week ago",
-    externalLink: "https://www.risingspaces.in/own-edge"
+    externalLink: "https://www.risingspaces.in/own-edge",
+    agentPhone: "",
   },
   {
     id: "ongoing_prakriti",
@@ -412,7 +417,8 @@ export const seedProperties: Property[] = [
     facing: "East",
     amenities: ["Commercial Zone", "Concrete Roads", "High Visibility", "Water Supply", "Street Lights"],
     postedDate: "Yesterday",
-    externalLink: "https://codenameprakriti.com/"
+    externalLink: "https://codenameprakriti.com/",
+    agentPhone: "+91 80073 37766",
   },
   {
     id: "ongoing_pratham",
@@ -439,7 +445,8 @@ export const seedProperties: Property[] = [
     facing: "North",
     amenities: ["Commercial Zone", "Wide Access Roads", "Electricity Lines", "Water Supply", "Street Lights"],
     postedDate: "3 days ago",
-    externalLink: "https://codenamepratham.in/"
+    externalLink: "https://codenamepratham.in/",
+    agentPhone: "",
   },
   {
     id: "ongoing_joy_estate",
@@ -466,7 +473,8 @@ export const seedProperties: Property[] = [
     facing: "East",
     amenities: ["Gated Community", "Recreational Garden", "Concrete Roads", "Underground Cabling", "Street Lights", "CCTV Security"],
     postedDate: "Just Now",
-    externalLink: "https://codenamejoyestate.com/"
+    externalLink: "https://codenamejoyestate.com/",
+    agentPhone: "+91 7575960707",
   },
   {
     id: "ongoing_crown_estate",
@@ -493,7 +501,8 @@ export const seedProperties: Property[] = [
     facing: "West",
     amenities: ["Commercial Zone", "Gated Compound", "Wide Roads", "Electricity Supply", "CCTV Security"],
     postedDate: "4 days ago",
-    externalLink: "https://crownestate.in/"
+    externalLink: "https://crownestate.in/",
+    agentPhone: "+91 8806660101",
   },
   {
     id: "ongoing_mountville",
@@ -520,7 +529,8 @@ export const seedProperties: Property[] = [
     facing: "East",
     amenities: ["Gated Community", "Valley Views", "Concrete Roads", "Water Connections", "Street Lights"],
     postedDate: "1 week ago",
-    externalLink: "https://www.risingspaces.in/mountville"
+    externalLink: "https://www.risingspaces.in/mountville",
+    agentPhone: "+91 8805950707",
   },
   {
     id: "ongoing_red_stone",
@@ -547,7 +557,8 @@ export const seedProperties: Property[] = [
     facing: "South",
     amenities: ["Commercial Zone", "Highway Frontage", "Grand Entrance Gate", "Wide Concrete Roads", "Water Points"],
     postedDate: "2 weeks ago",
-    externalLink: "https://www.risingspaces.in/red-stone"
+    externalLink: "https://www.risingspaces.in/red-stone",
+    agentPhone: "+91 80073 37766",
   },
   {
     id: "ongoing_eco_town",
@@ -574,7 +585,8 @@ export const seedProperties: Property[] = [
     facing: "North-East",
     amenities: ["Eco-Friendly Gated", "Water Connection", "Underground Cabling", "Internal Asphalt Roads", "Street Lights"],
     postedDate: "3 days ago",
-    externalLink: "https://www.risingspaces.in/eco-town"
+    externalLink: "https://www.risingspaces.in/eco-town",
+    agentPhone: "",
   },
 
   // === UPCOMING PROJECTS (COMING SOON) ===
@@ -603,7 +615,8 @@ export const seedProperties: Property[] = [
     facing: "East",
     amenities: ["Gated Community", "Concrete Roads", "Underground Electricity", "Water Supply", "Street Lights", "CCTV Security"],
     postedDate: "Coming Soon",
-    externalLink: "https://www.risingspaces.in/18-aangan"
+    externalLink: "https://www.risingspaces.in/18-aangan",
+    agentPhone: "+91 9503230707",
   },
   {
     id: "upcoming_beyond_bliss",
@@ -632,7 +645,8 @@ export const seedProperties: Property[] = [
     balconies: 3,
     amenities: ["Private Pool", "Valley View", "Private Lawn", "Gated Security", "Clubhouse", "24/7 Power Backup"],
     postedDate: "Coming Soon",
-    externalLink: "https://beyondblisslonavala.com/"
+    externalLink: "https://beyondblisslonavala.com/",
+    agentPhone: "+91 98604 31818",
   }
 ];
 

@@ -2,6 +2,7 @@
 import React from 'react';
 import { CheckCircle, ArrowRight, Phone } from "lucide-react";
 import Image from 'next/image';
+import Link from 'next/link';
 
 const bankPartners = [
     { name: "HDFC Limited", logo: "/Images/hdfc.svg", rate: "Starts at 8.5%", color: "#003399" },
@@ -58,9 +59,9 @@ export default function NAPlotsFeatures() {
 
                     {/* CTA */}
 
-                    <button className="z-10 bg-primary hover:bg-primary-dark text-white font-bold text-sm px-8 py-3 rounded-full transition-all shadow-lg hover:scale-105 max-w-[200px] cursor-pointer">
+                    <Link href="tel:+918805390707" className="z-10 bg-primary hover:bg-primary-dark text-white font-bold text-sm px-8 py-3 rounded-full transition-all shadow-lg hover:scale-105 max-w-[200px] cursor-pointer">
                         <Phone className='inline mr-2 h-5 w-5' /> Call Us Now
-                    </button>
+                    </Link>
                 </div>
 
                 {/* Hide This Section - Will be updated later */}

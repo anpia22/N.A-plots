@@ -29,7 +29,7 @@ function NAPlotsBadge() {
 const topProjects = [
     {
         id: 1,
-        name: "The f Row",
+        name: "The fRow",
         developer: "Rising Spaces",
         locality: "Paud, Pune",
         bhk: "Residential NA Plots",

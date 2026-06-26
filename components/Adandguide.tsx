@@ -1,5 +1,6 @@
 "use client"
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import {
   ArrowRight,
   Play,
@@ -94,7 +95,7 @@ Gram Panchayats do NOT have legal power to convert agricultural land to NA land.
 | Infrastructure | Regulated, wide roads, drainage | Unregulated, narrow roads |
 | Appreciation | High, secure resale | Low, highly risky |
 
-> NAPLOTPUNE exclusively features Collector NA / PMRDA Sanctioned plots. Projects like 24K Premium and The f Row offer fully-approved layouts with bank loan options from leading financial institutions.`
+> NAPLOTPUNE exclusively features Collector NA / PMRDA Sanctioned plots. Projects like 24K Premium and The fRow offer fully-approved layouts with bank loan options from leading financial institutions.`
   },
   {
     id: "blog_hinjawadi_hotspot",
@@ -155,7 +156,7 @@ Residential villas are permitted up to G+2 or G+3 floors (approx. 12 meters).
 ### Gated Infrastructure Advantage
 Building on isolated plots means arranging water, electricity, and security yourself. Gated developments provide underground electric cables, municipal water, security guards, and landscape parks — all ready-made.
 
-> At The f Row in Paud, a fashion-inspired Vogue villa plotting community, we offer ready-to-construct plots with premium amenities. Our partners assist from design to delivery.`
+> At The fRow in Paud, a fashion-inspired Vogue villa plotting community, we offer ready-to-construct plots with premium amenities. Our partners assist from design to delivery.`
   }
 ];
 
@@ -234,13 +235,13 @@ export function AdBanners() {
             </div>
           </div>
 
-          {/* Right Banner: The f Row Paud */}
+          {/* Right Banner: The fRow Paud */}
           <div className="relative rounded-2xl overflow-hidden bg-amber-950 h-[220px] flex items-center group shadow-md border border-amber-900/30 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
               <img
                 src="/Images/Projects/frow_banner.avif"
-                alt="The f Row"
+                alt="The fRow"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-55"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-amber-950 via-amber-900/90 to-transparent" />
@@ -253,7 +254,7 @@ export function AdBanners() {
                   Vogue Villas
                 </span>
                 <h3 className="text-white text-xl font-bold mt-2 leading-tight">
-                  The f Row — Vogue Living
+                  The fRow — Vogue Living
                 </h3>
                 <p className="text-gray-300 text-xs mt-2 font-medium line-clamp-2">
                   Fashion-inspired gated plotting community & designer villas in Paud, Pune. Ready infrastructure.
@@ -265,7 +266,7 @@ export function AdBanners() {
                   href="https://thefrow.in/"
                   // onClick={(e) => {
                   //   e.preventDefault();
-                  //   alert("Welcome to The f Row! Gated NA plot bookings are now open. Our team will contact you shortly.");
+                  //   alert("Welcome to The fRow! Gated NA plot bookings are now open. Our team will contact you shortly.");
                   // }}
                   className="bg-yellow-500 hover:bg-yellow-400 text-amber-950 text-xs font-bold px-4 py-2.5 rounded-full inline-flex items-center gap-1.5 transition-all duration-300 transform active:scale-95 shadow-lg"
                 >
@@ -276,7 +277,7 @@ export function AdBanners() {
 
             {/* Price Badge */}
             <div className="absolute top-4 right-4 bg-yellow-500/20 backdrop-blur-md border border-yellow-500/30 text-yellow-300 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-md">
-              From ₹35 Lac*
+              From ₹75 Lac*
             </div>
           </div>
 
@@ -292,6 +293,8 @@ export function RealEstateGuide() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
 
   // Interactive Checklist State
   const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>({
@@ -570,8 +573,8 @@ export function RealEstateGuide() {
       </div>
 
       {/* ─── 3. FULL BLOG DETAIL MODAL (PORTAL) ───────────────────────────────── */}
-      {selectedBlog && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4 py-6 transition-all duration-300 overflow-y-auto">
+      {mounted && selectedBlog && createPortal(
+        <div className="fixed inset-0 z-9999 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4 py-6 overflow-y-auto">
           <div className="bg-white rounded-3xl w-full max-w-3xl max-h-[85vh] overflow-y-auto relative shadow-2xl animate-in zoom-in-95 duration-200 border border-slate-100 flex flex-col">
 
             {/* Header bar with Close Button */}
@@ -796,7 +799,8 @@ export function RealEstateGuide() {
 
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
     </section>

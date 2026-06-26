@@ -14,7 +14,7 @@ const features = [
         icon: <FileText size={36} className="text-[#e05a5a]" />,
         label: "All Reports from RERA",
         bg: "bg-[#fce8e8]",
-        href: "/search?status=Under Construction",
+        href: "/search",
     },
     {
         id: 3,

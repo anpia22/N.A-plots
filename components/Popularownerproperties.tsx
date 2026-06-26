@@ -40,7 +40,7 @@ const properties = [
     },
     {
         id: 4,
-        type: "The f Row - Vogue Villas & NA Plots",
+        type: "The fRow - Vogue Villas & NA Plots",
         price: "75 Lacs*",
         area: "1,500 - 3,500 sqft",
         locality: "Paud Mulshi, Pune",

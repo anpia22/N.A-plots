@@ -735,13 +735,13 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
               <h4 className="font-bold text-[#333] text-xs uppercase tracking-wide mb-3">Configuration</h4>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { val: "Studio", label: "Studio" },
+                  // { val: "Studio", label: "Studio" },
                   { val: "1", label: "1 BHK" },
                   { val: "2", label: "2 BHK" },
                   { val: "3", label: "3 BHK" },
                   { val: "4", label: "4 BHK" },
                   { val: "4+", label: "4+ BHK" },
-                  { val: "Office", label: "Office" },
+                  // { val: "Office", label: "Office" },
                 ].map(({ val, label }) => (
                   <button
                     key={val}
@@ -1017,7 +1017,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
 
                           {/* Property Title */}
                           <h1 className="text-[#333] group-hover:text-primary text-base sm:text-lg font-bold leading-snug mb-1 transition-colors">
-                            {p.bhk > 0 ? `${p.bhk} BHK ` : ""}{p.type} {p.type === "Plot" ? "for Sale in" : "for Sale in"} {p.projectName}
+                            {p.bhk > 0 ? `${p.bhkLabel ?? p.bhk} BHK ` : ""}{p.type} {p.type === "Plot" ? "for Sale in" : "for Sale in"} {p.projectName}
                           </h1>
 
                           {/* Locality */}
@@ -1190,7 +1190,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                 Contact
               </h3>
               <p className="text-white/80 text-xs leading-relaxed truncate">
-                For: {contactProperty.bhk > 0 ? `${contactProperty.bhk} BHK ` : ""}{contactProperty.type} at {contactProperty.projectName}
+                For: {contactProperty.bhk > 0 ? `${contactProperty.bhkLabel ?? contactProperty.bhk} BHK ` : ""}{contactProperty.type} at {contactProperty.projectName}
               </p>
             </div>
 
@@ -1332,7 +1332,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                       </label>
                       <textarea
                         rows={3}
-                        placeholder={`Hi, I am interested in your ${contactProperty.bhk > 0 ? `${contactProperty.bhk} BHK ` : ""}${contactProperty.type} in ${contactProperty.projectName}. Please send me the brochure and details.`}
+                        placeholder={`Hi, I am interested in your ${contactProperty.bhk > 0 ? `${contactProperty.bhkLabel ?? contactProperty.bhk} BHK ` : ""}${contactProperty.type} in ${contactProperty.projectName}. Please send me the brochure and details.`}
                         value={leadMessage}
                         onChange={(e) => setLeadMessage(e.target.value)}
                         className="w-full p-3 border border-gray-300 rounded-lg text-sm text-[#333] placeholder-gray-400 outline-none focus:border-primary resize-none"
@@ -1453,7 +1453,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
               <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-gray-100 gap-4 mb-6">
                 <div>
                   <h4 className="font-bold text-gray-800 text-lg">
-                    {detailProperty.bhk > 0 ? `${detailProperty.bhk} BHK ` : ""}{detailProperty.type} for Sale
+                    {detailProperty.bhk > 0 ? `${detailProperty.bhkLabel ?? detailProperty.bhk} BHK ` : ""}{detailProperty.type} for Sale
                   </h4>
                   <p className="text-gray-400 text-xs mt-0.5">Listed ID: {detailProperty.id} • Posted {detailProperty.postedDate}</p>
                 </div>
@@ -1483,7 +1483,7 @@ function SearchResultsContent({ localityOverride, typeOverride }: { localityOver
                     <>
                       <div>
                         <span className="text-[10px] text-gray-400 font-semibold block uppercase">Bedrooms</span>
-                        <span className="text-sm font-bold text-gray-700">{detailProperty.bhk} BHK</span>
+                        <span className="text-sm font-bold text-gray-700">{detailProperty.bhkLabel ?? detailProperty.bhk} BHK</span>
                       </div>
                       <div>
                         <span className="text-[10px] text-gray-400 font-semibold block uppercase">Bathrooms</span>

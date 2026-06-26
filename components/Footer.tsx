@@ -86,7 +86,7 @@ const footerColumns = [
     {
         heading: "Top Projects",
         links: [
-            "The f Row",
+            "The fRow",
             "Codename Tathastu",
             "The Pawna Villas",
             "Codename OWNEDGE",
@@ -205,7 +205,7 @@ const getLinkHref = (heading: string, linkText: string) => {
     // 3. Top Projects
     if (heading === "Top Projects") {
         const text = linkText.trim();
-        if (text === "The f Row") return "https://thefrow.in/";
+        if (text === "The fRow") return "https://thefrow.in/";
         if (text === "Codename Tathastu") return "https://codenametathastu.com/";
         if (text === "The Pawna Villas") return "https://thepawnavillas.com/";
         if (text === "Codename OWNEDGE") return "https://www.risingspaces.in/own-edge";

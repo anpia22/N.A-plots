@@ -8,7 +8,7 @@ export default function PropertyCategories() {
         {
             id: 1,
             title: "Vogue Living at Mulshi",
-            highlight: "The f ROW",
+            highlight: "The fRow",
             subtitle: "Luxury Gated Community",
             reward: "Sanctioned Residential NA Plots",
             buttonText: "Explore Now",

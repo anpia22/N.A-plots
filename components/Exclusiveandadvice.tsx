@@ -14,7 +14,7 @@ const properties = [
         status: "Under Construction",
         photos: 2,
         img: "/Images/Projects/frow_banner.avif",
-        projectName: "The f Row"
+        projectName: "The fRow"
     },
     {
         id: 2,

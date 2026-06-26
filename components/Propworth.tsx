@@ -84,7 +84,7 @@ export default function PropWorth() {
                 >
                     {/* Background image */}
                     <img
-                        src="/Images/Projects/RedStone_Webbanner.avif"
+                        src="/Images/FarmHousePriceListandDetails.jpg"
                         alt="city"
                         className="absolute inset-0 w-full h-full object-cover"
                     />

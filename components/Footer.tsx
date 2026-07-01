@@ -453,7 +453,7 @@ export default function Footer() {
             </div>
 
             {/* ── Crafted By: rendered as a body-level portal for parallax reveal ── */}
-            <CraftedByBar />
+            {/* <CraftedByBar /> */}
 
         </footer>
     );

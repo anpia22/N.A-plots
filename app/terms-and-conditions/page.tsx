@@ -267,16 +267,13 @@ export default function TermsAndConditionsPage() {
                 <span className="font-semibold text-text-primary block text-sm sm:text-base">NAPLOTSPUNE </span>
                 {/* <span className="text-xs sm:text-sm block">Realty Services Limited</span> */}
                 <span className="text-xs sm:text-sm block">Pune</span>
-                <span className="text-xs sm:text-sm block">Email: <a href="mailto:privacy@naplotspune.com" className="text-primary hover:underline font-bold">privacy@naplotspune.com</a></span>
-                <span className="text-xs sm:text-sm block">Phone: +91 0000000000</span>
+                <a href="mailto:info@naplotspune.com" className="text-xs sm:text-sm block">Email: info@naplotspune.com</a>
+                <a href="tel:+918805390707" className="text-xs sm:text-sm block">Phone: +91 8805390707</a>
               </div>
             </section>
-
           </main>
-
         </div>
       </div>
-
       <Footer />
     </div>
   );

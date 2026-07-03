@@ -12,4 +12,3 @@ Real estate marketing website for NA (Non-Agricultural) plot listings in Pune.
 ## Tech Stack
 Next.js (App Router) · TypeScript · Tailwind CSS · 
 
-## Screenshots
